@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">FYP</string>
+    <string name="hint_set">Set</string>
+    <string name="hint_weight">Weight</string>
+    <string name="hint_reps">Reps</string>
+    <string name="hint_exercise_name">Exercise name</string>
+    <string name="reps">reps</string>
+    <string name="set">Set</string>
+    <string name="kg">kg</string>
+    <string name="log_title">log title</string>
+    <string name="log_content">log content</string>
+    <string name="log_timestamp">timestamp</string>
+    <string name="log_toolbar">Log</string>
+    <string name="select_exercise">Select Exercise</string>
+    <string name="workout">Workout</string>
+    <string name="finish">FINISH</string>
+    <string name="exercise_name">Exercise name</string>
+    <string name="name">Name</string>
+
+    <string-array name="muscles">
+        <item>Abs</item>
+        <item>Back</item>
+        <item>Biceps</item>
+        <item>Chest</item>
+        <item>Legs</item>
+        <item>Shoulders</item>
+        <item>Triceps</item>
+    </string-array>
+</resources>

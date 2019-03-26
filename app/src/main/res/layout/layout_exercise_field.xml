@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:padding="5dp"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/set"
+            android:id="@+id/view_exercise_set_text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginStart="10dp"
+            android:layout_weight="0"
+            android:gravity="start" />
+
+        <TextView
+            android:id="@+id/view_exercise_set_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#424242"
+            android:layout_marginTop="0dp"
+            android:layout_marginStart="10dp"
+            android:gravity="start"
+            android:layout_weight="0" />
+
+        <EditText
+            android:id="@+id/view_exercise_set_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#424242"
+            android:layout_marginStart="10dp"
+            android:inputType="numberDecimal"
+            android:gravity="end"
+            android:layout_weight="0.20"
+            android:selectAllOnFocus="true"
+            android:minWidth="30dp"
+            android:maxWidth="50dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/view_exercise_set_weight_type"
+            android:text="@string/kg"
+            android:layout_marginStart="10dp"
+            android:layout_weight="0"
+            android:layout_marginEnd="10dp"
+            android:gravity="start" />
+
+        <EditText
+            android:id="@+id/view_exercise_set_reps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#424242"
+            android:layout_marginEnd="10dp"
+            android:inputType="numberDecimal"
+            android:gravity="end"
+            android:layout_weight="0.20"
+            android:selectAllOnFocus="true"
+            android:minWidth="30dp"
+            android:maxWidth="50dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reps"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/view_exercise_set_reps_text"
+            android:layout_marginEnd="0dp"
+            android:gravity="start"
+            android:layout_weight="0" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_remove_black_24dp"
+            android:id="@+id/view_exercise_remove_set_button"/>
+
+    </LinearLayout>
+    <!--<TextView-->
+        <!--android:id="@+id/view_exercise_set_text"-->
+        <!--android:layout_width="42dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="40dp"-->
+        <!--android:layout_weight="0"-->
+        <!--android:gravity="start"-->
+        <!--android:text="@string/hint_set"-->
+        <!--android:textAppearance="?android:attr/textAppearanceMedium" />-->
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/hint_weight"-->
+        <!--android:layout_marginLeft="50dp"-->
+        <!--android:id="@+id/view_exercise_weight_text"-->
+        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+        <!--android:layout_marginStart="10dp"-->
+        <!--android:layout_weight="0"-->
+        <!--android:gravity="start" />-->
+
+    <!--<EditText-->
+        <!--android:id="@+id/editText_weight"-->
+        <!--android:layout_width="40dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:ems="10"-->
+        <!--android:inputType="number" />-->
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/hint_reps"-->
+        <!--android:layout_marginLeft="50dp"-->
+        <!--android:id="@+id/view_exercise_reps_text"-->
+        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+        <!--android:layout_marginStart="10dp"-->
+        <!--android:layout_weight="0"-->
+        <!--android:gravity="start" />-->
+
+
+    <!--<EditText-->
+        <!--android:id="@+id/editText_reps"-->
+        <!--android:layout_width="50dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:ems="10"-->
+        <!--android:inputType="number"/>-->
+
+
+    <!--<Button-->
+        <!--android:id="@+id/delete_button"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:background="@android:drawable/ic_delete"-->
+        <!--android:onClick="onDelete" />-->
+</LinearLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_log"
+        android:icon="@drawable/ic_log"
+        android:title="Log"/>
+
+    <item
+        android:id="@+id/navigation_routines"
+        android:icon="@drawable/ic_dumbell"
+        android:title="Routines"/>
+
+    <item
+        android:id="@+id/navigation_Stats"
+        android:icon="@drawable/ic_stat"
+        android:title="Stats"/>
+
+</menu>
