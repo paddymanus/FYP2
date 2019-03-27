@@ -3,11 +3,13 @@ package com.example.paddy.fyp.home;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import com.example.paddy.fyp.ExerciseLogListActivity;
 import com.example.paddy.fyp.R;
@@ -18,7 +20,8 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.ArrayList;
 
-public class HomeActivity extends AppCompatActivity implements LogItemRecyclerAdapter.OnLogItemListener {
+public class HomeActivity extends AppCompatActivity implements LogItemRecyclerAdapter.OnLogItemListener,
+        View.OnClickListener {
 
     private static final String TAG = "HomeActivity";
 
@@ -36,23 +39,25 @@ public class HomeActivity extends AppCompatActivity implements LogItemRecyclerAd
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         mRecyclerView = findViewById(R.id.rvLogItem);
+
+        findViewById(R.id.fab).setOnClickListener(this);
         Log.d(TAG, "onCreate: starting");
 
         initRecyclerView();
-        insertFakeItems();
+      // insertFakeItems();
         setupBottomNavigationView();
     }
 
-    private void insertFakeItems(){
-        for (int i = 0; i < 1000; i++){
-            LogItem logItem = new LogItem();
-            logItem.setTitle("title # " + i);
-            logItem.setContent("content # " + i);
-            logItem.setTimestamp("Jan 2019");
-            mLogItems.add(logItem);
-        } 
-        mLogItemRecyclerAdapter.notifyDataSetChanged();
-    }
+//    private void insertFakeItems(){
+//        for (int i = 0; i < 1000; i++){
+//            LogItem logItem = new LogItem();
+//            logItem.setTitle("title # " + i);
+//            logItem.setContent("content # " + i);
+//            logItem.setTimestamp("Jan 2019");
+//            mLogItems.add(logItem);
+//        }
+//        mLogItemRecyclerAdapter.notifyDataSetChanged();
+//    }
 
     private void initRecyclerView(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -87,6 +92,12 @@ public class HomeActivity extends AppCompatActivity implements LogItemRecyclerAd
 
         Intent intent = new Intent(this, ExerciseLogListActivity.class);
         intent.putExtra("selected_item", mLogItems.get(position));
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(this, ExerciseLogListActivity.class);
         startActivity(intent);
     }
 }

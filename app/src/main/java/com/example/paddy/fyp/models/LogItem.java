@@ -1,25 +1,41 @@
 package com.example.paddy.fyp.models;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-
+@Entity(tableName = "logItem", indices = {@Index("id")})
 public class LogItem implements Parcelable {
 
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
+    @ColumnInfo(name = "title")
     private String title;
+
+    @ColumnInfo(name = "content")
     private String content;
+
+    @ColumnInfo(name = "timestamp")
     private String timestamp;
 
-    public LogItem(String title, String content, String timestamp) {
+    public LogItem(int id, String title, String content, String timestamp) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.timestamp = timestamp;
     }
 
+    @Ignore
     public LogItem() {
     }
 
     protected LogItem(Parcel in) {
+        id = in.readInt();
         title = in.readString();
         content = in.readString();
         timestamp = in.readString();
@@ -36,6 +52,14 @@ public class LogItem implements Parcelable {
             return new LogItem[size];
         }
     };
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -61,10 +85,12 @@ public class LogItem implements Parcelable {
         this.timestamp = timestamp;
     }
 
+
     @Override
     public String toString() {
         return "LogItem{" +
-                "title='" + title + '\'' +
+                "id=" + id +
+                ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", timestamp='" + timestamp + '\'' +
                 '}';
@@ -77,6 +103,7 @@ public class LogItem implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(title);
         dest.writeString(content);
         dest.writeString(timestamp);
