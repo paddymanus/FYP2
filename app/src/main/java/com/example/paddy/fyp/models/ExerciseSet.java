@@ -2,14 +2,20 @@ package com.example.paddy.fyp.models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity(tableName = "exerciseSets")
+
+@Entity(tableName = "exerciseSets", foreignKeys = @ForeignKey(entity = LogItem.class,
+        parentColumns = "id", childColumns = "workout_id"))
 public class ExerciseSet {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
+
+    @ColumnInfo(name = "workout_id", index = true)
+    private int workoutID;
 
     @ColumnInfo(name = "exerciseName")
     private String name;
@@ -31,8 +37,9 @@ public class ExerciseSet {
     //ExexerciseSet set("name", 0, 0, 0);
 
 
-    public ExerciseSet(String name, String parameters, String number, int weight, int reps) {
+    public ExerciseSet(int workoutID, String name, String parameters, String number, int weight, int reps) {
         this.name = name;
+        this.workoutID = workoutID;
         this.parameters = parameters;
         this.number = number;
         this.weight = weight;
@@ -47,6 +54,14 @@ public class ExerciseSet {
 //        mExerciseSets = exerciseSets;
 //    }
 
+
+    public int getWorkoutID() {
+        return workoutID;
+    }
+
+    public void setWorkoutID(int workoutID) {
+        this.workoutID = workoutID;
+    }
 
     public String getName() {
         return name;

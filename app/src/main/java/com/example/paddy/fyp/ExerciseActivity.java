@@ -162,9 +162,6 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
             exerciseSet.setReps(Integer.valueOf(setRepsET.getText().toString()));
             exercises.add(exerciseSet);
 
-            listSet.add((String.valueOf(exerciseSet.getNumber())));
-            listWeight.add((String.valueOf(exerciseSet.getWeight())));
-            listReps.add((String.valueOf(exerciseSet.getReps())));
 
             Log.d(TAG, "getIncomingIntent: " + exerciseSet.toString() + listSet + listWeight + listReps);
 

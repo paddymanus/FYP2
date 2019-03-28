@@ -6,8 +6,9 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import com.example.paddy.fyp.models.ExerciseSet;
+import com.example.paddy.fyp.models.LogItem;
 
-@Database(entities = {ExerciseSet.class}, version = 1)
+@Database(entities = {ExerciseSet.class, LogItem.class}, version = 1)
 public abstract class ExerciseSetDatabase extends RoomDatabase {
 
     public static final String DATABASE_NAME = "exercise_sets_db";

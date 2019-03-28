@@ -8,7 +8,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,7 +18,7 @@
         <activity android:name=".ExerciseActivity" />
         <activity android:name=".NewExerciseActivity" />
         <activity android:name=".ExerciseLogListActivity"/>
-        <activity android:name=".home.HomeActivity"/>
+        <activity android:name=".MainActivity"/>
         <activity android:name=".routines.RoutinesActivity"/>
         <activity android:name=".stats.StatsActivity"/>
         <activity android:name=".NavigationActivity">

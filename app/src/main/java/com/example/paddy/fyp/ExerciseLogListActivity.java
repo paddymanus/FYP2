@@ -19,8 +19,10 @@ import com.example.paddy.fyp.home.HomeActivity;
 import com.example.paddy.fyp.models.ExerciseSet;
 import com.example.paddy.fyp.models.LogItem;
 import com.example.paddy.fyp.persistence.ExerciseSetRepository;
+import com.example.paddy.fyp.persistence.LogItemRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ExerciseLogListActivity extends AppCompatActivity implements
@@ -37,10 +39,13 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
 
     // vars
     private ArrayList<ExerciseSet> mSets = new ArrayList<>();
+    private HashMap<String, String> mSetsHashMap = new HashMap();
     private ExerciseSetRecyclerAdapter mExerciseSetRecyclerAdapter;
     private ExerciseSetRepository mExerciseSetRepository;
     private boolean mIsNewLogItem;
     private LogItem mInitialLogItem;
+    private LogItem mFinalLogItem;
+    private LogItemRepository mLogItemRepository;
 
 
     @Override
@@ -53,6 +58,7 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
         mBackPressed = findViewById(R.id.toolbar_back_arrow_exercise);
         mFinish = findViewById(R.id.note_text_finish);
         mExerciseSetRepository = new ExerciseSetRepository(this);
+        mLogItemRepository = new LogItemRepository(this);
 
         if(getIntent().hasExtra("selected_item")){
             LogItem logItem = getIntent().getParcelableExtra("selected_item");
@@ -76,6 +82,7 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
     private boolean getIncomingIntent(){
         if(getIntent().hasExtra("selected_item")){
             mInitialLogItem = getIntent().getParcelableExtra("selected_item");
+            mFinalLogItem = getIntent().getParcelableExtra("selected_item");
             Log.d(TAG, "getIncomingIntent: " + mInitialLogItem.toString());
 
             mIsNewLogItem = false;
@@ -85,16 +92,51 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
         return true;
     }
 
+    private void saveChanges(){
+        if(mIsNewLogItem){
+            saveNewLogItem();
+        }
+        else{
+
+        }
+    }
+
+    private void saveNewLogItem(){
+        mLogItemRepository.insertLogItemTask(mFinalLogItem);
+    }
+
     private void setLogItemProperties(){
         mEditTitle.setText(mInitialLogItem.getTitle());
     }
 
+    private void getExercises(){
+
+    }
+
     private void setNewLogItemProperties(){
-        mEditTitle.setText("Name");
+        mEditTitle.setText("");
     }
 
 
     private void retrieveExerciseSets(){
+        mExerciseSetRepository.retrieveSetTask().observe(this, new Observer<List<ExerciseSet>>() {
+            @Override
+            public void onChanged(@Nullable List<ExerciseSet> exerciseSets) {
+                if(mSets.size() > 0){
+                    mSets.clear();
+                }
+                if(exerciseSets != null){
+                    mSets.addAll(exerciseSets);
+                    for(int i = 0; i < mSets.size(); i++){
+                        int workoutId = mSets.get(i).getWorkoutID();
+                    }
+                }
+                mExerciseSetRecyclerAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void retrieveExerciseSetsByID(int id){
         mExerciseSetRepository.retrieveSetTask().observe(this, new Observer<List<ExerciseSet>>() {
             @Override
             public void onChanged(@Nullable List<ExerciseSet> exerciseSets) {
@@ -119,6 +161,7 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
     private void setListeners(){
         mButton.setOnClickListener(this);
         mBackPressed.setOnClickListener(this);
+        mFinish.setOnClickListener(this);
 
     }
 
@@ -134,6 +177,10 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
                 Intent intent = new Intent(this, HomeActivity.class);
                 startActivity(intent);
                 break;
+            }
+            case R.id.note_text_finish:{
+                saveChanges();
+                finish();
             }
         }
     }
