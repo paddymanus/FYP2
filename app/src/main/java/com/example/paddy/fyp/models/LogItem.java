@@ -7,12 +7,13 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 @Entity(tableName = "logItem", indices = {@Index("id")})
 public class LogItem implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
 
     @ColumnInfo(name = "title")
     private String title;
@@ -23,8 +24,7 @@ public class LogItem implements Parcelable {
     @ColumnInfo(name = "timestamp")
     private String timestamp;
 
-    public LogItem(int id, String title, String content, String timestamp) {
-        this.id = id;
+    public LogItem(String title, String content, String timestamp) {
         this.title = title;
         this.content = content;
         this.timestamp = timestamp;
@@ -35,7 +35,7 @@ public class LogItem implements Parcelable {
     }
 
     protected LogItem(Parcel in) {
-        id = in.readInt();
+        id = in.readLong();
         title = in.readString();
         content = in.readString();
         timestamp = in.readString();
@@ -53,11 +53,11 @@ public class LogItem implements Parcelable {
         }
     };
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -103,7 +103,7 @@ public class LogItem implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
+        dest.writeLong(id);
         dest.writeString(title);
         dest.writeString(content);
         dest.writeString(timestamp);

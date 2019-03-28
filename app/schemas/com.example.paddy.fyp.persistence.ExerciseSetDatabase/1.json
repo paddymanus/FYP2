@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "e30731fb420f5678cf919c0a6cbbd23e",
+    "identityHash": "d26142072ba7eb135ea6dce1aada1124",
     "entities": [
       {
         "tableName": "exerciseSets",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `workout_id` INTEGER NOT NULL, `exerciseName` TEXT, `parameters` TEXT, `setNo` TEXT, `weight` INTEGER NOT NULL, `reps` INTEGER NOT NULL, FOREIGN KEY(`workout_id`) REFERENCES `logItem`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `workout_id` INTEGER NOT NULL, `exerciseName` TEXT, `parameters` TEXT, `setNo` TEXT, `weight` INTEGER NOT NULL, `reps` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -57,29 +57,8 @@
           ],
           "autoGenerate": true
         },
-        "indices": [
-          {
-            "name": "index_exerciseSets_workout_id",
-            "unique": false,
-            "columnNames": [
-              "workout_id"
-            ],
-            "createSql": "CREATE  INDEX `index_exerciseSets_workout_id` ON `${TABLE_NAME}` (`workout_id`)"
-          }
-        ],
-        "foreignKeys": [
-          {
-            "table": "logItem",
-            "onDelete": "NO ACTION",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "workout_id"
-            ],
-            "referencedColumns": [
-              "id"
-            ]
-          }
-        ]
+        "indices": [],
+        "foreignKeys": []
       },
       {
         "tableName": "logItem",
@@ -131,7 +110,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e30731fb420f5678cf919c0a6cbbd23e\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"d26142072ba7eb135ea6dce1aada1124\")"
     ]
   }
 }

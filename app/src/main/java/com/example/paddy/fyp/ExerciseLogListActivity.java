@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.paddy.fyp.adapters.ExerciseSetRecyclerAdapter;
+import com.example.paddy.fyp.adapters.LogItemRecyclerAdapter;
 import com.example.paddy.fyp.home.HomeActivity;
 import com.example.paddy.fyp.models.ExerciseSet;
 import com.example.paddy.fyp.models.LogItem;
@@ -41,10 +42,12 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
     private ArrayList<ExerciseSet> mSets = new ArrayList<>();
     private HashMap<String, String> mSetsHashMap = new HashMap();
     private ExerciseSetRecyclerAdapter mExerciseSetRecyclerAdapter;
+    private LogItemRecyclerAdapter mLogItemRecyclerAdapter;
     private ExerciseSetRepository mExerciseSetRepository;
     private boolean mIsNewLogItem;
     private LogItem mInitialLogItem;
     private LogItem mFinalLogItem;
+    private ExerciseSet mExerciseSet;
     private LogItemRepository mLogItemRepository;
 
 
@@ -76,6 +79,7 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
 
         initRecyclerView();
         retrieveExerciseSets();
+      //  retrieveMatchingSetTask();
         setListeners();
     }
 
@@ -113,8 +117,26 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
 
     }
 
+    private void isLogNotNull() {
+        String temp = mEditTitle.getText().toString();
+        temp = temp.replace("\n", "");
+        temp = temp.replace(" ", "");
+        if (temp.length() > 0) {
+            mFinalLogItem.setTitle(mEditTitle.getText().toString());
+            String content = "Bench Press, Shoulder Press, Dumbell Flies, Laterial Raises";
+            String timestamp = "March 2019";
+            mFinalLogItem.setContent(content);
+            mFinalLogItem.setTimestamp(timestamp);
+        }
+    }
+
     private void setNewLogItemProperties(){
         mEditTitle.setText("");
+
+        mInitialLogItem = new LogItem();
+        mFinalLogItem = new LogItem();
+        mInitialLogItem.setTitle("");
+        mFinalLogItem.setTitle("");
     }
 
 
@@ -127,17 +149,14 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
                 }
                 if(exerciseSets != null){
                     mSets.addAll(exerciseSets);
-                    for(int i = 0; i < mSets.size(); i++){
-                        int workoutId = mSets.get(i).getWorkoutID();
-                    }
                 }
                 mExerciseSetRecyclerAdapter.notifyDataSetChanged();
             }
         });
     }
 
-    private void retrieveExerciseSetsByID(int id){
-        mExerciseSetRepository.retrieveSetTask().observe(this, new Observer<List<ExerciseSet>>() {
+    private void retrieveMatchingSetTask(){
+        mExerciseSetRepository.retrieveMatchingSetsTask().observe(this, new Observer<List<ExerciseSet>>() {
             @Override
             public void onChanged(@Nullable List<ExerciseSet> exerciseSets) {
                 if(mSets.size() > 0){
@@ -169,6 +188,8 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.add_exercise_button:{
+                isLogNotNull();
+                saveChanges();
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 break;
@@ -179,6 +200,7 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
                 break;
             }
             case R.id.note_text_finish:{
+                isLogNotNull();
                 saveChanges();
                 finish();
             }

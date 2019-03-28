@@ -5,11 +5,11 @@ import android.os.AsyncTask;
 import com.example.paddy.fyp.models.Exercise;
 import com.example.paddy.fyp.persistence.ExerciseDao;
 
-public class InsertAsyncTask extends AsyncTask<Exercise, Void, Void> {
+public class InsertExerciseAsyncTask extends AsyncTask<Exercise, Void, Void> {
 
     private ExerciseDao mExerciseDao;
 
-    public InsertAsyncTask(ExerciseDao dao) {
+    public InsertExerciseAsyncTask(ExerciseDao dao) {
         mExerciseDao = dao;
     }
 

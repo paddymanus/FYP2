@@ -20,6 +20,10 @@ public interface ExerciseSetDao {
     @Query("SELECT * FROM exerciseSets")
     LiveData<List<ExerciseSet>> getExerciseSets();
 
+    @Query("SELECT * FROM exerciseSets " +
+            "INNER JOIN logItem ON logItem.id LIKE exerciseSets.workout_id ")
+    LiveData<List<ExerciseSet>> getMatchingExerciseSets();
+
     @Delete
     int delete(ExerciseSet... exerciseSets);
 

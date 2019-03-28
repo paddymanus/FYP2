@@ -4,17 +4,22 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 
-@Entity(tableName = "exerciseSets", foreignKeys = @ForeignKey(entity = LogItem.class,
-        parentColumns = "id", childColumns = "workout_id"))
+@Entity(tableName = "exerciseSets")
+
+//        ,foreignKeys = @ForeignKey(entity = LogItem.class,
+//                parentColumns = "id", childColumns = "workout_id"))
+
 public class ExerciseSet {
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
     private int id;
 
-    @ColumnInfo(name = "workout_id", index = true)
+    @ColumnInfo(name = "workout_id")
     private int workoutID;
 
     @ColumnInfo(name = "exerciseName")
@@ -107,11 +112,11 @@ public class ExerciseSet {
         this.reps = reps;
     }
 
-
     @Override
     public String toString() {
         return "ExerciseSet{" +
                 "id=" + id +
+                ", workoutID=" + workoutID +
                 ", name='" + name + '\'' +
                 ", parameters='" + parameters + '\'' +
                 ", number='" + number + '\'' +

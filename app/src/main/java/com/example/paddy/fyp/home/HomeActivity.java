@@ -1,8 +1,10 @@
 package com.example.paddy.fyp.home;
 
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -15,10 +17,12 @@ import com.example.paddy.fyp.ExerciseLogListActivity;
 import com.example.paddy.fyp.R;
 import com.example.paddy.fyp.adapters.LogItemRecyclerAdapter;
 import com.example.paddy.fyp.models.LogItem;
+import com.example.paddy.fyp.persistence.LogItemRepository;
 import com.example.paddy.fyp.utils.BottomNavigationViewHelper;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements LogItemRecyclerAdapter.OnLogItemListener,
         View.OnClickListener {
@@ -33,6 +37,7 @@ public class HomeActivity extends AppCompatActivity implements LogItemRecyclerAd
     // vars
     private ArrayList<LogItem> mLogItems = new ArrayList<>();
     private LogItemRecyclerAdapter mLogItemRecyclerAdapter;
+    private LogItemRepository mLogItemRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,29 +46,51 @@ public class HomeActivity extends AppCompatActivity implements LogItemRecyclerAd
         mRecyclerView = findViewById(R.id.rvLogItem);
 
         findViewById(R.id.fab).setOnClickListener(this);
+
+        mLogItemRepository = new LogItemRepository(this);
         Log.d(TAG, "onCreate: starting");
 
         initRecyclerView();
-      // insertFakeItems();
+//        insertFakeItems();
+        retrieveLogItems();
         setupBottomNavigationView();
     }
 
-//    private void insertFakeItems(){
-//        for (int i = 0; i < 1000; i++){
-//            LogItem logItem = new LogItem();
-//            logItem.setTitle("title # " + i);
-//            logItem.setContent("content # " + i);
-//            logItem.setTimestamp("Jan 2019");
-//            mLogItems.add(logItem);
-//        }
-//        mLogItemRecyclerAdapter.notifyDataSetChanged();
-//    }
+    private void retrieveLogItems(){
+        mLogItemRepository.retrieveLogItemTask().observe(this, new Observer<List<LogItem>>() {
+            @Override
+            public void onChanged(@Nullable List<LogItem> logItems) {
+                if(mLogItems.size() > 0){
+                    mLogItems.clear();
+                }
+                if(logItems != null){
+                    mLogItems.addAll(logItems);
+                }
+                mLogItemRecyclerAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void insertFakeItems(){
+        for (int i = 0; i < 1000; i++){
+            LogItem logItem = new LogItem();
+            logItem.setTitle("title # " + i);
+            logItem.setContent("content # " + i);
+            logItem.setTimestamp("Jan 2019");
+            mLogItems.add(logItem);
+        }
+        mLogItemRecyclerAdapter.notifyDataSetChanged();
+    }
 
     private void initRecyclerView(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mLogItemRecyclerAdapter = new LogItemRecyclerAdapter(mLogItems, this);
         mRecyclerView.setAdapter(mLogItemRecyclerAdapter);
+    }
+
+    private void setId(){
+
     }
 
 

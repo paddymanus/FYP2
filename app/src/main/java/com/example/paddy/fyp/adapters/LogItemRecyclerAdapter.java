@@ -60,6 +60,11 @@ public class LogItemRecyclerAdapter extends RecyclerView.Adapter<LogItemRecycler
         public void onClick(View v) {
             onLogItemListener.onLogItemClick(getAdapterPosition());
         }
+
+    }
+
+    public long findPosition(View view){
+        return view.getId();
     }
 
     public interface OnLogItemListener{

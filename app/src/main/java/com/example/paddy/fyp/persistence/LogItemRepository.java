@@ -3,9 +3,7 @@ package com.example.paddy.fyp.persistence;
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
 
-import com.example.paddy.fyp.async.InsertAsyncTask;
 import com.example.paddy.fyp.async.InsertLogItemAsyncTask;
-import com.example.paddy.fyp.models.Exercise;
 import com.example.paddy.fyp.models.LogItem;
 
 import java.util.List;
