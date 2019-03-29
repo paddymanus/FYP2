@@ -6,24 +6,23 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 
-@Entity(tableName = "exerciseSets")
-
-//        ,foreignKeys = @ForeignKey(entity = LogItem.class,
-//                parentColumns = "id", childColumns = "workout_id"))
+@Entity(foreignKeys = @ForeignKey(entity = LogItem.class,
+                parentColumns = "id",childColumns = "workout_id"))
 
 public class ExerciseSet {
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
+    @ColumnInfo(name = "_id")
     private int id;
-
-    @ColumnInfo(name = "workout_id")
-    private int workoutID;
 
     @ColumnInfo(name = "exerciseName")
     private String name;
+
+    @ColumnInfo(name = "workout_id")
+    private Long workoutID;
 
     @ColumnInfo(name = "parameters")
     private String parameters;
@@ -38,11 +37,7 @@ public class ExerciseSet {
     private int reps;
 
 
-//  private ArrayList<ExerciseSet> mExerciseSets = new ArrayList<>();
-    //ExexerciseSet set("name", 0, 0, 0);
-
-
-    public ExerciseSet(int workoutID, String name, String parameters, String number, int weight, int reps) {
+    public ExerciseSet(String name, Long workoutID, String parameters, String number, int weight, int reps) {
         this.name = name;
         this.workoutID = workoutID;
         this.parameters = parameters;
@@ -55,16 +50,11 @@ public class ExerciseSet {
     public ExerciseSet() {
     }
 
-//    public void setExerciseSets(ArrayList<ExerciseSet> exerciseSets) {
-//        mExerciseSets = exerciseSets;
-//    }
-
-
-    public int getWorkoutID() {
+    public Long getWorkoutID() {
         return workoutID;
     }
 
-    public void setWorkoutID(int workoutID) {
+    public void setWorkoutID(Long workoutID) {
         this.workoutID = workoutID;
     }
 

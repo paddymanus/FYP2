@@ -17,12 +17,15 @@ public interface ExerciseSetDao {
     @Insert
     long[] insertExerciseSets(ExerciseSet... exerciseSets);
 
-    @Query("SELECT * FROM exerciseSets")
+    @Query("SELECT * FROM ExerciseSet")
     LiveData<List<ExerciseSet>> getExerciseSets();
 
-    @Query("SELECT * FROM exerciseSets " +
-            "INNER JOIN logItem ON logItem.id LIKE exerciseSets.workout_id ")
+    @Query("SELECT * FROM ExerciseSet " +
+            "INNER JOIN logItem ON logItem.title LIKE ExerciseSet.workout_id ")
     LiveData<List<ExerciseSet>> getMatchingExerciseSets();
+
+    @Query("SELECT * FROM ExerciseSet WHERE workout_id LIKE :workoutid")
+    LiveData<List<ExerciseSet>> getWorkoutId1(int workoutid);
 
     @Delete
     int delete(ExerciseSet... exerciseSets);

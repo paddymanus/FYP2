@@ -152,6 +152,7 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
             exerciseSet = new ExerciseSet();
             exerciseSet.setName(mViewTitle.getText().toString());
 
+
 //            exerciseSet.setNumber(mSetNumber.getText().toString());
             View item = mRecyclerView.getChildAt(i);
             EditText setWeightET = (EditText) item.findViewById(R.id.view_exercise_set_weight);
@@ -174,6 +175,7 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
                 Log.d(TAG, "getSet: " + set);
         //    }
             exerciseSet.setParameters(set);
+            Log.d(TAG, "updateExercise: " + exerciseSet.toString());
 
         }
 

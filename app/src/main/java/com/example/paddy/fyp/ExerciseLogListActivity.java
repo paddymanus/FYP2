@@ -25,6 +25,7 @@ import com.example.paddy.fyp.persistence.LogItemRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ExerciseLogListActivity extends AppCompatActivity implements
         View.OnClickListener{
@@ -78,8 +79,9 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
         }
 
         initRecyclerView();
-        retrieveExerciseSets();
-      //  retrieveMatchingSetTask();
+      //  retrieveExerciseSets();
+        retrieveMatchingSetTask();
+     //   retrieveSete1();
         setListeners();
     }
 
@@ -118,6 +120,7 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
     }
 
     private void isLogNotNull() {
+        long count = 0;
         String temp = mEditTitle.getText().toString();
         temp = temp.replace("\n", "");
         temp = temp.replace(" ", "");
@@ -157,6 +160,21 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
 
     private void retrieveMatchingSetTask(){
         mExerciseSetRepository.retrieveMatchingSetsTask().observe(this, new Observer<List<ExerciseSet>>() {
+            @Override
+            public void onChanged(@Nullable List<ExerciseSet> exerciseSets) {
+                if(mSets.size() > 0){
+                    mSets.clear();
+                }
+                if(exerciseSets != null){
+                    mSets.addAll(exerciseSets);
+                }
+                mExerciseSetRecyclerAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void retrieveSete1(){
+        mExerciseSetRepository.retrieveSet1().observe(this, new Observer<List<ExerciseSet>>() {
             @Override
             public void onChanged(@Nullable List<ExerciseSet> exerciseSets) {
                 if(mSets.size() > 0){

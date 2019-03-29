@@ -2,15 +2,15 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d26142072ba7eb135ea6dce1aada1124",
+    "identityHash": "88cef5c147f8838819f14c147ba3e48f",
     "entities": [
       {
-        "tableName": "exerciseSets",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `workout_id` INTEGER NOT NULL, `exerciseName` TEXT, `parameters` TEXT, `setNo` TEXT, `weight` INTEGER NOT NULL, `reps` INTEGER NOT NULL)",
+        "tableName": "ExerciseSet",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `workout_id` INTEGER, `exerciseName` TEXT, `parameters` TEXT, `setNo` TEXT, `weight` INTEGER NOT NULL, `reps` INTEGER NOT NULL, FOREIGN KEY(`workout_id`) REFERENCES `logItem`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
-            "columnName": "id",
+            "columnName": "_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -18,7 +18,7 @@
             "fieldPath": "workoutID",
             "columnName": "workout_id",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "name",
@@ -53,22 +53,34 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "_id"
           ],
           "autoGenerate": true
         },
         "indices": [],
-        "foreignKeys": []
+        "foreignKeys": [
+          {
+            "table": "logItem",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "workout_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       },
       {
         "tableName": "logItem",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `content` TEXT, `timestamp` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `title` TEXT, `content` TEXT, `timestamp` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "title",
@@ -93,7 +105,7 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [
           {
@@ -110,7 +122,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"d26142072ba7eb135ea6dce1aada1124\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"88cef5c147f8838819f14c147ba3e48f\")"
     ]
   }
 }

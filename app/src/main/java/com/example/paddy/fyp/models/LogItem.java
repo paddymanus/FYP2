@@ -9,11 +9,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-@Entity(tableName = "logItem", indices = {@Index("id")})
+@Entity(tableName = "logItem", indices = @Index("id"))
 public class LogItem implements Parcelable {
 
-    @PrimaryKey(autoGenerate = true)
-    private long id;
+
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    private Long id;
 
     @ColumnInfo(name = "title")
     private String title;
@@ -24,7 +26,8 @@ public class LogItem implements Parcelable {
     @ColumnInfo(name = "timestamp")
     private String timestamp;
 
-    public LogItem(String title, String content, String timestamp) {
+    public LogItem(Long id, String title, String content, String timestamp) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.timestamp = timestamp;
@@ -53,11 +56,11 @@ public class LogItem implements Parcelable {
         }
     };
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

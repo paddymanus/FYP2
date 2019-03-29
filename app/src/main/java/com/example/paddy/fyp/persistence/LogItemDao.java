@@ -20,6 +20,9 @@ public interface LogItemDao {
         @Query("SELECT * FROM logItem")
         LiveData<List<LogItem>> getLogItems();
 
+        @Query("SELECT * FROM logItem WHERE id LIKE :id")
+        List<LogItem> findByWorkoutId(int id);
+
         @Delete
         int delete(LogItem... logItems);
 
