@@ -21,11 +21,15 @@ public interface ExerciseSetDao {
     LiveData<List<ExerciseSet>> getExerciseSets();
 
     @Query("SELECT * FROM ExerciseSet " +
-            "INNER JOIN logItem ON logItem.title LIKE ExerciseSet.workout_id ")
-    LiveData<List<ExerciseSet>> getMatchingExerciseSets();
+            "INNER JOIN LogItem ON ExerciseSet.workout_id LIKE LogItem.title " +
+    "WHERE LogItem.title = :title")
+    List<ExerciseSet> getMatchingExerciseSets(String title);
 
     @Query("SELECT * FROM ExerciseSet WHERE workout_id LIKE :workoutid")
-    LiveData<List<ExerciseSet>> getWorkoutId1(int workoutid);
+    LiveData<List<ExerciseSet>> getWorkoutId1(String workoutid);
+
+    @Query("SELECT * FROM ExerciseSet WHERE workout_id LIKE :name")
+    LiveData<List<ExerciseSet>> getByTitle(String name);
 
     @Delete
     int delete(ExerciseSet... exerciseSets);

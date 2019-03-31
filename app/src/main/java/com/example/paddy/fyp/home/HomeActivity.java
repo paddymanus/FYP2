@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.paddy.fyp.ExerciseLogListActivity;
+import com.example.paddy.fyp.MainActivity;
 import com.example.paddy.fyp.R;
 import com.example.paddy.fyp.adapters.LogItemRecyclerAdapter;
 import com.example.paddy.fyp.models.LogItem;
@@ -51,7 +52,7 @@ public class HomeActivity extends AppCompatActivity implements LogItemRecyclerAd
         Log.d(TAG, "onCreate: starting");
 
         initRecyclerView();
-//        insertFakeItems();
+     //   insertFakeItems();
         retrieveLogItems();
         setupBottomNavigationView();
     }
@@ -70,6 +71,7 @@ public class HomeActivity extends AppCompatActivity implements LogItemRecyclerAd
             }
         });
     }
+
 
     private void insertFakeItems(){
         for (int i = 0; i < 1000; i++){
@@ -120,6 +122,9 @@ public class HomeActivity extends AppCompatActivity implements LogItemRecyclerAd
         Intent intent = new Intent(this, ExerciseLogListActivity.class);
         intent.putExtra("selected_item", mLogItems.get(position));
         startActivity(intent);
+
+        Intent intent1 = new Intent(this, MainActivity.class);
+        intent1.putExtra("selected_item1", mLogItems.get(position));
     }
 
     @Override

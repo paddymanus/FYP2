@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import com.example.paddy.fyp.adapters.ExerciseRecyclerAdapter;
 import com.example.paddy.fyp.home.HomeActivity;
 import com.example.paddy.fyp.models.Exercise;
+import com.example.paddy.fyp.models.LogItem;
 import com.example.paddy.fyp.persistence.ExerciseRepository;
 
 import java.util.ArrayList;
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements
     private ArrayList<Exercise> mExercise = new ArrayList<>();
     private ExerciseRecyclerAdapter mExerciseRecyclerAdapter;
     private ExerciseRepository mExerciseRepository;
+    private boolean mIsNewLogItem;
+    private LogItem mInitialLogItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,12 @@ public class MainActivity extends AppCompatActivity implements
 
         mExerciseRepository = new ExerciseRepository(this);
 
+        if(getIntent().hasExtra("selected_item1")){
+            LogItem logItem1 = getIntent().getParcelableExtra("selected_item1");
+            Log.d(TAG, "onCreateOne: " + logItem1.toString());
+        }
+
+        getIncomingIntent();
 
         initRecyclerView();
         retrieveExercises();
@@ -54,6 +63,18 @@ public class MainActivity extends AppCompatActivity implements
         //insertFakeExercise();
 
 
+    }
+
+    private boolean getIncomingIntent(){
+        if(getIntent().hasExtra("selected_item1")){
+            mInitialLogItem = getIntent().getParcelableExtra("selected_item1");
+            Log.d(TAG, "getIncomingIntent: " + mInitialLogItem.toString());
+
+            mIsNewLogItem = false;
+            return false;
+        }
+        mIsNewLogItem = true;
+        return true;
     }
 
 
@@ -117,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onExerciseClick(int position) {
         Intent intent = new Intent(this, ExerciseActivity.class);
         intent.putExtra("selected_exercise", mExercise.get(position));
+        intent.putExtra("selected_item3", mInitialLogItem);
         startActivity(intent);
     }
 
@@ -125,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements
         switch (v.getId()){
             case R.id.toolbar_add:{
                 Intent intent = new Intent(this, NewExerciseActivity.class);
+                intent.putExtra("selected_item2", mInitialLogItem);
                 startActivity(intent);
                 break;
             }

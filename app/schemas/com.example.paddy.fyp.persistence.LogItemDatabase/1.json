@@ -2,23 +2,17 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "bb6dbf3861c8608bac240811796c797e",
+    "identityHash": "daae373064b953608139c6a83ffd4895",
     "entities": [
       {
         "tableName": "logItem",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `title` TEXT, `content` TEXT, `timestamp` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`title` TEXT NOT NULL, `content` TEXT, `timestamp` TEXT, PRIMARY KEY(`title`))",
         "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
           {
             "fieldPath": "title",
             "columnName": "title",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "content",
@@ -35,18 +29,18 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "title"
           ],
           "autoGenerate": false
         },
         "indices": [
           {
-            "name": "index_logItem_id",
+            "name": "index_logItem_title",
             "unique": false,
             "columnNames": [
-              "id"
+              "title"
             ],
-            "createSql": "CREATE  INDEX `index_logItem_id` ON `${TABLE_NAME}` (`id`)"
+            "createSql": "CREATE  INDEX `index_logItem_title` ON `${TABLE_NAME}` (`title`)"
           }
         ],
         "foreignKeys": []
@@ -54,7 +48,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"bb6dbf3861c8608bac240811796c797e\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"daae373064b953608139c6a83ffd4895\")"
     ]
   }
 }

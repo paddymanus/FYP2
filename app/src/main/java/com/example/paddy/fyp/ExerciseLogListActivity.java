@@ -25,10 +25,11 @@ import com.example.paddy.fyp.persistence.LogItemRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ExerciseLogListActivity extends AppCompatActivity implements
-        View.OnClickListener{
+        View.OnClickListener, ExerciseSetRecyclerAdapter.onExerciseSetListener{
 
     private static final String TAG = "ExerciseLogListActivity";
 
@@ -79,9 +80,9 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
         }
 
         initRecyclerView();
-      //  retrieveExerciseSets();
-        retrieveMatchingSetTask();
-     //   retrieveSete1();
+       // retrieveExerciseSets();
+        retrieveSete1();
+      //  retrieveSetByName();
         setListeners();
     }
 
@@ -120,7 +121,6 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
     }
 
     private void isLogNotNull() {
-        long count = 0;
         String temp = mEditTitle.getText().toString();
         temp = temp.replace("\n", "");
         temp = temp.replace(" ", "");
@@ -130,6 +130,7 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
             String timestamp = "March 2019";
             mFinalLogItem.setContent(content);
             mFinalLogItem.setTimestamp(timestamp);
+            Log.d(TAG, "isLogNotNull: " + mFinalLogItem);
         }
     }
 
@@ -158,8 +159,9 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
         });
     }
 
-    private void retrieveMatchingSetTask(){
-        mExerciseSetRepository.retrieveMatchingSetsTask().observe(this, new Observer<List<ExerciseSet>>() {
+
+    private void retrieveSete1(){
+        mExerciseSetRepository.retrieveSet1(mInitialLogItem.getTitle()).observe(this, new Observer<List<ExerciseSet>>() {
             @Override
             public void onChanged(@Nullable List<ExerciseSet> exerciseSets) {
                 if(mSets.size() > 0){
@@ -173,8 +175,8 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
         });
     }
 
-    private void retrieveSete1(){
-        mExerciseSetRepository.retrieveSet1().observe(this, new Observer<List<ExerciseSet>>() {
+    private void retrieveSetByName(){
+        mExerciseSetRepository.retrieveSetByTitle().observe(this, new Observer<List<ExerciseSet>>() {
             @Override
             public void onChanged(@Nullable List<ExerciseSet> exerciseSets) {
                 if(mSets.size() > 0){
@@ -187,20 +189,24 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
             }
         });
     }
+
+
 
     private void initRecyclerView(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        mExerciseSetRecyclerAdapter = new ExerciseSetRecyclerAdapter(mSets);
+        mExerciseSetRecyclerAdapter = new ExerciseSetRecyclerAdapter(mSets, this);
         mRecyclerView.setAdapter(mExerciseSetRecyclerAdapter);
     }
+
 
     private void setListeners(){
         mButton.setOnClickListener(this);
         mBackPressed.setOnClickListener(this);
         mFinish.setOnClickListener(this);
-
     }
+
+
 
     @Override
     public void onClick(View v) {
@@ -209,7 +215,9 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
                 isLogNotNull();
                 saveChanges();
                 Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra("selected_item1", mInitialLogItem);
                 startActivity(intent);
+                Log.d(TAG, "onClick: " + mInitialLogItem);
                 break;
             }
             case R.id.toolbar_back_arrow_exercise:{
@@ -223,5 +231,10 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
                 finish();
             }
         }
+    }
+
+    @Override
+    public void onExerciseSetClick(int position) {
+        Log.d(TAG, "onExerciseSetClick: " + position);
     }
 }

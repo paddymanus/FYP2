@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.paddy.fyp.models.Exercise;
+import com.example.paddy.fyp.models.LogItem;
 import com.example.paddy.fyp.persistence.ExerciseRepository;
 
 public class NewExerciseActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener,
@@ -30,6 +31,7 @@ public class NewExerciseActivity extends AppCompatActivity implements AdapterVie
     private ExerciseRepository mExerciseRepository;
     private Exercise mExerciseFinal;
     private Exercise mInitialExercise;
+    private LogItem mInitialLogItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,11 @@ public class NewExerciseActivity extends AppCompatActivity implements AdapterVie
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+
+        if(getIntent().hasExtra("selected_item2")){
+            LogItem logItem2 = getIntent().getParcelableExtra("selected_item2");
+            Log.d(TAG, "onCreateTwo: " + logItem2.toString());
+        }
 
         if (getIncomingIntent()) {
             setNewExerciseProperties();

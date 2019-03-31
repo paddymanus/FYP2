@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.paddy.fyp.adapters.SetRecyclerAdapter;
 import com.example.paddy.fyp.models.Exercise;
 import com.example.paddy.fyp.models.ExerciseSet;
+import com.example.paddy.fyp.models.LogItem;
 import com.example.paddy.fyp.models.Set;
 import com.example.paddy.fyp.persistence.ExerciseSetRepository;
 
@@ -46,6 +47,7 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
     // vars
     private boolean mIsNewExercise;
     private ExerciseSet exerciseSet, eSet;
+    private LogItem mLogItem, mInitialLogItem;
     private ExerciseSet mFinalSet;
     private Exercise mInitialExercise;
     private ArrayList<Set> mSets = new ArrayList<>();
@@ -71,6 +73,13 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
         mExerciseSetRepository = new ExerciseSetRepository(this);
 
 
+        if(getIntent().hasExtra("selected_item3")){
+            LogItem logItem = getIntent().getParcelableExtra("selected_item3");
+            Log.d(TAG, "onCreateThree: " + logItem.toString());
+        }
+
+
+        getIncomingIntentLog();
 
         if(getIncomingIntent()){
             setNewExerciseProperties();
@@ -138,22 +147,14 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
         int fvPosition = layoutManager.findFirstVisibleItemPosition();
         int lvPosition = layoutManager.findLastVisibleItemPosition();
 
-        ArrayList aListSet = new ArrayList<>();
-
-
-        List<String> listSet = new ArrayList<>();
-        List<String> listWeight = new ArrayList<>();
-        List<String> listReps = new ArrayList<>();
         String set = "";
-
 
         for (int i = 0; i <= lvPosition - fvPosition; i++) {
 
             exerciseSet = new ExerciseSet();
             exerciseSet.setName(mViewTitle.getText().toString());
+            exerciseSet.setWorkoutID(mInitialLogItem.getTitle());
 
-
-//            exerciseSet.setNumber(mSetNumber.getText().toString());
             View item = mRecyclerView.getChildAt(i);
             EditText setWeightET = (EditText) item.findViewById(R.id.view_exercise_set_weight);
             EditText setRepsET = (EditText) item.findViewById(R.id.view_exercise_set_reps);
@@ -163,32 +164,22 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
             exerciseSet.setReps(Integer.valueOf(setRepsET.getText().toString()));
             exercises.add(exerciseSet);
 
+            if (set.length() != 0) {
+                set = set.concat("\n");
+            }
+            set = set.concat(String.valueOf(exerciseSet.getWeight() + " x " + String.valueOf(exerciseSet.getReps())));
+            Log.d(TAG, "getSet: " + set);
 
-            Log.d(TAG, "getIncomingIntent: " + exerciseSet.toString() + listSet + listWeight + listReps);
-
-         //   for (int i1 = 0; i1 <= lvPosition - fvPosition; i1++) {
-
-                if (set.length() != 0) {
-                    set = set.concat("\n");
-                }
-                set = set.concat(String.valueOf(exerciseSet.getWeight() + " x " + String.valueOf(exerciseSet.getReps())));
-                Log.d(TAG, "getSet: " + set);
-        //    }
             exerciseSet.setParameters(set);
             Log.d(TAG, "updateExercise: " + exerciseSet.toString());
 
         }
-
 
     }
 
     private void saveNewExerciseSet()
     {
         mExerciseSetRepository.insertSetTask(exerciseSet);
-//        for (int i = 0; i < exercises.size(); i++) {
-//            // add to execises to sectioned list
-//            mExerciseSetRepository.insertSetTask(exercises.get(i));
-//        }
     }
 
 
@@ -205,7 +196,20 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
     private boolean getIncomingIntent(){
         if(getIntent().hasExtra("selected_exercise")){
             mInitialExercise = getIntent().getParcelableExtra("selected_exercise");
-            Log.d(TAG, "getIncomingIntent: " + mInitialExercise.toString());
+            mInitialLogItem = getIntent().getParcelableExtra("selected_item3");
+            Log.d(TAG, "getIncomingIntent: " + mInitialExercise.toString() + mInitialLogItem.toString());
+
+            mIsNewExercise = false;
+            return false;
+        }
+        mIsNewExercise = true;
+        return true;
+    }
+
+    private boolean getIncomingIntentLog(){
+        if(getIntent().hasExtra("selected_item")){
+            mLogItem = getIntent().getParcelableExtra("selected_item");
+            Log.d(TAG, "getIncomingIntent: " + mLogItem.toString());
 
             mIsNewExercise = false;
             return false;

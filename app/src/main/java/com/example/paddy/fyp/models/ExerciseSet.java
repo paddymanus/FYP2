@@ -9,8 +9,9 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 
-@Entity(foreignKeys = @ForeignKey(entity = LogItem.class,
-                parentColumns = "id",childColumns = "workout_id"))
+@Entity
+//        (foreignKeys = @ForeignKey(entity = LogItem.class,
+//                parentColumns = "title",childColumns = "workout_id"))
 
 public class ExerciseSet {
 
@@ -22,7 +23,7 @@ public class ExerciseSet {
     private String name;
 
     @ColumnInfo(name = "workout_id")
-    private Long workoutID;
+    private String workoutID;
 
     @ColumnInfo(name = "parameters")
     private String parameters;
@@ -37,7 +38,8 @@ public class ExerciseSet {
     private int reps;
 
 
-    public ExerciseSet(String name, Long workoutID, String parameters, String number, int weight, int reps) {
+    public ExerciseSet(int id, String name, String workoutID, String parameters, String number, int weight, int reps) {
+        this.id = id;
         this.name = name;
         this.workoutID = workoutID;
         this.parameters = parameters;
@@ -50,11 +52,11 @@ public class ExerciseSet {
     public ExerciseSet() {
     }
 
-    public Long getWorkoutID() {
+    public String getWorkoutID() {
         return workoutID;
     }
 
-    public void setWorkoutID(Long workoutID) {
+    public void setWorkoutID(String workoutID) {
         this.workoutID = workoutID;
     }
 

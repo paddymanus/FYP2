@@ -16,17 +16,18 @@ import java.util.ArrayList;
 public class ExerciseSetRecyclerAdapter extends RecyclerView.Adapter<ExerciseSetRecyclerAdapter.ViewHolder> {
 
     private ArrayList<ExerciseSet> mSets = new ArrayList<>();
-    ExerciseActivity eActivity = new ExerciseActivity();
+    private onExerciseSetListener mOnExerciseSetListener;
 
-    public ExerciseSetRecyclerAdapter(ArrayList<ExerciseSet> mSets) {
+    public ExerciseSetRecyclerAdapter(ArrayList<ExerciseSet> mSets, onExerciseSetListener onExerciseSetListener) {
         this.mSets = mSets;
+        this.mOnExerciseSetListener = onExerciseSetListener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recyclerview_exerciseset, viewGroup, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, mOnExerciseSetListener);
     }
 
     @Override
@@ -56,14 +57,27 @@ public class ExerciseSetRecyclerAdapter extends RecyclerView.Adapter<ExerciseSet
         return mSets.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView exerciseTitle, sets, weights, reps;
+        onExerciseSetListener onExerciseSetListener;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, onExerciseSetListener onExerciseSetListener1) {
             super(itemView);
             exerciseTitle = itemView.findViewById(R.id.title_exercise_name);
             sets = itemView.findViewById(R.id.title_sets);
+            this.onExerciseSetListener = onExerciseSetListener1;
+
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            onExerciseSetListener.onExerciseSetClick(getAdapterPosition());
+        }
+    }
+
+    public interface onExerciseSetListener{
+        void onExerciseSetClick(int position);
     }
 }

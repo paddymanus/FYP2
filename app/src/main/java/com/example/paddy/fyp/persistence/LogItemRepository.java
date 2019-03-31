@@ -29,10 +29,10 @@ public class LogItemRepository {
         return mLogItemDatabase.getLogItemsDao().getLogItems();
     }
 
-    public List<LogItem> findByWorkoutIdTask(int id){
-
-        return mLogItemDatabase.getLogItemsDao().findByWorkoutId(id);
-    }
+//    public List<LogItem> findByWorkoutIdTask(int id){
+//
+//        return mLogItemDatabase.getLogItemsDao().findByWorkoutId(id);
+//    }
 
     public void deleteExercise(LogItem logItem){
 
