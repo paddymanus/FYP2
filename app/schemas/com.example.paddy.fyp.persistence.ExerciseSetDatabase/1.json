@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c33ab259b4c234462b083d09439e1228",
+    "identityHash": "dd4ade7b1dfe91faeb1a4b4295f5961f",
     "entities": [
       {
         "tableName": "ExerciseSet",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `exerciseName` TEXT, `workout_id` TEXT, `parameters` TEXT, `setNo` TEXT, `weight` INTEGER NOT NULL, `reps` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `exerciseName` TEXT, `workout_id` INTEGER NOT NULL, `parameters` TEXT, `setNo` TEXT, `weight` INTEGER NOT NULL, `reps` INTEGER NOT NULL, `volume` INTEGER NOT NULL, `1RM` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -23,8 +23,8 @@
           {
             "fieldPath": "workoutID",
             "columnName": "workout_id",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "parameters",
@@ -49,6 +49,18 @@
             "columnName": "reps",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "volume",
+            "columnName": "volume",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "onerepmax",
+            "columnName": "1RM",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -62,13 +74,19 @@
       },
       {
         "tableName": "logItem",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`title` TEXT NOT NULL, `content` TEXT, `timestamp` TEXT, PRIMARY KEY(`title`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT, `content` TEXT, `timestamp` TEXT, PRIMARY KEY(`id`))",
         "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
           {
             "fieldPath": "title",
             "columnName": "title",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "content",
@@ -85,18 +103,18 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "title"
+            "id"
           ],
           "autoGenerate": false
         },
         "indices": [
           {
-            "name": "index_logItem_title",
+            "name": "index_logItem_id",
             "unique": false,
             "columnNames": [
-              "title"
+              "id"
             ],
-            "createSql": "CREATE  INDEX `index_logItem_title` ON `${TABLE_NAME}` (`title`)"
+            "createSql": "CREATE  INDEX `index_logItem_id` ON `${TABLE_NAME}` (`id`)"
           }
         ],
         "foreignKeys": []
@@ -104,7 +122,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c33ab259b4c234462b083d09439e1228\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"dd4ade7b1dfe91faeb1a4b4295f5961f\")"
     ]
   }
 }

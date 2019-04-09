@@ -10,9 +10,6 @@ import android.support.annotation.NonNull;
 
 
 @Entity
-//        (foreignKeys = @ForeignKey(entity = LogItem.class,
-//                parentColumns = "title",childColumns = "workout_id"))
-
 public class ExerciseSet {
 
     @PrimaryKey(autoGenerate = true)
@@ -23,7 +20,7 @@ public class ExerciseSet {
     private String name;
 
     @ColumnInfo(name = "workout_id")
-    private String workoutID;
+    private int workoutID;
 
     @ColumnInfo(name = "parameters")
     private String parameters;
@@ -37,8 +34,14 @@ public class ExerciseSet {
     @ColumnInfo(name = "reps")
     private int reps;
 
+    @ColumnInfo(name = "volume")
+    private int volume;
 
-    public ExerciseSet(int id, String name, String workoutID, String parameters, String number, int weight, int reps) {
+    @ColumnInfo(name = "1RM")
+    private int onerepmax;
+
+
+    public ExerciseSet(int id, String name, int workoutID, String parameters, String number, int weight, int reps, int volume, int onerepmax) {
         this.id = id;
         this.name = name;
         this.workoutID = workoutID;
@@ -46,17 +49,19 @@ public class ExerciseSet {
         this.number = number;
         this.weight = weight;
         this.reps = reps;
+        this.volume = volume;
+        this.onerepmax = onerepmax;
     }
 
     @Ignore
     public ExerciseSet() {
     }
 
-    public String getWorkoutID() {
+    public int getWorkoutID() {
         return workoutID;
     }
 
-    public void setWorkoutID(String workoutID) {
+    public void setWorkoutID(int workoutID) {
         this.workoutID = workoutID;
     }
 
@@ -104,6 +109,22 @@ public class ExerciseSet {
         this.reps = reps;
     }
 
+    public int getVolume() {
+        return volume;
+    }
+
+    public void setVolume(int volume) {
+        this.volume = volume;
+    }
+
+    public int getOnerepmax() {
+        return onerepmax;
+    }
+
+    public void setOnerepmax(int onerepmax) {
+        this.onerepmax = onerepmax;
+    }
+
     @Override
     public String toString() {
         return "ExerciseSet{" +
@@ -114,6 +135,8 @@ public class ExerciseSet {
                 ", number='" + number + '\'' +
                 ", weight=" + weight +
                 ", reps=" + reps +
+                ", volume=" + volume +
+                ", onerepmax=" + onerepmax +
                 '}';
     }
 }

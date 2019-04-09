@@ -51,6 +51,10 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
     private LogItem mFinalLogItem;
     private ExerciseSet mExerciseSet;
     private LogItemRepository mLogItemRepository;
+    private static final AtomicInteger count = new AtomicInteger(0);
+    private int logID, lvPosition;
+    private int lvPos = 1;
+    private int intValue;
 
 
     @Override
@@ -79,6 +83,7 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
             setLogItemProperties();
         }
 
+
         initRecyclerView();
        // retrieveExerciseSets();
         retrieveSete1();
@@ -98,6 +103,16 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
         mIsNewLogItem = true;
         return true;
     }
+
+    private void checkIfNew(){
+        if(getIncomingIntent()){
+            isLogNotNull();
+        }
+        else {
+            mFinalLogItem = getIntent().getParcelableExtra("selected_item");
+        }
+    }
+
 
     private void saveChanges(){
         if(mIsNewLogItem){
@@ -125,6 +140,10 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
         temp = temp.replace("\n", "");
         temp = temp.replace(" ", "");
         if (temp.length() > 0) {
+            int intValue = getIntent().getExtras().getInt("selected_log");
+            Log.d(TAG, "isLogNotNull: " + intValue);
+          //  logID = count.incrementAndGet();
+            mFinalLogItem.setId(intValue);
             mFinalLogItem.setTitle(mEditTitle.getText().toString());
             String content = "Bench Press, Shoulder Press, Dumbell Flies, Laterial Raises";
             String timestamp = "March 2019";
@@ -161,7 +180,7 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
 
 
     private void retrieveSete1(){
-        mExerciseSetRepository.retrieveSet1(mInitialLogItem.getTitle()).observe(this, new Observer<List<ExerciseSet>>() {
+        mExerciseSetRepository.retrieveSet1(mInitialLogItem.getId()).observe(this, new Observer<List<ExerciseSet>>() {
             @Override
             public void onChanged(@Nullable List<ExerciseSet> exerciseSets) {
                 if(mSets.size() > 0){
@@ -212,12 +231,14 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.add_exercise_button:{
-                isLogNotNull();
+ //               isLogNotNull();
+//                saveChanges();
+                checkIfNew();
                 saveChanges();
                 Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra("selected_item1", mInitialLogItem);
+                intent.putExtra("selected_item1", mFinalLogItem);
                 startActivity(intent);
-                Log.d(TAG, "onClick: " + mInitialLogItem);
+                Log.d(TAG, "onClick: " + mFinalLogItem);
                 break;
             }
             case R.id.toolbar_back_arrow_exercise:{
@@ -228,7 +249,8 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
             case R.id.note_text_finish:{
                 isLogNotNull();
                 saveChanges();
-                finish();
+                Intent intent = new Intent(this, HomeActivity.class);
+                startActivity(intent);
             }
         }
     }

@@ -35,8 +35,8 @@ public class ExerciseSetRepository {
         return mExerciseSetDatabase.getExerciseSetDao().getMatchingExerciseSets(title);
     }
 
-    public LiveData<List<ExerciseSet>> retrieveSet1(String title){
-        return mExerciseSetDatabase.getExerciseSetDao().getWorkoutId1(title);
+    public LiveData<List<ExerciseSet>> retrieveSet1(int id){
+        return mExerciseSetDatabase.getExerciseSetDao().getWorkoutId1(id);
     }
 
     public LiveData<List<ExerciseSet>> retrieveSetByTitle(){

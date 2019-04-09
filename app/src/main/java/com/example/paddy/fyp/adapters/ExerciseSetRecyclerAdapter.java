@@ -35,6 +35,8 @@ public class ExerciseSetRecyclerAdapter extends RecyclerView.Adapter<ExerciseSet
 
         viewHolder.exerciseTitle.setText(mSets.get(i).getName());
         viewHolder.sets.setText(mSets.get(i).getParameters());
+        viewHolder.volume.setText(String.valueOf(mSets.get(i).getVolume()));
+     //   viewHolder.onerepmax.setText(mSets.get(i).getOnerepmax());
     //    viewHolder.weights.setText(String.valueOf(mSets.get(i).getWeight()));
    //     viewHolder.reps.setText(String.valueOf(mSets.get(i).getReps()));
 
@@ -59,13 +61,15 @@ public class ExerciseSetRecyclerAdapter extends RecyclerView.Adapter<ExerciseSet
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView exerciseTitle, sets, weights, reps;
+        TextView exerciseTitle, sets, volume, onerepmax;
         onExerciseSetListener onExerciseSetListener;
 
         public ViewHolder(@NonNull View itemView, onExerciseSetListener onExerciseSetListener1) {
             super(itemView);
             exerciseTitle = itemView.findViewById(R.id.title_exercise_name);
             sets = itemView.findViewById(R.id.title_sets);
+            volume = itemView.findViewById(R.id.title_volume);
+      //      onerepmax = itemView.findViewById(R.id.title_1rm);
             this.onExerciseSetListener = onExerciseSetListener1;
 
             itemView.setOnClickListener(this);

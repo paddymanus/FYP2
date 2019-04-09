@@ -39,6 +39,8 @@ public class HomeActivity extends AppCompatActivity implements LogItemRecyclerAd
     private ArrayList<LogItem> mLogItems = new ArrayList<>();
     private LogItemRecyclerAdapter mLogItemRecyclerAdapter;
     private LogItemRepository mLogItemRepository;
+    private int lvPosition = 1;
+    private String hello = "HELO";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,7 @@ public class HomeActivity extends AppCompatActivity implements LogItemRecyclerAd
 
         mLogItemRepository = new LogItemRepository(this);
         Log.d(TAG, "onCreate: starting");
+
 
         initRecyclerView();
      //   insertFakeItems();
@@ -96,6 +99,10 @@ public class HomeActivity extends AppCompatActivity implements LogItemRecyclerAd
     }
 
 
+    public void getLastPosition() {
+        LinearLayoutManager layoutManager = ((LinearLayoutManager) mRecyclerView.getLayoutManager());
+        int lvPosition = layoutManager.findLastVisibleItemPosition() + 1;
+    }
 
 
 
@@ -129,7 +136,9 @@ public class HomeActivity extends AppCompatActivity implements LogItemRecyclerAd
 
     @Override
     public void onClick(View v) {
+        getLastPosition();
         Intent intent = new Intent(this, ExerciseLogListActivity.class);
+        intent.putExtra("selected_log", mLogItems.size() + 1);
         startActivity(intent);
     }
 }

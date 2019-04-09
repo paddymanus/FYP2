@@ -16,6 +16,10 @@
     <string name="finish">FINISH</string>
     <string name="exercise_name">Exercise name</string>
     <string name="name">Name</string>
+    <string name="volume">Volume</string>
+    <string name="_1rm">1RM</string>
+    <string name="est_1rm">Est. 1RM:</string>
+    <string name="hint_volume">Volume:</string>
 
     <string-array name="muscles">
         <item>Abs</item>

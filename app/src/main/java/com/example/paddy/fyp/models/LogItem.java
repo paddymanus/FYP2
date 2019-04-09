@@ -9,12 +9,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-@Entity(tableName = "logItem", indices = @Index("title"))
+@Entity(tableName = "logItem", indices = @Index("id"))
 public class LogItem implements Parcelable {
 
 
-    @NonNull
-    @PrimaryKey
+    @PrimaryKey  //(autoGenerate = true)
+    private int id;
+
     @ColumnInfo(name = "title")
     private String title;
 
@@ -35,6 +36,7 @@ public class LogItem implements Parcelable {
     }
 
     protected LogItem(Parcel in) {
+        id = in.readInt();
         title = in.readString();
         content = in.readString();
         timestamp = in.readString();
@@ -51,6 +53,14 @@ public class LogItem implements Parcelable {
             return new LogItem[size];
         }
     };
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -80,6 +90,7 @@ public class LogItem implements Parcelable {
     @Override
     public String toString() {
         return "LogItem{" +
+                "id=" + id +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", timestamp='" + timestamp + '\'' +
@@ -93,6 +104,7 @@ public class LogItem implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(title);
         dest.writeString(content);
         dest.writeString(timestamp);

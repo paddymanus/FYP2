@@ -148,12 +148,13 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
         int lvPosition = layoutManager.findLastVisibleItemPosition();
 
         String set = "";
+        int volume;
 
         for (int i = 0; i <= lvPosition - fvPosition; i++) {
 
             exerciseSet = new ExerciseSet();
             exerciseSet.setName(mViewTitle.getText().toString());
-            exerciseSet.setWorkoutID(mInitialLogItem.getTitle());
+            exerciseSet.setWorkoutID(mInitialLogItem.getId());
 
             View item = mRecyclerView.getChildAt(i);
             EditText setWeightET = (EditText) item.findViewById(R.id.view_exercise_set_weight);
@@ -167,9 +168,12 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
             if (set.length() != 0) {
                 set = set.concat("\n");
             }
-            set = set.concat(String.valueOf(exerciseSet.getWeight() + " x " + String.valueOf(exerciseSet.getReps())));
+            set = set.concat(String.valueOf(exerciseSet.getWeight() + "kg x " + String.valueOf(exerciseSet.getReps())));
             Log.d(TAG, "getSet: " + set);
 
+            volume = exerciseSet.getWeight() * exerciseSet.getReps();
+
+            exerciseSet.setVolume(volume);
             exerciseSet.setParameters(set);
             Log.d(TAG, "updateExercise: " + exerciseSet.toString());
 
@@ -242,6 +246,7 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
                 updateExercise();
                 saveNewExerciseSet();
                 Intent intent = new Intent(this, ExerciseLogListActivity.class);
+                intent.putExtra("selected_item", mInitialLogItem);
                 startActivity(intent);
                 break;
             }
