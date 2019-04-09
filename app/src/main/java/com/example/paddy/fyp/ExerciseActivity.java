@@ -148,7 +148,10 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
         int lvPosition = layoutManager.findLastVisibleItemPosition();
 
         String set = "";
-        int volume;
+        int volume = 0;
+        double temp = 1.0;
+        int max = 0;
+        int maxTemp = 0;
 
         for (int i = 0; i <= lvPosition - fvPosition; i++) {
 
@@ -171,9 +174,21 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
             set = set.concat(String.valueOf(exerciseSet.getWeight() + "kg x " + String.valueOf(exerciseSet.getReps())));
             Log.d(TAG, "getSet: " + set);
 
-            volume = exerciseSet.getWeight() * exerciseSet.getReps();
+            temp = (temp * exerciseSet.getWeight() / (1.0278 - (0.0278 * exerciseSet.getReps())));
+            max = (int) Math.round(temp);
+
+            if(maxTemp < max){
+                exerciseSet.setOnerepmax(max);
+            } else {
+                exerciseSet.setOnerepmax(maxTemp);
+            }
+            maxTemp = max;
+            temp = 1.0;
+
+            volume += exerciseSet.getWeight() * exerciseSet.getReps();
 
             exerciseSet.setVolume(volume);
+         //   exerciseSet.setOnerepmax(max);
             exerciseSet.setParameters(set);
             Log.d(TAG, "updateExercise: " + exerciseSet.toString());
 

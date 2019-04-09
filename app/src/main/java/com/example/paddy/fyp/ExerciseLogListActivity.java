@@ -231,8 +231,6 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.add_exercise_button:{
- //               isLogNotNull();
-//                saveChanges();
                 checkIfNew();
                 saveChanges();
                 Intent intent = new Intent(this, MainActivity.class);
