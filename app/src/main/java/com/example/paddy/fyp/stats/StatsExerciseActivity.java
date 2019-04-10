@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.paddy.fyp.ExerciseActivity;
 import com.example.paddy.fyp.NewExerciseActivity;
@@ -18,6 +19,7 @@ import com.example.paddy.fyp.adapters.ExerciseRecyclerAdapter;
 import com.example.paddy.fyp.home.HomeActivity;
 import com.example.paddy.fyp.models.Exercise;
 import com.example.paddy.fyp.models.LogItem;
+import com.example.paddy.fyp.models.StatsHome;
 import com.example.paddy.fyp.persistence.ExerciseRepository;
 
 import java.util.ArrayList;
@@ -30,13 +32,14 @@ public class StatsExerciseActivity extends AppCompatActivity implements Exercise
     // UI components
     private RecyclerView mRecyclerView;
     private ImageButton mBackButton;
+    private TextView mViewTitle;
 
     // vars
     private ArrayList<Exercise> mExercise = new ArrayList<>();
     private ExerciseRecyclerAdapter mExerciseRecyclerAdapter;
     private ExerciseRepository mExerciseRepository;
     private boolean mIsNewLogItem;
-    private LogItem mInitialLogItem;
+    private StatsHome mIntialStatsHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,35 +49,42 @@ public class StatsExerciseActivity extends AppCompatActivity implements Exercise
 
         mRecyclerView = findViewById(R.id.view_exercise_recycler_list);
         mBackButton = findViewById(R.id.toolbar_back_arrow_exercise_stats);
+        mViewTitle = findViewById(R.id.stats_exercise_title);
 
         mExerciseRepository = new ExerciseRepository(this);
 
-        if(getIntent().hasExtra("selected_item1")){
-            LogItem logItem1 = getIntent().getParcelableExtra("selected_item1");
-            Log.d(TAG, "onCreateOne: " + logItem1.toString());
+        if(getIntent().hasExtra("selected_stat")){
+            StatsHome statsHome = getIntent().getParcelableExtra("selected_stat");
+            Log.d(TAG, "onCreateOne: " + statsHome.toString());
         }
 
-        getIncomingIntent();
+        if(getIncomingIntent()){
+
+        }
+        else {
+            setExerciseProperties();
+        }
 
         initRecyclerView();
         retrieveExercises();
-        // letsTrySomething();
         setListeners();
-        //insertFakeExercise();
-
 
     }
 
     private boolean getIncomingIntent(){
-        if(getIntent().hasExtra("selected_item1")){
-            mInitialLogItem = getIntent().getParcelableExtra("selected_item1");
-            Log.d(TAG, "getIncomingIntent: " + mInitialLogItem.toString());
+        if(getIntent().hasExtra("selected_stat")){
+            mIntialStatsHome = getIntent().getParcelableExtra("selected_stat");
+            Log.d(TAG, "getIncomingIntent: " + mIntialStatsHome.toString());
 
             mIsNewLogItem = false;
             return false;
         }
         mIsNewLogItem = true;
         return true;
+    }
+
+    private void setExerciseProperties(){
+        mViewTitle.setText(mIntialStatsHome.getTitle());
     }
 
 
@@ -109,7 +119,11 @@ public class StatsExerciseActivity extends AppCompatActivity implements Exercise
 
     @Override
     public void onExerciseClick(int position) {
+
+        Intent intent = new Intent(this, StatsOptionsActivity.class);
+        startActivity(intent);
     }
+
 
     @Override
     public void onClick(View v) {

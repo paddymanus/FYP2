@@ -98,6 +98,7 @@ public class StatsActivity extends AppCompatActivity implements StatsHomeRecycle
         else if(position >= 3){
             Log.d(TAG, "onStatClicked: these are the categories");
             Intent intent = new Intent(this, StatsExerciseActivity.class);
+            intent.putExtra("selected_stat", mStatsHome.get(position));
             startActivity(intent);
         }
     }
