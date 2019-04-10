@@ -32,6 +32,8 @@ public class StatsOptionsActivity extends AppCompatActivity implements StatsOpti
     // vars
     private ArrayList<StatsOptions> mStatsOptions = new ArrayList<>();
     private StatsOptionsRecyclerAdapter mStatsOptionsRecyclerAdapter;
+    private boolean mIsNewLogItem;
+    private StatsHome mIntialStatsHome;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class StatsOptionsActivity extends AppCompatActivity implements StatsOpti
         mBackButton = findViewById(R.id.toolbar_back_arrow_exercise_stats);
 
         initRecyclerView();
+        getIncomingIntent();
         insertStats();
         setListeners();
 
@@ -67,6 +70,18 @@ public class StatsOptionsActivity extends AppCompatActivity implements StatsOpti
         mStatsOptionsRecyclerAdapter.notifyDataSetChanged();
     }
 
+    private boolean getIncomingIntent(){
+        if(getIntent().hasExtra("selected_stat")){
+            mIntialStatsHome = getIntent().getParcelableExtra("selected_stat");
+            Log.d(TAG, "getIncomingIntent: " + mIntialStatsHome.toString());
+
+            mIsNewLogItem = false;
+            return false;
+        }
+        mIsNewLogItem = true;
+        return true;
+    }
+
     private void setListeners(){
         mBackButton.setOnClickListener(this);
 
@@ -90,6 +105,7 @@ public class StatsOptionsActivity extends AppCompatActivity implements StatsOpti
         switch (v.getId()){
             case R.id.toolbar_back_arrow_exercise_stats:{
                 Intent intent = new Intent(this, StatsExerciseActivity.class);
+                intent.putExtra("selected_stat", mIntialStatsHome);
                 startActivity(intent);
                 break;
             }

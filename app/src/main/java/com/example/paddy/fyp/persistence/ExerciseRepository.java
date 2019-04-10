@@ -29,6 +29,10 @@ public class ExerciseRepository {
         return mExerciseDatabase.getExerciseDao().getExercises();
     }
 
+    public LiveData<List<Exercise>> retrieveExerciseStat(String category){
+        return mExerciseDatabase.getExerciseDao().getExerciseStat(category);
+    }
+
     public void deleteExercise(Exercise exercise){
 
     }

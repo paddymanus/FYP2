@@ -20,11 +20,8 @@ public interface ExerciseDao {
     @Query("SELECT * FROM exercises")
     LiveData<List<Exercise>> getExercises();
 
-    @Query("SELECT * FROM exercises WHERE name LIKE :name")
-    List<Exercise> getExerciseNameWithCustomQuery(String name);
-
-    @Query("SELECT * FROM exercises WHERE name LIKE :category")
-    List<Exercise> getExerciseCategoryWithCustomQuery(String category);
+    @Query("SELECT * FROM exercises WHERE category LIKE :category")
+    LiveData<List<Exercise>> getExerciseStat(String category);
 
 
     @Delete

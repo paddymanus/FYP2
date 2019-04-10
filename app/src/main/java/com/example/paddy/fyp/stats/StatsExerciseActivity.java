@@ -66,7 +66,7 @@ public class StatsExerciseActivity extends AppCompatActivity implements Exercise
         }
 
         initRecyclerView();
-        retrieveExercises();
+        retrieveExerciseStats();
         setListeners();
 
     }
@@ -103,6 +103,21 @@ public class StatsExerciseActivity extends AppCompatActivity implements Exercise
         });
     }
 
+    private void retrieveExerciseStats(){
+        mExerciseRepository.retrieveExerciseStat(mIntialStatsHome.getTitle()).observe(this, new Observer<List<Exercise>>() {
+            @Override
+            public void onChanged(@Nullable List<Exercise> exercises) {
+                if(mExercise.size() > 0){
+                    mExercise.clear();
+                }
+                if(exercises != null){
+                    mExercise.addAll(exercises);
+                }
+                mExerciseRecyclerAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
 
     private void initRecyclerView(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -121,6 +136,7 @@ public class StatsExerciseActivity extends AppCompatActivity implements Exercise
     public void onExerciseClick(int position) {
 
         Intent intent = new Intent(this, StatsOptionsActivity.class);
+        intent.putExtra("selected_stat", mIntialStatsHome);
         startActivity(intent);
     }
 
