@@ -22,6 +22,7 @@ import com.example.paddy.fyp.models.ExerciseSet;
 import com.example.paddy.fyp.models.LogItem;
 import com.example.paddy.fyp.models.Set;
 import com.example.paddy.fyp.persistence.ExerciseSetRepository;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
 import java.util.List;

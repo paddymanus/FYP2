@@ -20,6 +20,7 @@
     <string name="_1rm">1RM</string>
     <string name="est_1rm">Est. 1RM:</string>
     <string name="hint_volume">Volume:</string>
+    <string name="statistics">Statistics</string>
 
     <string-array name="muscles">
         <item>Abs</item>
