@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark">
 
-        <include layout="@layout/layout_exercise_toolbar"/>
+        <include layout="@layout/layout_stats_exercise_toolbar"/>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -27,21 +27,5 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     </android.support.v7.widget.RecyclerView>
-
-    <Button
-        android:id="@+id/add_field_button"
-        android:layout_width="80dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:background="#555"
-        android:layout_gravity="center"
-        android:textColor="#FFF"
-        android:text="Add Set"
-        android:paddingLeft="5dp"/>
-
-
-
 
 </LinearLayout>

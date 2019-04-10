@@ -1,9 +1,11 @@
 package com.example.paddy.fyp.stats;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,7 +18,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.ArrayList;
 
-public class StatsActivity extends AppCompatActivity {
+public class StatsActivity extends AppCompatActivity implements StatsHomeRecyclerAdapter.OnStatsHomeListener {
     private static final String TAG = "StatsActivity";
 
     // Ui components
@@ -43,7 +45,10 @@ public class StatsActivity extends AppCompatActivity {
     private void initRecyclerView(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        mStatsHomeRecyclerAdapter = new StatsHomeRecyclerAdapter(mStatsHome);
+        mStatsHomeRecyclerAdapter = new StatsHomeRecyclerAdapter(mStatsHome, this);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.recyclerview_divider));
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setAdapter(mStatsHomeRecyclerAdapter);
     }
 
@@ -77,5 +82,23 @@ public class StatsActivity extends AppCompatActivity {
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.navigationView);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
         BottomNavigationViewHelper.enableNavigation(mContext, bottomNavigationViewEx);
+    }
+
+    @Override
+    public void onStatClicked(int position) {
+        if(position == 0){
+            Log.d(TAG, "onStatClicked: this is zero mate");
+        }
+        else if(position == 1){
+            Log.d(TAG, "onStatClicked: this is one now lad");
+        }
+        else if(position == 2){
+            Log.d(TAG, "onStatClicked: this is big fat 2");
+        }
+        else if(position >= 3){
+            Log.d(TAG, "onStatClicked: these are the categories");
+            Intent intent = new Intent(this, StatsExerciseActivity.class);
+            startActivity(intent);
+        }
     }
 }
