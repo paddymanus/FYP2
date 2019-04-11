@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements
     private ExerciseRepository mExerciseRepository;
     private boolean mIsNewLogItem;
     private LogItem mInitialLogItem;
+    private int size;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements
 
         initRecyclerView();
         retrieveExercises();
+        retrieveExerciseStats();
+        Log.d(TAG, "onCreate: " + size);
      //   letsTrySomething();
         setListeners();
         //insertFakeExercise();
@@ -93,6 +96,20 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
+    private void retrieveExerciseStats(){
+        mExerciseRepository.retrieveExerciseStat("Legs").observe(this, new Observer<List<Exercise>>() {
+            @Override
+            public void onChanged(@Nullable List<Exercise> exercises) {
+                if(exercises != null){
+                    size = exercises.size();
+                    Log.d(TAG, "onChanged: " + size);
+                }
+            }
+        });
+    }
+
+
+
     private void insertFakeExercise(){
         for(int i = 0; i < 1000; i++){
             Exercise exercise = new Exercise();
@@ -125,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mExerciseRecyclerAdapter = new ExerciseRecyclerAdapter(mExercise, this);
         mRecyclerView.setAdapter(mExerciseRecyclerAdapter);
+        Log.d(TAG, "initRecyclerView: " + size);
     }
 
     private void setListeners(){

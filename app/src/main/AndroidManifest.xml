@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.paddy.fyp">
 
@@ -17,15 +18,15 @@
         </activity>
         <activity android:name=".ExerciseActivity" />
         <activity android:name=".NewExerciseActivity" />
-        <activity android:name=".ExerciseLogListActivity"/>
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".routines.RoutinesActivity"/>
-        <activity android:name=".stats.StatsActivity"/>
-        <activity android:name=".stats.StatsExerciseActivity"/>
-        <activity android:name=".stats.StatsOptionsActivity"/>
-        <activity android:name=".stats.StatsHistoryActivity"/>
-        <activity android:name=".NavigationActivity">
-        </activity>
-
+        <activity android:name=".ExerciseLogListActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".routines.RoutinesActivity" />
+        <activity android:name=".stats.StatsActivity" />
+        <activity android:name=".stats.StatsExerciseActivity" />
+        <activity android:name=".stats.StatsOptionsActivity" />
+        <activity android:name=".stats.StatsHistoryActivity" />
+        <activity android:name=".NavigationActivity"></activity>
+        <activity android:name=".stats.StatsMusclesActivity"></activity>
     </application>
+
 </manifest>

@@ -88,6 +88,8 @@ public class StatsActivity extends AppCompatActivity implements StatsHomeRecycle
     public void onStatClicked(int position) {
         if(position == 0){
             Log.d(TAG, "onStatClicked: this is zero mate");
+            Intent intent = new Intent(this, StatsMusclesActivity.class);
+            startActivity(intent);
         }
         else if(position == 1){
             Log.d(TAG, "onStatClicked: this is one now lad");
