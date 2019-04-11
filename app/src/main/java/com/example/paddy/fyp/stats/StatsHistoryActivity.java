@@ -12,22 +12,22 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.paddy.fyp.ExerciseActivity;
-import com.example.paddy.fyp.NewExerciseActivity;
 import com.example.paddy.fyp.R;
 import com.example.paddy.fyp.adapters.ExerciseRecyclerAdapter;
-import com.example.paddy.fyp.home.HomeActivity;
+import com.example.paddy.fyp.adapters.ExerciseSetRecyclerAdapter;
+import com.example.paddy.fyp.adapters.LogItemRecyclerAdapter;
 import com.example.paddy.fyp.models.Exercise;
-import com.example.paddy.fyp.models.LogItem;
+import com.example.paddy.fyp.models.ExerciseSet;
 import com.example.paddy.fyp.models.StatsHome;
 import com.example.paddy.fyp.persistence.ExerciseRepository;
+import com.example.paddy.fyp.persistence.ExerciseSetRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StatsExerciseActivity extends AppCompatActivity implements ExerciseRecyclerAdapter.OnExerciseListener, View.OnClickListener {
+public class StatsHistoryActivity extends AppCompatActivity implements ExerciseSetRecyclerAdapter.onExerciseSetListener, View.OnClickListener {
 
-    private static final String TAG = "StatsExerciseActivity";
+    private static final String TAG = "StatsHistoryActivity";
 
     // UI components
     private RecyclerView mRecyclerView;
@@ -35,28 +35,30 @@ public class StatsExerciseActivity extends AppCompatActivity implements Exercise
     private TextView mViewTitle;
 
     // vars
-    private ArrayList<Exercise> mExercise = new ArrayList<>();
-    private ExerciseRecyclerAdapter mExerciseRecyclerAdapter;
-    private ExerciseRepository mExerciseRepository;
+    private ArrayList<ExerciseSet> mSets = new ArrayList<>();
+    private ExerciseSetRecyclerAdapter mExerciseSetRecyclerAdapter;
+    private ExerciseSetRepository mExerciseSetRepository;
+    private Exercise mInitialExercise;
     private boolean mIsNewLogItem;
     private StatsHome mIntialStatsHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stats_exercise);
+        setContentView(R.layout.activity_stats_history);
         Log.d(TAG, "onCreate: started");
 
         mRecyclerView = findViewById(R.id.view_exercise_recycler_list);
         mBackButton = findViewById(R.id.toolbar_back_arrow_exercise_stats);
         mViewTitle = findViewById(R.id.stats_exercise_title);
 
-        mExerciseRepository = new ExerciseRepository(this);
+        mExerciseSetRepository = new ExerciseSetRepository(this);
 
-        if(getIntent().hasExtra("selected_stat1")){
-            mIntialStatsHome = getIntent().getParcelableExtra("selected_stat1");
-            Log.d(TAG, "onCreate: " + mIntialStatsHome.toString());
+        if(getIntent().hasExtra("selected_stat")){
+            mIntialStatsHome = getIntent().getParcelableExtra("selected_stat");
+            Log.d(TAG, "onCreateOne: " + mIntialStatsHome.toString());
         }
+
 
         if(getIncomingIntent()){
 
@@ -65,13 +67,27 @@ public class StatsExerciseActivity extends AppCompatActivity implements Exercise
             setExerciseProperties();
         }
 
+        getIncomingIntent1();
+
         initRecyclerView();
-        retrieveExerciseStats();
+        retrieveExerciseSets();
         setListeners();
 
     }
 
     private boolean getIncomingIntent(){
+        if(getIntent().hasExtra("selected_exercise")){
+            mInitialExercise = getIntent().getParcelableExtra("selected_exercise");
+            Log.d(TAG, "getIncomingIntent: " + mInitialExercise.toString());
+
+            mIsNewLogItem = false;
+            return false;
+        }
+        mIsNewLogItem = true;
+        return true;
+    }
+
+    private boolean getIncomingIntent1(){
         if(getIntent().hasExtra("selected_stat")){
             mIntialStatsHome = getIntent().getParcelableExtra("selected_stat");
             Log.d(TAG, "getIncomingIntent: " + mIntialStatsHome.toString());
@@ -84,31 +100,30 @@ public class StatsExerciseActivity extends AppCompatActivity implements Exercise
     }
 
     private void setExerciseProperties(){
-        mViewTitle.setText(mIntialStatsHome.getTitle());
+        mViewTitle.setText(mInitialExercise.getName());
     }
 
-
-    private void retrieveExerciseStats(){
-        mExerciseRepository.retrieveExerciseStat(mIntialStatsHome.getTitle()).observe(this, new Observer<List<Exercise>>() {
+    private void retrieveExerciseSets(){
+        mExerciseSetRepository.retrieveSetByTitle(mInitialExercise.getName()).observe(this, new Observer<List<ExerciseSet>>() {
             @Override
-            public void onChanged(@Nullable List<Exercise> exercises) {
-                if(mExercise.size() > 0){
-                    mExercise.clear();
+            public void onChanged(@Nullable List<ExerciseSet> exerciseSets) {
+                if(mSets.size() > 0){
+                    mSets.clear();
                 }
-                if(exercises != null){
-                    mExercise.addAll(exercises);
+                if(exerciseSets != null){
+                    mSets.addAll(exerciseSets);
                 }
-                mExerciseRecyclerAdapter.notifyDataSetChanged();
+                mExerciseSetRecyclerAdapter.notifyDataSetChanged();
             }
         });
     }
 
-
     private void initRecyclerView(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setReverseLayout(true);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        mExerciseRecyclerAdapter = new ExerciseRecyclerAdapter(mExercise, this);
-        mRecyclerView.setAdapter(mExerciseRecyclerAdapter);
+        mExerciseSetRecyclerAdapter = new ExerciseSetRecyclerAdapter(mSets, this);
+        mRecyclerView.setAdapter(mExerciseSetRecyclerAdapter);
     }
 
     private void setListeners(){
@@ -118,23 +133,20 @@ public class StatsExerciseActivity extends AppCompatActivity implements Exercise
 
 
     @Override
-    public void onExerciseClick(int position) {
-
-        Intent intent = new Intent(this, StatsOptionsActivity.class);
-        intent.putExtra("selected_stat", mIntialStatsHome);
-        intent.putExtra("selected_exercise", mExercise.get(position));
-        startActivity(intent);
-    }
-
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.toolbar_back_arrow_exercise_stats:{
-                Intent intent = new Intent(this, StatsActivity.class);
+                Intent intent = new Intent(this, StatsOptionsActivity.class);
+                intent.putExtra("selected_exercise", mInitialExercise);
+                intent.putExtra("selected_stat", mIntialStatsHome);
                 startActivity(intent);
                 break;
             }
         }
+    }
+
+    @Override
+    public void onExerciseSetClick(int position) {
+
     }
 }

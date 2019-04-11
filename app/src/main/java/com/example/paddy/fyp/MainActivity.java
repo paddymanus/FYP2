@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements
 
         initRecyclerView();
         retrieveExercises();
-        // letsTrySomething();
+     //   letsTrySomething();
         setListeners();
         //insertFakeExercise();
 

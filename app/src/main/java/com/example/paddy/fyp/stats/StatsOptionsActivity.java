@@ -12,9 +12,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.example.paddy.fyp.ExerciseActivity;
 import com.example.paddy.fyp.R;
 import com.example.paddy.fyp.adapters.StatsHomeRecyclerAdapter;
 import com.example.paddy.fyp.adapters.StatsOptionsRecyclerAdapter;
+import com.example.paddy.fyp.models.Exercise;
 import com.example.paddy.fyp.models.StatsHome;
 import com.example.paddy.fyp.models.StatsOptions;
 import com.example.paddy.fyp.utils.BottomNavigationViewHelper;
@@ -34,6 +36,7 @@ public class StatsOptionsActivity extends AppCompatActivity implements StatsOpti
     private StatsOptionsRecyclerAdapter mStatsOptionsRecyclerAdapter;
     private boolean mIsNewLogItem;
     private StatsHome mIntialStatsHome;
+    private Exercise mInitialExercise;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,6 +48,12 @@ public class StatsOptionsActivity extends AppCompatActivity implements StatsOpti
 
         initRecyclerView();
         getIncomingIntent();
+
+        if(getIntent().hasExtra("selected_stat")){
+            mIntialStatsHome = getIntent().getParcelableExtra("selected_stat");
+            Log.d(TAG, "onCreate: " + mIntialStatsHome.toString());
+        }
+
         insertStats();
         setListeners();
 
@@ -71,6 +80,18 @@ public class StatsOptionsActivity extends AppCompatActivity implements StatsOpti
     }
 
     private boolean getIncomingIntent(){
+        if(getIntent().hasExtra("selected_exercise")){
+            mInitialExercise = getIntent().getParcelableExtra("selected_exercise");
+            Log.d(TAG, "getIncomingIntent: " + mInitialExercise.toString());
+
+            mIsNewLogItem = false;
+            return false;
+        }
+        mIsNewLogItem = true;
+        return true;
+    }
+
+    private boolean getIncomingIntent1(){
         if(getIntent().hasExtra("selected_stat")){
             mIntialStatsHome = getIntent().getParcelableExtra("selected_stat");
             Log.d(TAG, "getIncomingIntent: " + mIntialStatsHome.toString());
@@ -91,6 +112,10 @@ public class StatsOptionsActivity extends AppCompatActivity implements StatsOpti
     public void onStatClicked(int position) {
         if(position == 0){
             Log.d(TAG, "onStatClicked: this is the history");
+            Intent intent = new Intent(this, StatsHistoryActivity.class);
+            intent.putExtra("selected_exercise", mInitialExercise);
+            intent.putExtra("selected_stat", mIntialStatsHome);
+            startActivity(intent);
         }
         else if(position == 1){
             Log.d(TAG, "onStatClicked: this is the est. 1RM");
@@ -105,7 +130,7 @@ public class StatsOptionsActivity extends AppCompatActivity implements StatsOpti
         switch (v.getId()){
             case R.id.toolbar_back_arrow_exercise_stats:{
                 Intent intent = new Intent(this, StatsExerciseActivity.class);
-                intent.putExtra("selected_stat", mIntialStatsHome);
+                intent.putExtra("selected_stat1", mIntialStatsHome);
                 startActivity(intent);
                 break;
             }

@@ -23,6 +23,7 @@
         <activity android:name=".stats.StatsActivity"/>
         <activity android:name=".stats.StatsExerciseActivity"/>
         <activity android:name=".stats.StatsOptionsActivity"/>
+        <activity android:name=".stats.StatsHistoryActivity"/>
         <activity android:name=".NavigationActivity">
         </activity>
 

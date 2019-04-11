@@ -194,21 +194,6 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
         });
     }
 
-    private void retrieveSetByName(){
-        mExerciseSetRepository.retrieveSetByTitle().observe(this, new Observer<List<ExerciseSet>>() {
-            @Override
-            public void onChanged(@Nullable List<ExerciseSet> exerciseSets) {
-                if(mSets.size() > 0){
-                    mSets.clear();
-                }
-                if(exerciseSets != null){
-                    mSets.addAll(exerciseSets);
-                }
-                mExerciseSetRecyclerAdapter.notifyDataSetChanged();
-            }
-        });
-    }
-
 
 
     private void initRecyclerView(){
