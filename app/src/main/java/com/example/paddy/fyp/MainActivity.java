@@ -3,6 +3,7 @@ package com.example.paddy.fyp;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,8 +17,10 @@ import com.example.paddy.fyp.home.HomeActivity;
 import com.example.paddy.fyp.models.Exercise;
 import com.example.paddy.fyp.models.LogItem;
 import com.example.paddy.fyp.persistence.ExerciseRepository;
+import com.example.paddy.fyp.stats.StatsMusclesActivity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
@@ -32,11 +35,14 @@ public class MainActivity extends AppCompatActivity implements
 
     // vars
     private ArrayList<Exercise> mExercise = new ArrayList<>();
+    private ArrayList<Integer> mSize = new ArrayList<>();
     private ExerciseRecyclerAdapter mExerciseRecyclerAdapter;
     private ExerciseRepository mExerciseRepository;
     private boolean mIsNewLogItem;
     private LogItem mInitialLogItem;
-    private int size;
+    int size;
+    private int sizes;
+    private int[] muscles = new int[1];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,16 +61,21 @@ public class MainActivity extends AppCompatActivity implements
             Log.d(TAG, "onCreateOne: " + logItem1.toString());
         }
 
+
+        Log.d(TAG, "onCreateMuscles: " + muscles.toString());
+        Log.d(TAG, "onCreate: here" + mExercise);
+
         getIncomingIntent();
 
         initRecyclerView();
         retrieveExercises();
         retrieveExerciseStats();
-        Log.d(TAG, "onCreate: " + size);
-     //   letsTrySomething();
+        Log.d(TAG, "onCreateMuscles2: " + Arrays.toString(muscles));
+        Log.d(TAG, "onCreateMSize: " + mSize);
         setListeners();
-        //insertFakeExercise();
 
+        int muscleSize = size;
+        Log.d(TAG, "onCreateMuscleSize: " + muscleSize);
 
     }
 
@@ -86,63 +97,50 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onChanged(@Nullable List<Exercise> exercises) {
                 if(mExercise.size() > 0){
+                    Log.d(TAG, "retrieveExercises: " + mExercise);
                     mExercise.clear();
                 }
                 if(exercises != null){
                     mExercise.addAll(exercises);
+                    Log.d(TAG, "retrieveExercises: " + mExercise);
                 }
                 mExerciseRecyclerAdapter.notifyDataSetChanged();
             }
         });
+        Log.d(TAG, "retrieveExercisessize: " + mExercise);
     }
 
-    private void retrieveExerciseStats(){
+    public void retrieveExerciseStats(){
+        final int[] legSize = new int[1];
         mExerciseRepository.retrieveExerciseStat("Legs").observe(this, new Observer<List<Exercise>>() {
             @Override
             public void onChanged(@Nullable List<Exercise> exercises) {
                 if(exercises != null){
                     size = exercises.size();
-                    Log.d(TAG, "onChanged: " + size);
+                    legSize[0] = size;
+                    retrieveLegs(size);
+                    mSize.add(size);
+                    Log.d(TAG, "onChangedmSize: " + mSize);
+                    Log.d(TAG, "onChangedleg: " + Arrays.toString(legSize));
                 }
             }
         });
+        Log.d(TAG, "retrieveExerciseStatsSize: " + size);
     }
 
 
-
-    private void insertFakeExercise(){
-        for(int i = 0; i < 1000; i++){
-            Exercise exercise = new Exercise();
-            exercise.setName("name #" + i);
-            exercise.setCategory("category #" + i);
-            mExercise.add(exercise);
-        }
-        mExerciseRecyclerAdapter.notifyDataSetChanged();
+    private void retrieveLegs(int legsize){
+        muscles[0] = legsize;
+        Log.d(TAG, "retrieveLegs: " + Arrays.toString(muscles));
     }
 
-    private void letsTrySomething(){
-        Exercise exercise = new Exercise();
-        exercise.setName("Barbell Row");
-        exercise.setCategory("Back");
-        Exercise exercise1 = new Exercise();
-        exercise1.setName("Bench Press");
-        exercise1.setCategory("Chest");
-        Exercise exercise2 = new Exercise();
-        exercise2.setName("Squat");
-        exercise2.setCategory("Legs");
-        mExercise.add(exercise);
-        mExercise.add(exercise1);
-        mExercise.add(exercise2);
-
-        mExerciseRecyclerAdapter.notifyDataSetChanged();
-    }
 
     private void initRecyclerView(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mExerciseRecyclerAdapter = new ExerciseRecyclerAdapter(mExercise, this);
         mRecyclerView.setAdapter(mExerciseRecyclerAdapter);
-        Log.d(TAG, "initRecyclerView: " + size);
+        Log.d(TAG, "initRecyclerView: " + mExercise);
     }
 
     private void setListeners(){
