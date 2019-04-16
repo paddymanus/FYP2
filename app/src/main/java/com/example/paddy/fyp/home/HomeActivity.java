@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 
@@ -142,4 +143,5 @@ public class HomeActivity extends AppCompatActivity implements LogItemRecyclerAd
         intent.putExtra("selected_log", mLogItems.size() + 1);
         startActivity(intent);
     }
+
 }

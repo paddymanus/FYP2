@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -98,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements
     private void initRecyclerView(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
         mExerciseRecyclerAdapter = new ExerciseRecyclerAdapter(mExercise, this);
         mRecyclerView.setAdapter(mExerciseRecyclerAdapter);
     }
@@ -133,4 +135,23 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
     }
+
+    private void deleteExercise(Exercise exercise){
+        mExercise.remove(exercise);
+        mExerciseRecyclerAdapter.notifyDataSetChanged();
+
+        mExerciseRepository.deleteExercise(exercise);
+    }
+
+    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            deleteExercise(mExercise.get(viewHolder.getAdapterPosition()));
+        }
+    };
 }

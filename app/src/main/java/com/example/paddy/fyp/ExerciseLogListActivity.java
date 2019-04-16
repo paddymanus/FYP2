@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -208,6 +209,7 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
     private void initRecyclerView(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
         mExerciseSetRecyclerAdapter = new ExerciseSetRecyclerAdapter(mSets, this);
         mRecyclerView.setAdapter(mExerciseSetRecyclerAdapter);
     }
@@ -251,4 +253,23 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
     public void onExerciseSetClick(int position) {
         Log.d(TAG, "onExerciseSetClick: " + position);
     }
+
+    private void deleteExercise(ExerciseSet exerciseSet){
+        mSets.remove(exerciseSet);
+        mExerciseSetRecyclerAdapter.notifyDataSetChanged();
+
+        mExerciseSetRepository.deleteSet(exerciseSet);
+    }
+
+    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            deleteExercise(mSets.get(viewHolder.getAdapterPosition()));
+        }
+    };
 }

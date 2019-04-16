@@ -3,6 +3,7 @@ package com.example.paddy.fyp.persistence;
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
 
+import com.example.paddy.fyp.async.DeleteExerciseAsyncTask;
 import com.example.paddy.fyp.async.InsertExerciseAsyncTask;
 import com.example.paddy.fyp.models.Exercise;
 
@@ -34,6 +35,6 @@ public class ExerciseRepository {
     }
 
     public void deleteExercise(Exercise exercise){
-
+        new DeleteExerciseAsyncTask(mExerciseDatabase.getExerciseDao()).execute(exercise);
     }
 }
