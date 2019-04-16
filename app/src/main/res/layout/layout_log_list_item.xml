@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/log_timestamp"
-        android:textSize="12sp"
+        android:textSize="16sp"
         android:padding="10dp"/>
 
     </LinearLayout>

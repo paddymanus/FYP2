@@ -35,14 +35,10 @@ public class MainActivity extends AppCompatActivity implements
 
     // vars
     private ArrayList<Exercise> mExercise = new ArrayList<>();
-    private ArrayList<Integer> mSize = new ArrayList<>();
     private ExerciseRecyclerAdapter mExerciseRecyclerAdapter;
     private ExerciseRepository mExerciseRepository;
     private boolean mIsNewLogItem;
     private LogItem mInitialLogItem;
-    int size;
-    private int sizes;
-    private int[] muscles = new int[1];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,20 +58,11 @@ public class MainActivity extends AppCompatActivity implements
         }
 
 
-        Log.d(TAG, "onCreateMuscles: " + muscles.toString());
-        Log.d(TAG, "onCreate: here" + mExercise);
-
         getIncomingIntent();
 
         initRecyclerView();
         retrieveExercises();
-        retrieveExerciseStats();
-        Log.d(TAG, "onCreateMuscles2: " + Arrays.toString(muscles));
-        Log.d(TAG, "onCreateMSize: " + mSize);
         setListeners();
-
-        int muscleSize = size;
-        Log.d(TAG, "onCreateMuscleSize: " + muscleSize);
 
     }
 
@@ -97,41 +84,14 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onChanged(@Nullable List<Exercise> exercises) {
                 if(mExercise.size() > 0){
-                    Log.d(TAG, "retrieveExercises: " + mExercise);
                     mExercise.clear();
                 }
                 if(exercises != null){
                     mExercise.addAll(exercises);
-                    Log.d(TAG, "retrieveExercises: " + mExercise);
                 }
                 mExerciseRecyclerAdapter.notifyDataSetChanged();
             }
         });
-        Log.d(TAG, "retrieveExercisessize: " + mExercise);
-    }
-
-    public void retrieveExerciseStats(){
-        final int[] legSize = new int[1];
-        mExerciseRepository.retrieveExerciseStat("Legs").observe(this, new Observer<List<Exercise>>() {
-            @Override
-            public void onChanged(@Nullable List<Exercise> exercises) {
-                if(exercises != null){
-                    size = exercises.size();
-                    legSize[0] = size;
-                    retrieveLegs(size);
-                    mSize.add(size);
-                    Log.d(TAG, "onChangedmSize: " + mSize);
-                    Log.d(TAG, "onChangedleg: " + Arrays.toString(legSize));
-                }
-            }
-        });
-        Log.d(TAG, "retrieveExerciseStatsSize: " + size);
-    }
-
-
-    private void retrieveLegs(int legsize){
-        muscles[0] = legsize;
-        Log.d(TAG, "retrieveLegs: " + Arrays.toString(muscles));
     }
 
 
@@ -140,7 +100,6 @@ public class MainActivity extends AppCompatActivity implements
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mExerciseRecyclerAdapter = new ExerciseRecyclerAdapter(mExercise, this);
         mRecyclerView.setAdapter(mExerciseRecyclerAdapter);
-        Log.d(TAG, "initRecyclerView: " + mExercise);
     }
 
     private void setListeners(){

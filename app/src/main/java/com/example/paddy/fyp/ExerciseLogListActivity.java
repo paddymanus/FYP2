@@ -21,6 +21,7 @@ import com.example.paddy.fyp.models.ExerciseSet;
 import com.example.paddy.fyp.models.LogItem;
 import com.example.paddy.fyp.persistence.ExerciseSetRepository;
 import com.example.paddy.fyp.persistence.LogItemRepository;
+import com.example.paddy.fyp.utils.UtilityDate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -136,6 +137,10 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
     }
 
     private void isLogNotNull() {
+        LinearLayoutManager layoutManager = ((LinearLayoutManager) mRecyclerView.getLayoutManager());
+        int fvPosition = layoutManager.findFirstVisibleItemPosition();
+        int lvPosition = layoutManager.findLastVisibleItemPosition();
+
         String temp = mEditTitle.getText().toString();
         temp = temp.replace("\n", "");
         temp = temp.replace(" ", "");
@@ -146,10 +151,14 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
             mFinalLogItem.setId(intValue);
             mFinalLogItem.setTitle(mEditTitle.getText().toString());
             String content = "Bench Press, Shoulder Press, Dumbell Flies, Laterial Raises";
-            String timestamp = "March 2019";
+            String timestamp = UtilityDate.getCurrentTimeStamp();
             mFinalLogItem.setContent(content);
             mFinalLogItem.setTimestamp(timestamp);
             Log.d(TAG, "isLogNotNull: " + mFinalLogItem);
+
+//            for (int i = 0; i <= lvPosition - fvPosition; i++){
+//
+//            }
         }
     }
 
