@@ -36,6 +36,7 @@ tools:context=".home.HomeActivity">
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_below="@+id/log_toolbar"
+        android:layout_above="@id/navigationView"
         android:id="@+id/rvLogItem"
         android:padding="5dp">
 

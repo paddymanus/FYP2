@@ -25,8 +25,9 @@
         <activity android:name=".stats.StatsExerciseActivity" />
         <activity android:name=".stats.StatsOptionsActivity" />
         <activity android:name=".stats.StatsHistoryActivity" />
-        <activity android:name=".NavigationActivity"></activity>
-        <activity android:name=".stats.StatsMusclesActivity"></activity>
+        <activity android:name=".NavigationActivity"/>
+        <activity android:name=".stats.StatsMusclesActivity"/>
+        <activity android:name=".stats.Stats1rmActivity"/>
     </application>
 
 </manifest>

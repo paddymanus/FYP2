@@ -89,6 +89,10 @@ public class MainActivity extends AppCompatActivity implements
                 }
                 if(exercises != null){
                     mExercise.addAll(exercises);
+                    for(int i = 0; i < exercises.size(); i++){
+                        String name = exercises.get(i).getName();
+                        Log.d(TAG, "onChanged: " + name);
+                    }
                 }
                 mExerciseRecyclerAdapter.notifyDataSetChanged();
             }
