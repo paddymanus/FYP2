@@ -51,7 +51,7 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
     private boolean mIsNewExercise;
     private ExerciseSet exerciseSet, eSet;
     private LogItem mLogItem, mInitialLogItem;
-    private ExerciseSet mFinalSet;
+    private ExerciseSet mInitialSet;
     private Exercise mInitialExercise;
     private ArrayList<Set> mSets = new ArrayList<>();
     List<ExerciseSet> exercises = new ArrayList<ExerciseSet>();
@@ -80,6 +80,11 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
         if(getIntent().hasExtra("selected_item3")){
             LogItem logItem = getIntent().getParcelableExtra("selected_item3");
             Log.d(TAG, "onCreateThree: " + logItem.toString());
+        }
+
+        if(getIntent().hasExtra("selected_exercise_set")){
+            mInitialSet = getIntent().getParcelableExtra("selected_exercise_set");
+            Log.d(TAG, "onCreateExerciseSet: " + mInitialSet.toString());
         }
 
 
@@ -204,6 +209,10 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
+    private void updateExerciseSet(){
+        mExerciseSetRepository.updateSet(mInitialSet);
+    }
+
     private void saveNewExerciseSet()
     {
         mExerciseSetRepository.insertSetTask(exerciseSet);
@@ -250,7 +259,7 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void setNewExerciseProperties(){
-        mViewTitle.setText("Exercise Title");
+        mViewTitle.setText(mInitialSet.getName());
     }
 
 

@@ -252,6 +252,9 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
     @Override
     public void onExerciseSetClick(int position) {
         Log.d(TAG, "onExerciseSetClick: " + position);
+//        Intent intent = new Intent(this, ExerciseActivity.class);
+//        intent.putExtra("selected_exercise_set", mSets.get(position));
+//        startActivity(intent);
     }
 
     private void deleteExercise(ExerciseSet exerciseSet){

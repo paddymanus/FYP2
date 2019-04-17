@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.paddy.fyp.ExerciseActivity;
 import com.example.paddy.fyp.R;
@@ -30,6 +31,7 @@ public class StatsOptionsActivity extends AppCompatActivity implements StatsOpti
     // Ui components
     private RecyclerView mRecyclerView;
     private ImageButton mBackButton;
+    private TextView mViewTitle;
 
     // vars
     private ArrayList<StatsOptions> mStatsOptions = new ArrayList<>();
@@ -45,6 +47,7 @@ public class StatsOptionsActivity extends AppCompatActivity implements StatsOpti
         Log.d(TAG, "onCreate: started");
         mRecyclerView = findViewById(R.id.layout_stats_options);
         mBackButton = findViewById(R.id.toolbar_back_arrow_exercise_stats);
+        mViewTitle = findViewById(R.id.stats_exercise_title);
 
         initRecyclerView();
         getIncomingIntent();
@@ -83,12 +86,17 @@ public class StatsOptionsActivity extends AppCompatActivity implements StatsOpti
         if(getIntent().hasExtra("selected_exercise")){
             mInitialExercise = getIntent().getParcelableExtra("selected_exercise");
             Log.d(TAG, "getIncomingIntent: " + mInitialExercise.toString());
+            setExerciseProperties();
 
             mIsNewLogItem = false;
             return false;
         }
         mIsNewLogItem = true;
         return true;
+    }
+
+    private void setExerciseProperties(){
+        mViewTitle.setText(mInitialExercise.getName());
     }
 
     private boolean getIncomingIntent1(){
@@ -134,7 +142,7 @@ public class StatsOptionsActivity extends AppCompatActivity implements StatsOpti
         switch (v.getId()){
             case R.id.toolbar_back_arrow_exercise_stats:{
                 Intent intent = new Intent(this, StatsExerciseActivity.class);
-                intent.putExtra("selected_stat1", mIntialStatsHome);
+                intent.putExtra("selected_stat", mIntialStatsHome);
                 startActivity(intent);
                 break;
             }

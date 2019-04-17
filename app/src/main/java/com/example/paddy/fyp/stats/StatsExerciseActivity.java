@@ -53,8 +53,8 @@ public class StatsExerciseActivity extends AppCompatActivity implements Exercise
 
         mExerciseRepository = new ExerciseRepository(this);
 
-        if(getIntent().hasExtra("selected_stat1")){
-            mIntialStatsHome = getIntent().getParcelableExtra("selected_stat1");
+        if(getIntent().hasExtra("selected_stat")){
+            mIntialStatsHome = getIntent().getParcelableExtra("selected_stat");
             Log.d(TAG, "onCreate: " + mIntialStatsHome.toString());
         }
 

@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.example.paddy.fyp.async.DeleteSetAsyncTask;
 import com.example.paddy.fyp.async.InsertSetAsyncTask;
+import com.example.paddy.fyp.async.UpdateSetAsyncTask;
 import com.example.paddy.fyp.models.ExerciseSet;
 import com.example.paddy.fyp.models.LogItem;
 
@@ -24,7 +25,7 @@ public class ExerciseSetRepository {
     }
 
     public void updateSet(ExerciseSet exerciseSet){
-
+        new UpdateSetAsyncTask(mExerciseSetDatabase.getExerciseSetDao()).execute(exerciseSet);
     }
 
     public LiveData<List<ExerciseSet>> retrieveSetTask(){

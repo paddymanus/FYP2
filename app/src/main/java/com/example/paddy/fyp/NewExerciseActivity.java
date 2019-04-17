@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.paddy.fyp.models.Exercise;
 import com.example.paddy.fyp.models.LogItem;
@@ -105,7 +106,10 @@ public class NewExerciseActivity extends AppCompatActivity implements AdapterVie
             String muscleG = mEditCategory.getSelectedItem().toString();
             mExerciseFinal.setCategory(muscleG);
             Log.d(TAG, "getIncomingIntent: " + mExerciseFinal.toString());
-
+        } else {
+            Toast toast = Toast.makeText(getApplicationContext(), "Hmm, the exercise has no name?", Toast.LENGTH_LONG);
+            toast.setMargin(50,50);
+            toast.show();
         }
 
     }

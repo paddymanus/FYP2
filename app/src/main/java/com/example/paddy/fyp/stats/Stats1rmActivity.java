@@ -1,11 +1,15 @@
 package com.example.paddy.fyp.stats;
 
 import android.arch.lifecycle.Observer;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.paddy.fyp.R;
 import com.example.paddy.fyp.models.Exercise;
@@ -24,10 +28,15 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Stats1rmActivity extends AppCompatActivity {
+public class Stats1rmActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final String TAG = "Stats1rmActivity";
 
+    //ui components
+    private ImageButton mBackButton;
+    private TextView mViewTitle;
+
+    // vars
     private LineChart lineChart;
     private StatsHome mIntialStatsHome;
     private Exercise mInitialExercise;
@@ -38,6 +47,9 @@ public class Stats1rmActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stats_1rm);
+
+        mBackButton = findViewById(R.id.toolbar_back_arrow_exercise_stats);
+        mViewTitle = findViewById(R.id.stats_exercise_title);
 
         lineChart = (LineChart) findViewById(R.id.LineChart1rm);
 
@@ -50,6 +62,7 @@ public class Stats1rmActivity extends AppCompatActivity {
 
         if(getIntent().hasExtra("selected_exercise")){
             mInitialExercise = getIntent().getParcelableExtra("selected_exercise");
+            setExerciseProperties();
             Log.d(TAG, "onCreateTwo: " + mInitialExercise.toString());
         }
 
@@ -61,6 +74,7 @@ public class Stats1rmActivity extends AppCompatActivity {
 
 
         retrieveExercise();
+        setListeners();
 
     }
 
@@ -95,5 +109,28 @@ public class Stats1rmActivity extends AppCompatActivity {
                 lineChart.invalidate();
             }
         });
+    }
+
+    private void setExerciseProperties(){
+        mViewTitle.setText(mInitialExercise.getName());
+    }
+
+    private void setListeners(){
+        mBackButton.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.toolbar_back_arrow_exercise_stats:{
+                Intent intent = new Intent(this, StatsOptionsActivity.class);
+                intent.putExtra("selected_stat", mIntialStatsHome);
+                intent.putExtra("selected_exercise", mInitialExercise);
+                startActivity(intent);
+                break;
+            }
+        }
+
     }
 }

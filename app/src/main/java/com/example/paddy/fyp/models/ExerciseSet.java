@@ -6,11 +6,13 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 
 @Entity
-public class ExerciseSet {
+public class ExerciseSet implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
@@ -56,6 +58,30 @@ public class ExerciseSet {
     @Ignore
     public ExerciseSet() {
     }
+
+    protected ExerciseSet(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        workoutID = in.readInt();
+        parameters = in.readString();
+        number = in.readString();
+        weight = in.readInt();
+        reps = in.readInt();
+        volume = in.readInt();
+        onerepmax = in.readInt();
+    }
+
+    public static final Creator<ExerciseSet> CREATOR = new Creator<ExerciseSet>() {
+        @Override
+        public ExerciseSet createFromParcel(Parcel in) {
+            return new ExerciseSet(in);
+        }
+
+        @Override
+        public ExerciseSet[] newArray(int size) {
+            return new ExerciseSet[size];
+        }
+    };
 
     public int getWorkoutID() {
         return workoutID;
@@ -138,5 +164,23 @@ public class ExerciseSet {
                 ", volume=" + volume +
                 ", onerepmax=" + onerepmax +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeInt(workoutID);
+        dest.writeString(parameters);
+        dest.writeString(number);
+        dest.writeInt(weight);
+        dest.writeInt(reps);
+        dest.writeInt(volume);
+        dest.writeInt(onerepmax);
     }
 }

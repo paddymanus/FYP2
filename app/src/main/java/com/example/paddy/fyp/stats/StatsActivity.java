@@ -54,7 +54,7 @@ public class StatsActivity extends AppCompatActivity implements StatsHomeRecycle
 
     private void insertStats(){
         StatsHome statsHome = new StatsHome("Muscles targeted");
-        StatsHome statsHome1 = new StatsHome("Number of workouts");
+        StatsHome statsHome1 = new StatsHome("Body measurements");
         StatsHome statsHome2 = new StatsHome("Bodyweight");
         StatsHome statsHome3 = new StatsHome("Abs");
         StatsHome statsHome4 = new StatsHome("Back");
@@ -96,6 +96,8 @@ public class StatsActivity extends AppCompatActivity implements StatsHomeRecycle
         }
         else if(position == 2){
             Log.d(TAG, "onStatClicked: this is big fat 2");
+            Intent intent = new Intent(this, StatsBodyweightActivity.class);
+            startActivity(intent);
         }
         else if(position >= 3){
             Log.d(TAG, "onStatClicked: these are the categories");

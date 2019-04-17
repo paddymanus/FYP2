@@ -17,7 +17,7 @@ public interface ExerciseDao {
     @Insert
     long[] insertExercises(Exercise... exercises);
 
-    @Query("SELECT * FROM exercises")
+    @Query("SELECT * FROM exercises ORDER BY name")
     LiveData<List<Exercise>> getExercises();
 
     @Query("SELECT * FROM exercises WHERE category LIKE :category")
