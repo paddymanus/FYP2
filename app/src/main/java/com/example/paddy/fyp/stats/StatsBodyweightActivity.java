@@ -78,6 +78,8 @@ public class StatsBodyweightActivity extends AppCompatActivity implements StatsH
         }
         else if(position == 1){
             Log.d(TAG, "onStatClicked: this is stats");
+            Intent intent = new Intent(this, StatsBodyweightStatActivity.class);
+            startActivity(intent);
         }
     }
 
