@@ -33,6 +33,7 @@
         <activity android:name=".stats.StatsBodyweightStatActivity"/>
         <activity android:name=".stats.StatsMeasurementsActivity"/>
         <activity android:name=".stats.StatsAddMeasurementActivity"/>
+        <activity android:name=".stats.StatsMeasurementsStatActivity"/>
     </application>
 
 </manifest>

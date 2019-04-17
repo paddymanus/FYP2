@@ -21,6 +21,9 @@ public interface MeasurementDao {
         @Query("SELECT * FROM measurement")
         LiveData<List<Measurement>> getMeasurement();
 
+        @Query("SELECT * FROM measurement WHERE bodypart LIKE :bodypart")
+        LiveData<List<Measurement>> getByBodypart(String bodypart);
+
         @Delete
         int delete(Measurement... measurements);
 

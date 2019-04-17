@@ -31,6 +31,10 @@ public class MeasurementRepository {
         return mMeasurementDatabase.getMeasurementsDao().getMeasurement();
     }
 
+    public LiveData<List<Measurement>> retrieveMeasurementByBodypart(String bodypart){
+        return mMeasurementDatabase.getMeasurementsDao().getByBodypart(bodypart);
+    }
+
 
     public void deleteMeasurement(Measurement measurement){
 

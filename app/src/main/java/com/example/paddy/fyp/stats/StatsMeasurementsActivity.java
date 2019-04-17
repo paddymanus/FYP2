@@ -75,8 +75,8 @@ public class StatsMeasurementsActivity extends AppCompatActivity implements Stat
         }
         else if(position == 1){
             Log.d(TAG, "onStatClicked: this is stats");
-//            Intent intent = new Intent(this, StatsBodyweightStatActivity.class);
-//            startActivity(intent);
+            Intent intent = new Intent(this, StatsMeasurementsStatActivity.class);
+            startActivity(intent);
         }
     }
 
