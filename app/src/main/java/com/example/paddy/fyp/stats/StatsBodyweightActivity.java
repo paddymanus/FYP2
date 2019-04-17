@@ -28,7 +28,6 @@ public class StatsBodyweightActivity extends AppCompatActivity implements StatsH
     private ImageButton mBackButton;
 
     // vars
-    private Context mContext = StatsBodyweightActivity.this;
     private ArrayList<StatsHome> mStatsHome = new ArrayList<>();
     private StatsHomeRecyclerAdapter mStatsHomeRecyclerAdapter;
 
@@ -74,8 +73,8 @@ public class StatsBodyweightActivity extends AppCompatActivity implements StatsH
     public void onStatClicked(int position) {
         if(position == 0){
             Log.d(TAG, "onStatClicked: this is list");
-//            Intent intent = new Intent(this, StatsMusclesActivity.class);
-//            startActivity(intent);
+            Intent intent = new Intent(this, StatsAddBodyweightActivity.class);
+            startActivity(intent);
         }
         else if(position == 1){
             Log.d(TAG, "onStatClicked: this is stats");

@@ -16,6 +16,36 @@ tools:context=".home.HomeActivity">
 
     </android.support.design.widget.AppBarLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightGrey"
+        android:id="@+id/insert"
+        android:layout_below="@id/stats_toolbar">
+
+        <EditText
+            android:id="@+id/insert_weight_edit_text"
+            android:hint="@string/insert_weight"
+            android:padding="20dp"
+            android:background="@color/lightGrey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+        <Button
+            android:id="@+id/add_weight_button"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="20dp"
+            android:padding="10dp"
+            android:background="#555"
+            android:textColor="#FFF"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/add_weight" />
+
+    </RelativeLayout>
 
     <!-- Middle section (body) -->
     <RelativeLayout
@@ -23,7 +53,7 @@ tools:context=".home.HomeActivity">
         android:layout_height="match_parent"
         android:background="@color/white"
         android:layout_above="@id/navigationView"
-        android:layout_below="@+id/stats_toolbar"
+        android:layout_below="@+id/insert"
         android:id="@+id/relLayout">
 
         <include layout="@layout/layout_center_viewpager"/>
@@ -33,10 +63,10 @@ tools:context=".home.HomeActivity">
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@+id/stats_toolbar"
-        android:id="@+id/rvStatsHome"
+        android:layout_below="@+id/insert"
+        android:id="@+id/rvBodyweight"
         android:padding="5dp">
 
     </android.support.v7.widget.RecyclerView>

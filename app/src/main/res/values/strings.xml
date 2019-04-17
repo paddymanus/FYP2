@@ -22,6 +22,10 @@
     <string name="hint_volume">Volume:</string>
     <string name="statistics">Statistics</string>
     <string name="bodyweight">Bodyweight</string>
+    <string name="insert_weight">Insert weight</string>
+    <string name="add_weight">Add weight</string>
+    <string name="weight">Weight</string>
+    <string name="timestamp">Timestamp</string>
 
     <string-array name="muscles">
         <item>Abs</item>
