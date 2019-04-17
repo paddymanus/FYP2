@@ -93,6 +93,8 @@ public class StatsActivity extends AppCompatActivity implements StatsHomeRecycle
         }
         else if(position == 1){
             Log.d(TAG, "onStatClicked: this is one now lad");
+            Intent intent = new Intent(this, StatsMeasurementsActivity.class);
+            startActivity(intent);
         }
         else if(position == 2){
             Log.d(TAG, "onStatClicked: this is big fat 2");

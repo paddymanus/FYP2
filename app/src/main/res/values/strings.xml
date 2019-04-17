@@ -26,6 +26,11 @@
     <string name="add_weight">Add weight</string>
     <string name="weight">Weight</string>
     <string name="timestamp">Timestamp</string>
+    <string name="body_measurements">Body measurements</string>
+    <string name="insert_measurement">insert measurement</string>
+    <string name="inches">Inches</string>
+    <string name="measurement">measurement</string>
+    <string name="bodypart">bodypart</string>
 
     <string-array name="muscles">
         <item>Abs</item>
@@ -36,4 +41,11 @@
         <item>Shoulders</item>
         <item>Triceps</item>
     </string-array>
+
+    <string-array name="bodyparts">
+        <item>Waist</item>
+        <item>Chest</item>
+        <item>Arms</item>
+    </string-array>
+
 </resources>

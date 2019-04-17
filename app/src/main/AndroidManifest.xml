@@ -31,6 +31,8 @@
         <activity android:name=".stats.StatsBodyweightActivity"/>
         <activity android:name=".stats.StatsAddBodyweightActivity"/>
         <activity android:name=".stats.StatsBodyweightStatActivity"/>
+        <activity android:name=".stats.StatsMeasurementsActivity"/>
+        <activity android:name=".stats.StatsAddMeasurementActivity"/>
     </application>
 
 </manifest>
