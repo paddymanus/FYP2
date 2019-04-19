@@ -3,6 +3,7 @@ package com.example.paddy.fyp;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -84,6 +85,7 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
             // this is NOT a new log item
             setLogItemProperties();
         }
+
 
 
         initRecyclerView();

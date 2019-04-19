@@ -33,6 +33,8 @@
     <string name="bodypart">bodypart</string>
     <string name="insert">insert</string>
     <string name="muscles_targeted">Muscles targeted</string>
+    <string name="previous_attempts">Previous Attempts</string>
+    <string name="add_set">Add Set</string>
 
     <string-array name="muscles">
         <item>Abs</item>

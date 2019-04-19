@@ -1,7 +1,9 @@
 package com.example.paddy.fyp;
 
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,18 +19,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.paddy.fyp.adapters.ExerciseSetRecyclerAdapter;
 import com.example.paddy.fyp.adapters.SetRecyclerAdapter;
 import com.example.paddy.fyp.models.Exercise;
 import com.example.paddy.fyp.models.ExerciseSet;
 import com.example.paddy.fyp.models.LogItem;
 import com.example.paddy.fyp.models.Set;
 import com.example.paddy.fyp.persistence.ExerciseSetRepository;
+import com.example.paddy.fyp.utils.UtilityDate;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExerciseActivity extends AppCompatActivity implements View.OnClickListener, SetRecyclerAdapter.OnSetListener
+public class ExerciseActivity extends AppCompatActivity implements View.OnClickListener, SetRecyclerAdapter.OnSetListener,ExerciseSetRecyclerAdapter.onExerciseSetListener
 
 {
 
@@ -43,7 +47,7 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
     private ImageButton mBackArrow, mCheck;
     private Button mAddButton;
     private ImageView mDeleteButton;
-    private RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView, mRecyclerView2;
     private EditText setWeightET;
     private EditText setRepsET;
 
@@ -54,8 +58,10 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
     private ExerciseSet mInitialSet;
     private Exercise mInitialExercise;
     private ArrayList<Set> mSets = new ArrayList<>();
+    private ArrayList<ExerciseSet> mExerciseSets = new ArrayList<>();
     List<ExerciseSet> exercises = new ArrayList<ExerciseSet>();
     private SetRecyclerAdapter mSetRecyclerAdapter;
+    private ExerciseSetRecyclerAdapter mExerciseSetRecyclerAdapter;
     private ExerciseSetRepository mExerciseSetRepository;
 
 
@@ -74,6 +80,7 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
         setWeightET = findViewById(R.id.view_exercise_set_weight);
         setRepsET = findViewById(R.id.view_exercise_set_reps);
         mRecyclerView = findViewById(R.id.view_exercise_recycler_list);
+        mRecyclerView2 = findViewById(R.id.view_exercise_recycler_list2);
         mExerciseSetRepository = new ExerciseSetRepository(this);
 
 
@@ -87,7 +94,6 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
             Log.d(TAG, "onCreateExerciseSet: " + mInitialSet.toString());
         }
 
-
         getIncomingIntentLog();
 
         if(getIncomingIntent()){
@@ -98,19 +104,51 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
         }
         setListeners();
 
+        retrieveExerciseSets();
         initRecyclerView();
+        initRecyclerView2();
+
+        autoThreeSets();
 
 //        ExerciseSet eSet = new ExerciseSet("Bench Press", 1, 17.5, 1);
 //        Log.d(TAG, "onCreate: my set: " + eSet.toString());
 
     }
 
+    private void retrieveExerciseSets(){
+        mExerciseSetRepository.retrieveSetByTitle(mInitialExercise.getName()).observe(this, new Observer<List<ExerciseSet>>() {
+            @Override
+            public void onChanged(@Nullable List<ExerciseSet> exerciseSets) {
+                if(mExerciseSets.size() > 0){
+                    mExerciseSets.clear();
+                }
+                if(exerciseSets != null){
+                    mExerciseSets.addAll(exerciseSets);
+                }
+                mExerciseSetRecyclerAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void autoThreeSets(){
+        for(int i = 0; i < 3; i++){
+            addExerciseSet();
+        }
+    }
 
     private void initRecyclerView(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mSetRecyclerAdapter = new SetRecyclerAdapter(mSets, this);
         mRecyclerView.setAdapter(mSetRecyclerAdapter);
+    }
+
+    private void initRecyclerView2(){
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setReverseLayout(true);
+        mRecyclerView2.setLayoutManager(linearLayoutManager);
+        mExerciseSetRecyclerAdapter = new ExerciseSetRecyclerAdapter(mExerciseSets, this);
+        mRecyclerView2.setAdapter(mExerciseSetRecyclerAdapter);
     }
 
     private void addExerciseSet() {
@@ -171,6 +209,8 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
             exerciseSet = new ExerciseSet();
             exerciseSet.setName(mViewTitle.getText().toString());
             exerciseSet.setWorkoutID(mInitialLogItem.getId());
+            String timestamp = UtilityDate.getCurrentTimeStamp();
+            exerciseSet.setTimestamp(timestamp);
 
             View item = mRecyclerView.getChildAt(i);
             EditText setWeightET = (EditText) item.findViewById(R.id.view_exercise_set_weight);
@@ -299,5 +339,10 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onDeleteClick(int position) {
         removeExerciseSet(position);
+    }
+
+    @Override
+    public void onExerciseSetClick(int position) {
+
     }
 }

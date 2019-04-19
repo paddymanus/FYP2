@@ -31,6 +31,18 @@
             android:textColor="#DE000000"
             android:textSize="25dp" />
 
+        <TextView
+            android:id="@+id/set_timestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/log_timestamp"
+            android:textSize="16sp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="@id/cardView"
+            android:padding="10dp"/>
+
 
 
         <TextView

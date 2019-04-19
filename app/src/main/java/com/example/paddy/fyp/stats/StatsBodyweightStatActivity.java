@@ -13,15 +13,17 @@ import android.widget.TextView;
 
 import com.example.paddy.fyp.R;
 import com.example.paddy.fyp.models.Bodyweight;
-import com.example.paddy.fyp.models.Exercise;
-import com.example.paddy.fyp.models.ExerciseSet;
-import com.example.paddy.fyp.models.StatsHome;
 import com.example.paddy.fyp.persistence.BodyweightRepository;
-import com.example.paddy.fyp.persistence.ExerciseSetRepository;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
@@ -39,6 +41,9 @@ public class StatsBodyweightStatActivity extends AppCompatActivity implements Vi
     private LineChart lineChart;
     private BodyweightRepository mBodyweightRepository;
     ArrayList<Entry> yValues = new ArrayList<>();
+    ArrayList<String> xValues = new ArrayList<String>();
+    ArrayList<String> xStringValues = new ArrayList<>();
+    XAxis xAxis;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,8 +57,18 @@ public class StatsBodyweightStatActivity extends AppCompatActivity implements Vi
         mBodyweightRepository = new BodyweightRepository(this);
 
 
+
         lineChart.setDragEnabled(true);
         lineChart.setScaleEnabled(false);
+
+        YAxis rightAxis = this.lineChart.getAxisRight();
+        rightAxis.setEnabled(true);
+        rightAxis.setTextSize(0);
+
+        Description description = new Description();
+        description.setText("Bodyweight over time");
+        description.setTextSize(15);
+        lineChart.setDescription(description);
 
 
         retrieveBodyweight();
@@ -69,19 +84,33 @@ public class StatsBodyweightStatActivity extends AppCompatActivity implements Vi
                     for(int i = 0; i < bodyweights.size(); i++){
                         int weight = bodyweights.get(i).getWeight();
                         String timestamp = bodyweights.get(i).getTimestamp();
+                        Log.d(TAG, "onChanged: " + timestamp);
+                        xValues.add(i,timestamp);
                         yValues.add(new Entry(i, weight));
-                        Log.d(TAG, "onChanged: " + weight);
-                        Log.d(TAG, "onChanged: " + yValues);
+
+                        xAxis = lineChart.getXAxis();
+                        xAxis.setTextColor(Color.BLACK);
+                        xAxis.setTextSize(15);
+                        xAxis.setDrawGridLines(false);
+                        xAxis.isCenterAxisLabelsEnabled();
+                        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                        xAxis.setValueFormatter(new IndexAxisValueFormatter(xValues) {
+                            @Override
+                            public String getFormattedValue(float value, AxisBase axis) {
+                                return xValues.get((int) value);
+                            }
+                        });
                     }
                 }
                 LineDataSet set1 = new LineDataSet(yValues, "Weight KG");
 
                 set1.setFillAlpha(150);
                 set1.setColor(Color.RED);
-                set1.setLineWidth(3f);
+                set1.setLineWidth(2f);
                 //set1.setDrawFilled(true);
                 //set1.setFillColor(Color.CYAN);
                 set1.setValueTextSize(15f);
+
 
                 ArrayList<ILineDataSet> dataSets = new ArrayList<>();
                 dataSets.add(set1);

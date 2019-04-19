@@ -71,6 +71,7 @@ public class Stats1rmActivity extends AppCompatActivity implements View.OnClickL
 
         lineChart.setDragEnabled(true);
         lineChart.setScaleEnabled(false);
+        lineChart.setVisibleXRangeMaximum(10);
 
 
         retrieveExercise();

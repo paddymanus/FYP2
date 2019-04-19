@@ -36,6 +36,9 @@ public class ExerciseSet implements Parcelable {
     @ColumnInfo(name = "reps")
     private int reps;
 
+    @ColumnInfo(name = "timestamp")
+    private String timestamp;
+
     @ColumnInfo(name = "volume")
     private int volume;
 
@@ -43,7 +46,7 @@ public class ExerciseSet implements Parcelable {
     private int onerepmax;
 
 
-    public ExerciseSet(int id, String name, int workoutID, String parameters, String number, int weight, int reps, int volume, int onerepmax) {
+    public ExerciseSet(int id, String name, int workoutID, String parameters, String number, int weight, int reps, String timestamp, int volume, int onerepmax) {
         this.id = id;
         this.name = name;
         this.workoutID = workoutID;
@@ -51,6 +54,7 @@ public class ExerciseSet implements Parcelable {
         this.number = number;
         this.weight = weight;
         this.reps = reps;
+        this.timestamp = timestamp;
         this.volume = volume;
         this.onerepmax = onerepmax;
     }
@@ -67,6 +71,7 @@ public class ExerciseSet implements Parcelable {
         number = in.readString();
         weight = in.readInt();
         reps = in.readInt();
+        timestamp = in.readString();
         volume = in.readInt();
         onerepmax = in.readInt();
     }
@@ -135,6 +140,14 @@ public class ExerciseSet implements Parcelable {
         this.reps = reps;
     }
 
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
     public int getVolume() {
         return volume;
     }
@@ -161,6 +174,7 @@ public class ExerciseSet implements Parcelable {
                 ", number='" + number + '\'' +
                 ", weight=" + weight +
                 ", reps=" + reps +
+                ", timestamp='" + timestamp + '\'' +
                 ", volume=" + volume +
                 ", onerepmax=" + onerepmax +
                 '}';
@@ -180,6 +194,7 @@ public class ExerciseSet implements Parcelable {
         dest.writeString(number);
         dest.writeInt(weight);
         dest.writeInt(reps);
+        dest.writeString(timestamp);
         dest.writeInt(volume);
         dest.writeInt(onerepmax);
     }

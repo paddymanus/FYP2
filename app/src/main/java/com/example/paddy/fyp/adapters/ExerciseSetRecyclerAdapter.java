@@ -2,6 +2,7 @@ package com.example.paddy.fyp.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +11,13 @@ import android.widget.TextView;
 import com.example.paddy.fyp.ExerciseActivity;
 import com.example.paddy.fyp.R;
 import com.example.paddy.fyp.models.ExerciseSet;
+import com.example.paddy.fyp.utils.UtilityDate;
 
 import java.util.ArrayList;
 
 public class ExerciseSetRecyclerAdapter extends RecyclerView.Adapter<ExerciseSetRecyclerAdapter.ViewHolder> {
+
+    private static final String TAG = "ExerciseSetRecyclerAdap";
 
     private ArrayList<ExerciseSet> mSets = new ArrayList<>();
     private onExerciseSetListener mOnExerciseSetListener;
@@ -33,26 +37,23 @@ public class ExerciseSetRecyclerAdapter extends RecyclerView.Adapter<ExerciseSet
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
 
-        viewHolder.exerciseTitle.setText(mSets.get(i).getName());
-        viewHolder.sets.setText(mSets.get(i).getParameters());
-        viewHolder.volume.setText(String.valueOf(mSets.get(i).getVolume()));
-        viewHolder.onerepmax.setText(String.valueOf(mSets.get(i).getOnerepmax()));
+        try {
+            String month = mSets.get(i).getTimestamp().substring(3);
+            month = UtilityDate.getMonthFromNumber(month);
+            String date = mSets.get(i).getTimestamp().substring(0, 2);
+            String timestamp = date + " " + month;
+            viewHolder.timestamp.setText(timestamp);
+            viewHolder.exerciseTitle.setText(mSets.get(i).getName());
+            viewHolder.sets.setText(mSets.get(i).getParameters());
+            viewHolder.volume.setText(String.valueOf(mSets.get(i).getVolume()));
+            viewHolder.onerepmax.setText(String.valueOf(mSets.get(i).getOnerepmax()));
+        }catch (NullPointerException e){
+            Log.e(TAG, "onBindViewHolder: " + e.getMessage() );
+        }
     //    viewHolder.weights.setText(String.valueOf(mSets.get(i).getWeight()));
    //     viewHolder.reps.setText(String.valueOf(mSets.get(i).getReps()));
-
     }
 
-//    public String getStats() {
-//        String result = "";
-//        for (ExerciseSet exercise: mSets) {
-//            if (result.length() != 0) {
-//                result = result.concat(", ");
-//            }
-//            result = result.concat(String.valueOf(exercise.getWeight())
-//                    + "x" + String.valueOf(exercise.getReps()));
-//        }
-//        return result;
-//    }
 
     @Override
     public int getItemCount() {
@@ -61,7 +62,7 @@ public class ExerciseSetRecyclerAdapter extends RecyclerView.Adapter<ExerciseSet
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView exerciseTitle, sets, volume, onerepmax;
+        TextView exerciseTitle, sets, volume, onerepmax, timestamp;
         onExerciseSetListener onExerciseSetListener;
 
         public ViewHolder(@NonNull View itemView, onExerciseSetListener onExerciseSetListener1) {
@@ -70,6 +71,7 @@ public class ExerciseSetRecyclerAdapter extends RecyclerView.Adapter<ExerciseSet
             sets = itemView.findViewById(R.id.title_sets);
             volume = itemView.findViewById(R.id.title_volume);
             onerepmax = itemView.findViewById(R.id.title_1rm);
+            timestamp = itemView.findViewById(R.id.set_timestamp);
             this.onExerciseSetListener = onExerciseSetListener1;
 
             itemView.setOnClickListener(this);
