@@ -31,6 +31,8 @@
     <string name="inches">Inches</string>
     <string name="measurement">measurement</string>
     <string name="bodypart">bodypart</string>
+    <string name="insert">insert</string>
+    <string name="muscles_targeted">Muscles targeted</string>
 
     <string-array name="muscles">
         <item>Abs</item>

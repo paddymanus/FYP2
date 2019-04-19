@@ -25,7 +25,7 @@ tools:context=".home.HomeActivity">
 
         <EditText
             android:id="@+id/insert_measurement_edit_text"
-            android:hint="@string/insert_measurement"
+            android:hint="@string/insert"
             android:padding="20dp"
             android:background="@color/lightGrey"
             android:layout_width="match_parent"

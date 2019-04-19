@@ -1,11 +1,14 @@
 package com.example.paddy.fyp.stats;
 
 import android.arch.lifecycle.Observer;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.paddy.fyp.R;
@@ -26,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class StatsMusclesActivity extends AppCompatActivity {
+public class StatsMusclesActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final String TAG = "StatsMusclesActivity";
 
@@ -43,6 +46,7 @@ public class StatsMusclesActivity extends AppCompatActivity {
     private int[] yData = {legSize, chestSize, shouldersSize, bicepsSize, tricepsSize, backSize, absSize};
     private String[] xData = {"Legs", "Chest", "Shoulders", "Biceps", "Triceps", "Back", "Abs"};
     PieChart pieChart;
+    private ImageButton mBackButton;
 
     private ExerciseRepository mExerciseRepository;
 
@@ -55,10 +59,12 @@ public class StatsMusclesActivity extends AppCompatActivity {
 
         pieChart = (PieChart) findViewById(R.id.PieChart);
         mExerciseRepository = new ExerciseRepository(this);
+        mBackButton = findViewById(R.id.toolbar_back_arrow_exercise_stats);
 
         Description description = new Description();
-        description.setText("Exercise performed from muscle groups ");
-        description.setTextSize(34);
+      //  description.setText("Exercise performed from muscle groups ");
+        description.setTextSize(15);
+        description.setPosition(2,6);
         pieChart.setDescription(description);
         pieChart.setRotationEnabled(true);
         pieChart.setHoleRadius(25f);
@@ -69,6 +75,7 @@ public class StatsMusclesActivity extends AppCompatActivity {
 
         addDataSet();
         retrieveExerciseStats();
+        setListeners();
 
 
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
@@ -87,8 +94,8 @@ public class StatsMusclesActivity extends AppCompatActivity {
                         break;
                     }
                 }
-                String employee = xData[pos1];
-                Toast.makeText(StatsMusclesActivity.this, "" + employee + "\n" + "Trained " + sales + " times", Toast.LENGTH_LONG).show();
+                String muscle = xData[pos1];
+                Toast.makeText(StatsMusclesActivity.this, "" + muscle + "\n" + "Trained " + sales + " times", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -96,6 +103,11 @@ public class StatsMusclesActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    private void setListeners(){
+        mBackButton.setOnClickListener(this);
 
     }
 
@@ -114,7 +126,7 @@ public class StatsMusclesActivity extends AppCompatActivity {
         }
 
         //create the data set
-        PieDataSet pieDataSet = new PieDataSet(yEntrys, "Employee Sales");
+        PieDataSet pieDataSet = new PieDataSet(yEntrys, "Muscles Trained");
         pieDataSet.setSliceSpace(2);
         pieDataSet.setValueTextSize(12);
 
@@ -239,5 +251,16 @@ public class StatsMusclesActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.toolbar_back_arrow_exercise_stats:{
+                Intent intent = new Intent(this, StatsActivity.class);
+                startActivity(intent);
+                break;
+            }
+        }
     }
 }
