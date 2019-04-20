@@ -1,6 +1,7 @@
 package com.example.paddy.fyp.routines;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import com.example.paddy.fyp.R;
 import com.example.paddy.fyp.adapters.RoutinesHomeRecyclerAdapter;
@@ -17,7 +19,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.ArrayList;
 
-public class RoutinesActivity extends AppCompatActivity implements RoutinesHomeRecyclerAdapter.OnRoutineHomeListener {
+public class RoutinesActivity extends AppCompatActivity implements RoutinesHomeRecyclerAdapter.OnRoutineHomeListener, View.OnClickListener {
     private static final String TAG = "RoutinesActivity";
 
     // Ui components
@@ -64,16 +66,6 @@ public class RoutinesActivity extends AppCompatActivity implements RoutinesHomeR
     }
 
 
-
-
-
-
-
-
-
-
-
-
     // BottomNavigationView setup
     private void setupBottomNavigationView(){
         Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
@@ -84,6 +76,15 @@ public class RoutinesActivity extends AppCompatActivity implements RoutinesHomeR
 
     @Override
     public void onRoutineClicked(int position) {
+        Intent intent = new Intent(this, RoutineLogActivity.class);
+        intent.putExtra("selected_routine_item", mRoutineHome.get(position));
+        startActivity(intent);
+    }
 
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(this, RoutineLogActivity.class);
+        intent.putExtra("selected_routine", mRoutineHome.size() + 1);
+        startActivity(intent);
     }
 }

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:weightSum="100"
+    android:background="@color/colorPrimary"
+    android:gravity="center_vertical">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
+        android:id="@+id/back_arrow_container">
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_arrow_back_black_24dp"
+            android:background="?attr/selectableItemBackground"
+            android:id="@+id/toolbar_back_arrow_exercise"
+            android:layout_centerInParent="true"
+            />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="60"
+        android:id="@+id/tvRoutineTitle"
+        android:text="@string/routine_title"
+        android:textColor="#000"
+        android:layout_marginStart="15dp"
+        android:textSize="26sp" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="10"/>
+
+
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="100"
+        android:id="@+id/note_text_start"
+        android:text="@string/start"
+        android:textColor="#000"
+        android:layout_marginStart="15dp"
+        android:textSize="20sp" />
+
+
+
+</LinearLayout>

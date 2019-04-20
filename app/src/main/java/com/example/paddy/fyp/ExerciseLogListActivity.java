@@ -149,8 +149,6 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
         temp = temp.replace(" ", "");
         if (temp.length() > 0) {
             int intValue = getIntent().getExtras().getInt("selected_log");
-            Log.d(TAG, "isLogNotNull: " + intValue);
-          //  logID = count.incrementAndGet();
             mFinalLogItem.setId(intValue);
             mFinalLogItem.setTitle(mEditTitle.getText().toString());
             String content = "Bench Press, Shoulder Press, Dumbell Flies, Laterial Raises";
@@ -159,9 +157,6 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
             mFinalLogItem.setTimestamp(timestamp);
             Log.d(TAG, "isLogNotNull: " + mFinalLogItem);
 
-//            for (int i = 0; i <= lvPosition - fvPosition; i++){
-//
-//            }
         }
     }
 

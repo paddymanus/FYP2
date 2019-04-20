@@ -34,6 +34,8 @@
         <activity android:name=".stats.StatsMeasurementsActivity"/>
         <activity android:name=".stats.StatsAddMeasurementActivity"/>
         <activity android:name=".stats.StatsMeasurementsStatActivity"/>
+        <activity android:name=".routines.RoutineLogActivity"/>
+        <activity android:name=".routines.RoutinesAddExerciseActivity"/>
     </application>
 
 </manifest>
