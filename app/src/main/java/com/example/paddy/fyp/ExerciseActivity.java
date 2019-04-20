@@ -2,8 +2,10 @@ package com.example.paddy.fyp;
 
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -191,8 +193,9 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    public void updateExercise() {
+    public boolean updateExercise() {
         updateSets();
+        boolean isCalled = false;
 
         LinearLayoutManager layoutManager = ((LinearLayoutManager) mRecyclerView.getLayoutManager());
         int fvPosition = layoutManager.findFirstVisibleItemPosition();
@@ -203,6 +206,8 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
         double temp = 1.0;
         int max = 0;
         int maxTemp = 0;
+        int weightMax = 0;
+        int weightMaxTemp = 0;
 
         for (int i = 0; i <= lvPosition - fvPosition; i++) {
 
@@ -217,9 +222,12 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
             EditText setRepsET = (EditText) item.findViewById(R.id.view_exercise_set_reps);
             TextView setNumberET = (TextView) item.findViewById(R.id.view_exercise_set_number);
 
+            weightMax = Integer.valueOf(String.valueOf(setWeightET.getText()));
             exerciseSet.setWeight((Integer.valueOf(setWeightET.getText().toString())));
             exerciseSet.setReps(Integer.valueOf(setRepsET.getText().toString()));
             exercises.add(exerciseSet);
+
+
 
             if (set.length() != 0) {
                 set = set.concat("\n");
@@ -245,8 +253,50 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
             exerciseSet.setParameters(set);
             Log.d(TAG, "updateExercise: " + exerciseSet.toString());
 
-        }
+            if(weightMaxTemp > weightMax){
+                weightMax = weightMaxTemp;
+            }
 
+            if (weightMax > 150){
+                isCalled = true;
+            }
+            weightMaxTemp = weightMax;
+        }
+        return isCalled;
+//        saveExercise();
+    }
+
+    private void alertPopup(){
+        boolean didPopUp = true;
+        AlertDialog.Builder builder = new AlertDialog.Builder(ExerciseActivity.this);
+
+
+        builder.setCancelable(true);
+        builder.setTitle("WARNING, RECOMMENDED WEIGHT LIMIT EXCEEDED");
+        builder.setMessage("Are you sure you want to log this weight?");
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                saveExercise();
+             //   dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    private void saveExercise(){
+        saveNewExerciseSet();
+        Intent intent = new Intent(this, ExerciseLogListActivity.class);
+        intent.putExtra("selected_item", mInitialLogItem);
+        startActivity(intent);
     }
 
     private void updateExerciseSet(){
@@ -319,11 +369,16 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
                 removeExerciseSet(position);
             }
             case R.id.toolbar_check: {
-                updateExercise();
-                saveNewExerciseSet();
-                Intent intent = new Intent(this, ExerciseLogListActivity.class);
-                intent.putExtra("selected_item", mInitialLogItem);
-                startActivity(intent);
+                   if (updateExercise()){
+                       alertPopup();
+                   } else {
+                       saveExercise();
+                   }
+//                    saveExercise();
+//                    saveNewExerciseSet();
+//                    Intent intent = new Intent(this, ExerciseLogListActivity.class);
+//                    intent.putExtra("selected_item", mInitialLogItem);
+//                    startActivity(intent);
                 break;
             }
         }
