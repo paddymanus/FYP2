@@ -188,8 +188,7 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
                 mSets.get(i).set_setReps(0);
             }
             Log.d(TAG, "getIncomingIntent: " + mSets.toString());
-            Toast toast = Toast.makeText(getApplicationContext(), "message" + mSets, Toast.LENGTH_LONG);
-            toast.show();
+
         }
     }
 
@@ -249,7 +248,6 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
             volume += exerciseSet.getWeight() * exerciseSet.getReps();
 
             exerciseSet.setVolume(volume);
-         //   exerciseSet.setOnerepmax(max);
             exerciseSet.setParameters(set);
             Log.d(TAG, "updateExercise: " + exerciseSet.toString());
 
