@@ -20,11 +20,6 @@ public interface ExerciseSetDao {
     @Query("SELECT * FROM ExerciseSet")
     LiveData<List<ExerciseSet>> getExerciseSets();
 
-    @Query("SELECT * FROM ExerciseSet " +
-            "INNER JOIN LogItem ON ExerciseSet.workout_id LIKE LogItem.title " +
-    "WHERE LogItem.title = :title")
-    List<ExerciseSet> getMatchingExerciseSets(String title);
-
     @Query("SELECT * FROM ExerciseSet WHERE workout_id LIKE :workoutid")
     LiveData<List<ExerciseSet>> getWorkoutId1(int workoutid);
 

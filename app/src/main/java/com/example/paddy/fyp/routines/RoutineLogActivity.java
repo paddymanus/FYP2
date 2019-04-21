@@ -20,11 +20,13 @@ import com.example.paddy.fyp.R;
 import com.example.paddy.fyp.adapters.ExerciseSetRecyclerAdapter;
 import com.example.paddy.fyp.adapters.LogItemRecyclerAdapter;
 import com.example.paddy.fyp.home.HomeActivity;
+import com.example.paddy.fyp.models.Exercise;
 import com.example.paddy.fyp.models.ExerciseSet;
 import com.example.paddy.fyp.models.LogItem;
 import com.example.paddy.fyp.models.RoutineHome;
 import com.example.paddy.fyp.persistence.ExerciseSetRepository;
 import com.example.paddy.fyp.persistence.LogItemRepository;
+import com.example.paddy.fyp.persistence.RoutineRepository;
 import com.example.paddy.fyp.utils.UtilityDate;
 
 import java.util.ArrayList;
@@ -48,12 +50,15 @@ public class RoutineLogActivity extends AppCompatActivity implements
     private ArrayList<ExerciseSet> mSets = new ArrayList<>();
     private ExerciseSetRecyclerAdapter mExerciseSetRecyclerAdapter;
     private ExerciseSetRepository mExerciseSetRepository;
-    private boolean mIsNewLogItem;
+    private Exercise mExercise;
+    private boolean mIsNewRoutineItem;
     private LogItem mInitialLogItem;
     private LogItem mFinalLogItem;
     private ExerciseSet mExerciseSet;
     private RoutineHome mRoutineHome;
+    private RoutineHome mFinalRoutine;
     private LogItemRepository mLogItemRepository;
+    private RoutineRepository mRoutineRepository;
 
 
     @Override
@@ -66,10 +71,30 @@ public class RoutineLogActivity extends AppCompatActivity implements
         mBackPressed = findViewById(R.id.toolbar_back_arrow_exercise);
         mStart = findViewById(R.id.note_text_start);
         mExerciseSetRepository = new ExerciseSetRepository(this);
-        mLogItemRepository = new LogItemRepository(this);
+        mRoutineRepository = new RoutineRepository(this);
 
         if(getIntent().hasExtra("selected_routine_item")){
             mRoutineHome = getIntent().getParcelableExtra("selected_routine_item");
+            Log.d(TAG, "onCreate: " + mRoutineHome);
+        }
+
+        if(getIntent().hasExtra("selected_exercise")){
+            mExercise = getIntent().getParcelableExtra("selected_exercise");
+            Log.d(TAG, "onCreate: " + mExercise);
+        }
+
+        if(getIntent().hasExtra("selected_routine")) {
+            int intValue = getIntent().getExtras().getInt("selected_routine");
+            Log.d(TAG, "onCreate: " + intValue);
+        }
+
+        if(getIncomingIntent()){
+            // this is a new log item
+            setNewLogItemProperties();
+        }
+        else{
+            // this is NOT a new log item
+            setLogItemProperties();
         }
 
         initRecyclerView();
@@ -77,84 +102,66 @@ public class RoutineLogActivity extends AppCompatActivity implements
         setListeners();
     }
 
-//    private boolean getIncomingIntent(){
-//        if(getIntent().hasExtra("selected_item")){
-//            mInitialLogItem = getIntent().getParcelableExtra("selected_item");
-//            mFinalLogItem = getIntent().getParcelableExtra("selected_item");
-//            Log.d(TAG, "getIncomingIntent: " + mInitialLogItem.toString());
+    private boolean getIncomingIntent(){
+        if(getIntent().hasExtra("selected_routine_item")){
+            mRoutineHome = getIntent().getParcelableExtra("selected_routine_item");
+            Log.d(TAG, "getIncomingIntent: " + mRoutineHome.toString());
+
+            mIsNewRoutineItem = false;
+            return false;
+        }
+        mIsNewRoutineItem = true;
+        return true;
+    }
 //
-//            mIsNewLogItem = false;
-//            return false;
-//        }
-//        mIsNewLogItem = true;
-//        return true;
-//    }
-//
-//    private void checkIfNew(){
-//        if(getIncomingIntent()){
-//            isLogNotNull();
-//        }
-//        else {
-//            mFinalLogItem = getIntent().getParcelableExtra("selected_item");
-//        }
-//    }
+    private void checkIfNew(){
+        if(getIncomingIntent()){
+            isLogNotNull();
+        }
+        else {
+            mFinalLogItem = getIntent().getParcelableExtra("selected_item");
+        }
+    }
 
 
-//    private void saveChanges(){
-//        if(mIsNewLogItem){
-//            saveNewLogItem();
-//        }
-//        else{
-//
-//        }
-//    }
-//
-//    private void saveNewLogItem(){
-//        mLogItemRepository.insertLogItemTask(mFinalLogItem);
-//    }
-//
-//    private void setLogItemProperties(){
-//        mEditTitle.setText(mInitialLogItem.getTitle());
-//    }
-//
-//    private void getExercises(){
-//
-//    }
+    private void saveChanges(){
+        if(mIsNewRoutineItem){
+            saveNewRoutineItem();
+        }
+        else{
 
-//    private void isLogNotNull() {
-//        LinearLayoutManager layoutManager = ((LinearLayoutManager) mRecyclerView.getLayoutManager());
-//        int fvPosition = layoutManager.findFirstVisibleItemPosition();
-//        int lvPosition = layoutManager.findLastVisibleItemPosition();
+        }
+    }
 //
-//        String temp = mEditTitle.getText().toString();
-//        temp = temp.replace("\n", "");
-//        temp = temp.replace(" ", "");
-//        if (temp.length() > 0) {
-//            int intValue = getIntent().getExtras().getInt("selected_log");
-//            Log.d(TAG, "isLogNotNull: " + intValue);
-//          //  logID = count.incrementAndGet();
-//            mFinalLogItem.setId(intValue);
-//            mFinalLogItem.setTitle(mEditTitle.getText().toString());
-//            String content = "Bench Press, Shoulder Press, Dumbell Flies, Laterial Raises";
-//            String timestamp = UtilityDate.getCurrentTimeStamp();
-//            mFinalLogItem.setContent(content);
-//            mFinalLogItem.setTimestamp(timestamp);
-//            Log.d(TAG, "isLogNotNull: " + mFinalLogItem);
+    private void saveNewRoutineItem(){
+        mRoutineRepository.insertRoutineTask(mFinalRoutine);
+    }
 //
-////            for (int i = 0; i <= lvPosition - fvPosition; i++){
-////
-////            }
-//        }
-//    }
+    private void setLogItemProperties(){
+        mEditTitle.setText(mRoutineHome.getTitle());
+    }
+    
+
+    private void isLogNotNull() {
+        mFinalRoutine = new RoutineHome();
+        String temp = mEditTitle.getText().toString();
+        temp = temp.replace("\n", "");
+        temp = temp.replace(" ", "");
+        if (temp.length() > 0) {
+            int intValue = getIntent().getExtras().getInt("selected_routine");
+            mFinalRoutine.setId(intValue);
+            mFinalRoutine.setTitle(mEditTitle.getText().toString());
+        }
+    }
 //
-//    private void setNewLogItemProperties(){
-//        mEditTitle.setText("");
-//
-//        mInitialLogItem = new LogItem();
-//        mFinalLogItem = new LogItem();
-//        mInitialLogItem.setTitle("");
-//        mFinalLogItem.setTitle("");
-//    }
+    private void setNewLogItemProperties(){
+        mEditTitle.setText("");
+
+        mRoutineHome = new RoutineHome();
+        mFinalRoutine = new RoutineHome();
+        mFinalRoutine.setTitle("");
+        mRoutineHome.setTitle("");
+    }
 
 
 //    private void retrieveSete1(){
@@ -195,8 +202,8 @@ public class RoutineLogActivity extends AppCompatActivity implements
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.add_exercise_button:{
-//                checkIfNew();
-//                saveChanges();
+                checkIfNew();
+                saveChanges();
                 Intent intent = new Intent(this, RoutinesAddExerciseActivity.class);
                 intent.putExtra("selected_item1", mFinalLogItem);
                 startActivity(intent);
@@ -204,7 +211,7 @@ public class RoutineLogActivity extends AppCompatActivity implements
                 break;
             }
             case R.id.toolbar_back_arrow_exercise:{
-                Intent intent = new Intent(this, HomeActivity.class);
+                Intent intent = new Intent(this, RoutinesActivity.class);
                 startActivity(intent);
                 break;
             }

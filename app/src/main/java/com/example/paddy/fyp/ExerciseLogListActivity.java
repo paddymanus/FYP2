@@ -54,10 +54,6 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
     private LogItem mFinalLogItem;
     private ExerciseSet mExerciseSet;
     private LogItemRepository mLogItemRepository;
-    private static final AtomicInteger count = new AtomicInteger(0);
-    private int logID, lvPosition;
-    private int lvPos = 1;
-    private int intValue;
 
 
     @Override

@@ -117,7 +117,7 @@ public class RoutinesAddExerciseActivity extends AppCompatActivity implements
 
     @Override
     public void onExerciseClick(int position) {
-        Intent intent = new Intent(this, ExerciseActivity.class);
+        Intent intent = new Intent(this, RoutineLogActivity.class);
         intent.putExtra("selected_exercise", mExercise.get(position));
         intent.putExtra("selected_item3", mInitialLogItem);
         startActivity(intent);

@@ -1,5 +1,6 @@
 package com.example.paddy.fyp.routines;
 
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,10 +15,12 @@ import android.view.View;
 import com.example.paddy.fyp.R;
 import com.example.paddy.fyp.adapters.RoutinesHomeRecyclerAdapter;
 import com.example.paddy.fyp.models.RoutineHome;
+import com.example.paddy.fyp.persistence.RoutineRepository;
 import com.example.paddy.fyp.utils.BottomNavigationViewHelper;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RoutinesActivity extends AppCompatActivity implements RoutinesHomeRecyclerAdapter.OnRoutineHomeListener, View.OnClickListener {
     private static final String TAG = "RoutinesActivity";
@@ -29,6 +32,7 @@ public class RoutinesActivity extends AppCompatActivity implements RoutinesHomeR
     private Context mContext = RoutinesActivity.this;
     private ArrayList<RoutineHome> mRoutineHome = new ArrayList<>();
     private RoutinesHomeRecyclerAdapter mRoutinesHomeRecyclerAdapter;
+    private RoutineRepository mRoutineRepository;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,10 +40,14 @@ public class RoutinesActivity extends AppCompatActivity implements RoutinesHomeR
         setContentView(R.layout.activity_routines);
         Log.d(TAG, "onCreate: started");
         mRecyclerView = findViewById(R.id.rvRoutinesHome);
+        mRoutineRepository = new RoutineRepository(this);
+
+        findViewById(R.id.fab).setOnClickListener(this);
 
         setupBottomNavigationView();
         initRecyclerView();
-        insertRoutines();
+        retrieveRoutineItems();
+       // insertRoutines();
     }
 
     private void insertRoutines(){
@@ -52,6 +60,21 @@ public class RoutinesActivity extends AppCompatActivity implements RoutinesHomeR
         mRoutineHome.add(routineHome2);
         mRoutineHome.add(routineHome3);
         mRoutinesHomeRecyclerAdapter.notifyDataSetChanged();
+    }
+
+    private void retrieveRoutineItems(){
+        mRoutineRepository.retrieveRoutineTask().observe(this, new Observer<List<RoutineHome>>() {
+            @Override
+            public void onChanged(@Nullable List<RoutineHome> routineHomes) {
+                if(mRoutineHome.size() > 0){
+                    mRoutineHome.clear();
+                }
+                if(routineHomes != null){
+                    mRoutineHome.addAll(routineHomes);
+                }
+                mRoutinesHomeRecyclerAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
 
