@@ -19,13 +19,16 @@ import com.example.paddy.fyp.MainActivity;
 import com.example.paddy.fyp.R;
 import com.example.paddy.fyp.adapters.ExerciseSetRecyclerAdapter;
 import com.example.paddy.fyp.adapters.LogItemRecyclerAdapter;
+import com.example.paddy.fyp.adapters.RoutineExerciseRecyclerAdapter;
 import com.example.paddy.fyp.home.HomeActivity;
 import com.example.paddy.fyp.models.Exercise;
 import com.example.paddy.fyp.models.ExerciseSet;
 import com.example.paddy.fyp.models.LogItem;
+import com.example.paddy.fyp.models.RoutineExercise;
 import com.example.paddy.fyp.models.RoutineHome;
 import com.example.paddy.fyp.persistence.ExerciseSetRepository;
 import com.example.paddy.fyp.persistence.LogItemRepository;
+import com.example.paddy.fyp.persistence.RoutineExerciseRepository;
 import com.example.paddy.fyp.persistence.RoutineRepository;
 import com.example.paddy.fyp.utils.UtilityDate;
 
@@ -35,7 +38,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class RoutineLogActivity extends AppCompatActivity implements
-        View.OnClickListener, ExerciseSetRecyclerAdapter.onExerciseSetListener{
+        View.OnClickListener, RoutineExerciseRecyclerAdapter.OnRoutineExerciseListener{
 
     private static final String TAG = "ExerciseLogListActivity";
 
@@ -48,7 +51,9 @@ public class RoutineLogActivity extends AppCompatActivity implements
 
     // vars
     private ArrayList<ExerciseSet> mSets = new ArrayList<>();
+    private ArrayList<RoutineExercise> mRoutineExercise = new ArrayList<>();
     private ExerciseSetRecyclerAdapter mExerciseSetRecyclerAdapter;
+    private RoutineExerciseRecyclerAdapter mRoutineExerciseRecyclerAdapter;
     private ExerciseSetRepository mExerciseSetRepository;
     private Exercise mExercise;
     private boolean mIsNewRoutineItem;
@@ -59,6 +64,7 @@ public class RoutineLogActivity extends AppCompatActivity implements
     private RoutineHome mFinalRoutine;
     private LogItemRepository mLogItemRepository;
     private RoutineRepository mRoutineRepository;
+    private RoutineExerciseRepository mRoutineExerciseRepository;
 
 
     @Override
@@ -71,7 +77,9 @@ public class RoutineLogActivity extends AppCompatActivity implements
         mBackPressed = findViewById(R.id.toolbar_back_arrow_exercise);
         mStart = findViewById(R.id.note_text_start);
         mExerciseSetRepository = new ExerciseSetRepository(this);
+
         mRoutineRepository = new RoutineRepository(this);
+        mRoutineExerciseRepository = new RoutineExerciseRepository(this);
 
         if(getIntent().hasExtra("selected_routine_item")){
             mRoutineHome = getIntent().getParcelableExtra("selected_routine_item");
@@ -98,7 +106,7 @@ public class RoutineLogActivity extends AppCompatActivity implements
         }
 
         initRecyclerView();
-//        retrieveSete1();
+        retrieveSete1();
         setListeners();
     }
 
@@ -140,7 +148,7 @@ public class RoutineLogActivity extends AppCompatActivity implements
     private void setLogItemProperties(){
         mEditTitle.setText(mRoutineHome.getTitle());
     }
-    
+
 
     private void isLogNotNull() {
         mFinalRoutine = new RoutineHome();
@@ -164,20 +172,20 @@ public class RoutineLogActivity extends AppCompatActivity implements
     }
 
 
-//    private void retrieveSete1(){
-//        mExerciseSetRepository.retrieveSet1(mInitialLogItem.getId()).observe(this, new Observer<List<ExerciseSet>>() {
-//            @Override
-//            public void onChanged(@Nullable List<ExerciseSet> exerciseSets) {
-//                if(mSets.size() > 0){
-//                    mSets.clear();
-//                }
-//                if(exerciseSets != null){
-//                    mSets.addAll(exerciseSets);
-//                }
-//                mExerciseSetRecyclerAdapter.notifyDataSetChanged();
-//            }
-//        });
-//    }
+    private void retrieveSete1(){
+        mRoutineExerciseRepository.retrieveMatchingExerciseTask(mRoutineHome.getId()).observe(this, new Observer<List<RoutineExercise>>() {
+            @Override
+            public void onChanged(@Nullable List<RoutineExercise> routineExercises) {
+                if(mRoutineExercise.size() > 0){
+                    mRoutineExercise.clear();
+                }
+                if(routineExercises != null){
+                    mRoutineExercise.addAll(routineExercises);
+                }
+                mRoutineExerciseRecyclerAdapter.notifyDataSetChanged();
+            }
+        });
+    }
 
 
 
@@ -185,8 +193,8 @@ public class RoutineLogActivity extends AppCompatActivity implements
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
-        mExerciseSetRecyclerAdapter = new ExerciseSetRecyclerAdapter(mSets, this);
-        mRecyclerView.setAdapter(mExerciseSetRecyclerAdapter);
+        mRoutineExerciseRecyclerAdapter = new RoutineExerciseRecyclerAdapter(mRoutineExercise, this);
+        mRecyclerView.setAdapter(mRoutineExerciseRecyclerAdapter);
     }
 
 
@@ -205,7 +213,7 @@ public class RoutineLogActivity extends AppCompatActivity implements
                 checkIfNew();
                 saveChanges();
                 Intent intent = new Intent(this, RoutinesAddExerciseActivity.class);
-                intent.putExtra("selected_item1", mFinalLogItem);
+                intent.putExtra("selected_routine_home", mRoutineHome);
                 startActivity(intent);
                 Log.d(TAG, "onClick: " + mFinalLogItem);
                 break;
@@ -224,10 +232,7 @@ public class RoutineLogActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void onExerciseSetClick(int position) {
-        Log.d(TAG, "onExerciseSetClick: " + position);
-    }
+
 
     private void deleteExercise(ExerciseSet exerciseSet){
         mSets.remove(exerciseSet);
@@ -247,4 +252,9 @@ public class RoutineLogActivity extends AppCompatActivity implements
             deleteExercise(mSets.get(viewHolder.getAdapterPosition()));
         }
     };
+
+    @Override
+    public void onRoutineExerciseClick(int position) {
+
+    }
 }

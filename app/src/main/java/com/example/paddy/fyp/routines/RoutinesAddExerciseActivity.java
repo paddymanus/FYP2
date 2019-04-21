@@ -19,7 +19,10 @@ import com.example.paddy.fyp.adapters.ExerciseRecyclerAdapter;
 import com.example.paddy.fyp.home.HomeActivity;
 import com.example.paddy.fyp.models.Exercise;
 import com.example.paddy.fyp.models.LogItem;
+import com.example.paddy.fyp.models.RoutineExercise;
+import com.example.paddy.fyp.models.RoutineHome;
 import com.example.paddy.fyp.persistence.ExerciseRepository;
+import com.example.paddy.fyp.persistence.RoutineExerciseRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +41,8 @@ public class RoutinesAddExerciseActivity extends AppCompatActivity implements
     private ArrayList<Exercise> mExercise = new ArrayList<>();
     private ExerciseRecyclerAdapter mExerciseRecyclerAdapter;
     private ExerciseRepository mExerciseRepository;
+    private RoutineExerciseRepository mRoutineExerciseRepository;
+    private RoutineHome mRoutineHome;
     private boolean mIsNewLogItem;
     private LogItem mInitialLogItem;
 
@@ -52,11 +57,17 @@ public class RoutinesAddExerciseActivity extends AppCompatActivity implements
         mBackButton = findViewById(R.id.toolbar_back_arrow_select_exercise);
 
         mExerciseRepository = new ExerciseRepository(this);
+        mRoutineExerciseRepository = new RoutineExerciseRepository(this);
 
 //        if(getIntent().hasExtra("selected_item1")){
 //            LogItem logItem1 = getIntent().getParcelableExtra("selected_item1");
 //            Log.d(TAG, "onCreateOne: " + logItem1.toString());
 //        }
+
+        if(getIntent().hasExtra("selected_routine_home")){
+            mRoutineHome = getIntent().getParcelableExtra("selected_routine_home");
+            Log.d(TAG, "onCreateExerciseSet: " + mRoutineHome.toString());
+        }
 
 
 //        getIncomingIntent();
@@ -117,6 +128,15 @@ public class RoutinesAddExerciseActivity extends AppCompatActivity implements
 
     @Override
     public void onExerciseClick(int position) {
+        if(getIntent().hasExtra("selected_routine_home")){
+            mRoutineHome = getIntent().getParcelableExtra("selected_routine_home");
+            Log.d(TAG, "onCreateExerciseSetFour: " + mRoutineHome.toString());
+        }
+        RoutineExercise mFinalExercise = new RoutineExercise();
+        mFinalExercise.setName(mExercise.get(position).getName());
+        mFinalExercise.setCategory(mExercise.get(position).getCategory());
+        mFinalExercise.setLogId(mRoutineHome.getId());
+        mRoutineExerciseRepository.insertExerciseTask(mFinalExercise);
         Intent intent = new Intent(this, RoutineLogActivity.class);
         intent.putExtra("selected_exercise", mExercise.get(position));
         intent.putExtra("selected_item3", mInitialLogItem);
