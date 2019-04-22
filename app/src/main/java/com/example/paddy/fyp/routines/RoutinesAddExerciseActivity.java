@@ -31,7 +31,7 @@ public class RoutinesAddExerciseActivity extends AppCompatActivity implements
         ExerciseRecyclerAdapter.OnExerciseListener,
         View.OnClickListener{
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "RoutineAddExerciseActivity";
 
     // UI components
     private RecyclerView mRecyclerView;
@@ -140,6 +140,7 @@ public class RoutinesAddExerciseActivity extends AppCompatActivity implements
         Intent intent = new Intent(this, RoutineLogActivity.class);
         intent.putExtra("selected_exercise", mExercise.get(position));
         intent.putExtra("selected_item3", mInitialLogItem);
+        intent.putExtra("selected_routine_item", mRoutineHome);
         startActivity(intent);
     }
 
@@ -147,13 +148,14 @@ public class RoutinesAddExerciseActivity extends AppCompatActivity implements
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.toolbar_add:{
-                Intent intent = new Intent(this, NewExerciseActivity.class);
-                intent.putExtra("selected_item2", mInitialLogItem);
+                Intent intent = new Intent(this, RoutineNewExerciseActivity.class);
+                intent.putExtra("selected_routine_item", mRoutineHome);
                 startActivity(intent);
                 break;
             }
             case R.id.toolbar_back_arrow_select_exercise:{
                 Intent intent = new Intent(this, RoutineLogActivity.class);
+                intent.putExtra("selected_routine_item", mRoutineHome);
                 startActivity(intent);
                 break;
             }

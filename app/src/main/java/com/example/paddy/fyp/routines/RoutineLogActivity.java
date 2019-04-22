@@ -40,7 +40,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class RoutineLogActivity extends AppCompatActivity implements
         View.OnClickListener, RoutineExerciseRecyclerAdapter.OnRoutineExerciseListener{
 
-    private static final String TAG = "ExerciseLogListActivity";
+    private static final String TAG = "RoutineLogActivity";
 
     // UI Components
     private RecyclerView mRecyclerView;
@@ -127,7 +127,7 @@ public class RoutineLogActivity extends AppCompatActivity implements
             isLogNotNull();
         }
         else {
-            mFinalLogItem = getIntent().getParcelableExtra("selected_item");
+            mFinalRoutine = getIntent().getParcelableExtra("selected_routine_item");
         }
     }
 
@@ -213,9 +213,9 @@ public class RoutineLogActivity extends AppCompatActivity implements
                 checkIfNew();
                 saveChanges();
                 Intent intent = new Intent(this, RoutinesAddExerciseActivity.class);
-                intent.putExtra("selected_routine_home", mRoutineHome);
+                intent.putExtra("selected_routine_home", mFinalRoutine);
                 startActivity(intent);
-                Log.d(TAG, "onClick: " + mFinalLogItem);
+                Log.d(TAG, "onClick: " + mFinalRoutine);
                 break;
             }
             case R.id.toolbar_back_arrow_exercise:{
@@ -234,11 +234,11 @@ public class RoutineLogActivity extends AppCompatActivity implements
 
 
 
-    private void deleteExercise(ExerciseSet exerciseSet){
-        mSets.remove(exerciseSet);
-        mExerciseSetRecyclerAdapter.notifyDataSetChanged();
+    private void deleteRoutineExercise(RoutineExercise routineExercise){
+        mRoutineExercise.remove(routineExercise);
+        mRoutineExerciseRecyclerAdapter.notifyDataSetChanged();
 
-        mExerciseSetRepository.deleteSet(exerciseSet);
+        mRoutineExerciseRepository.deleteRoutineExercise(routineExercise);
     }
 
     ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
@@ -249,7 +249,7 @@ public class RoutineLogActivity extends AppCompatActivity implements
 
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-            deleteExercise(mSets.get(viewHolder.getAdapterPosition()));
+            deleteRoutineExercise(mRoutineExercise.get(viewHolder.getAdapterPosition()));
         }
     };
 

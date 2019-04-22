@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.content.Context;
 
 import com.example.paddy.fyp.async.DeleteExerciseAsyncTask;
+import com.example.paddy.fyp.async.DeleteRoutineExerciseAsyncTask;
 import com.example.paddy.fyp.async.InsertExerciseAsyncTask;
 import com.example.paddy.fyp.async.InsertRoutineAsyncTask;
 import com.example.paddy.fyp.async.InsertRoutineExerciseAsyncTask;
@@ -41,7 +42,7 @@ public class RoutineExerciseRepository {
 //        return mExerciseDatabase.getExerciseDao().getExerciseStat(category);
 //    }
 //
-//    public void deleteExercise(Exercise exercise){
-//        new DeleteExerciseAsyncTask(mExerciseDatabase.getExerciseDao()).execute(exercise);
-//    }
+    public void deleteRoutineExercise(RoutineExercise routineExercise){
+        new DeleteRoutineExerciseAsyncTask(mRoutineExerciseDatabase.getRoutineExerciseDao()).execute(routineExercise);
+    }
 }
