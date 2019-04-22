@@ -38,12 +38,12 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class RoutineLogActivity extends AppCompatActivity implements
-        View.OnClickListener, RoutineExerciseRecyclerAdapter.OnRoutineExerciseListener{
+        View.OnClickListener, RoutineExerciseRecyclerAdapter.OnRoutineExerciseListener, LogItemRecyclerAdapter.OnLogItemListener{
 
     private static final String TAG = "RoutineLogActivity";
 
     // UI Components
-    private RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView, mRecyclerView2;
     private EditText mEditTitle;
     private Button mButton;
     private ImageButton mBackPressed;
@@ -51,8 +51,10 @@ public class RoutineLogActivity extends AppCompatActivity implements
 
     // vars
     private ArrayList<ExerciseSet> mSets = new ArrayList<>();
+    private ArrayList<LogItem> mLogItems = new ArrayList<>();
     private ArrayList<RoutineExercise> mRoutineExercise = new ArrayList<>();
     private ExerciseSetRecyclerAdapter mExerciseSetRecyclerAdapter;
+    private LogItemRecyclerAdapter mLogItemRecyclerAdapter;
     private RoutineExerciseRecyclerAdapter mRoutineExerciseRecyclerAdapter;
     private ExerciseSetRepository mExerciseSetRepository;
     private Exercise mExercise;
@@ -67,16 +69,19 @@ public class RoutineLogActivity extends AppCompatActivity implements
     private RoutineExerciseRepository mRoutineExerciseRepository;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routine_workout);
         mRecyclerView = findViewById(R.id.rvRoutineLog);
+        mRecyclerView2 = findViewById(R.id.rvLogItem);
         mEditTitle = findViewById(R.id.name_edit_text);
         mButton = findViewById(R.id.add_exercise_button);
         mBackPressed = findViewById(R.id.toolbar_back_arrow_exercise);
         mStart = findViewById(R.id.note_text_start);
         mExerciseSetRepository = new ExerciseSetRepository(this);
+        mLogItemRepository = new LogItemRepository(this);
 
         mRoutineRepository = new RoutineRepository(this);
         mRoutineExerciseRepository = new RoutineExerciseRepository(this);
@@ -106,7 +111,9 @@ public class RoutineLogActivity extends AppCompatActivity implements
         }
 
         initRecyclerView();
+        initRecyclerView2();
         retrieveSete1();
+        retrieveLogItems();
         setListeners();
     }
 
@@ -173,6 +180,9 @@ public class RoutineLogActivity extends AppCompatActivity implements
 
 
     private void retrieveSete1(){
+        if(getIntent().hasExtra("selected_routine_item")) {
+            mRoutineHome = getIntent().getParcelableExtra("selected_routine_item");
+        }
         mRoutineExerciseRepository.retrieveMatchingExerciseTask(mRoutineHome.getId()).observe(this, new Observer<List<RoutineExercise>>() {
             @Override
             public void onChanged(@Nullable List<RoutineExercise> routineExercises) {
@@ -187,6 +197,21 @@ public class RoutineLogActivity extends AppCompatActivity implements
         });
     }
 
+    private void retrieveLogItems(){
+        mLogItemRepository.retrieveLogItemTask().observe(this, new Observer<List<LogItem>>() {
+            @Override
+            public void onChanged(@Nullable List<LogItem> logItems) {
+                if(mLogItems.size() > 0){
+                    mLogItems.clear();
+                }
+                if(logItems != null){
+                    mLogItems.addAll(logItems);
+                }
+                mLogItemRecyclerAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
 
 
     private void initRecyclerView(){
@@ -195,6 +220,16 @@ public class RoutineLogActivity extends AppCompatActivity implements
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
         mRoutineExerciseRecyclerAdapter = new RoutineExerciseRecyclerAdapter(mRoutineExercise, this);
         mRecyclerView.setAdapter(mRoutineExerciseRecyclerAdapter);
+    }
+
+    private void initRecyclerView2(){
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setReverseLayout(true);
+        mRecyclerView2.setLayoutManager(linearLayoutManager);
+        mLogItemRecyclerAdapter = new LogItemRecyclerAdapter(mLogItems, this);
+        mRecyclerView2.setAdapter(mLogItemRecyclerAdapter);
+        mRecyclerView2.setVisibility(View.GONE);
+        Log.d(TAG, "initRecyclerView: " + mLogItems.size());
     }
 
 
@@ -224,9 +259,12 @@ public class RoutineLogActivity extends AppCompatActivity implements
                 break;
             }
             case R.id.note_text_start:{
-//                isLogNotNull();
-//                saveChanges();
-                Intent intent = new Intent(this, HomeActivity.class);
+                isLogNotNull();
+                saveChanges();
+                Intent intent = new Intent(this, RoutineExerciseLogListActivity.class);
+                intent.putExtra("selected_log", mLogItems.size() + 1);
+                intent.putExtra("selected_routine_home", mFinalRoutine);
+                intent.putParcelableArrayListExtra("selected_routine_log", mRoutineExercise);
                 startActivity(intent);
             }
         }
@@ -255,6 +293,11 @@ public class RoutineLogActivity extends AppCompatActivity implements
 
     @Override
     public void onRoutineExerciseClick(int position) {
+
+    }
+
+    @Override
+    public void onLogItemClick(int position) {
 
     }
 }

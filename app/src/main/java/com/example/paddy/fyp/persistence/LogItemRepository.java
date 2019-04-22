@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.content.Context;
 
 import com.example.paddy.fyp.async.InsertLogItemAsyncTask;
+import com.example.paddy.fyp.async.UpdateLogItemAsyncTask;
 import com.example.paddy.fyp.models.LogItem;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class LogItemRepository {
     }
 
     public void updateLogItemTask(LogItem logItem){
-
+        new UpdateLogItemAsyncTask(mLogItemDatabase.getLogItemsDao()).execute(logItem);
     }
 
     public LiveData<List<LogItem>> retrieveLogItemTask(){

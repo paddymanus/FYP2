@@ -94,6 +94,7 @@ public class HomeActivity extends AppCompatActivity implements LogItemRecyclerAd
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mLogItemRecyclerAdapter = new LogItemRecyclerAdapter(mLogItems, this);
         mRecyclerView.setAdapter(mLogItemRecyclerAdapter);
+        Log.d(TAG, "initRecyclerView: " + mLogItems.size());
     }
 
     private void setId(){
