@@ -89,8 +89,10 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
         retrieveSete1();
       //  retrieveSetByName();
         setListeners();
-        int intValueHere = getIntent().getExtras().getInt("selected_log");
-        Log.d(TAG, "onCreate: " + intValueHere);
+        if(getIntent().hasExtra("selected_log")) {
+            int intValueHere = getIntent().getExtras().getInt("selected_log");
+            Log.d(TAG, "onCreate: " + intValueHere);
+        }
     }
 
     private boolean getIncomingIntent(){
