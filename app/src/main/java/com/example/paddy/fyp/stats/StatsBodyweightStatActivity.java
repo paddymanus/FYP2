@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.paddy.fyp.R;
 import com.example.paddy.fyp.models.Bodyweight;
 import com.example.paddy.fyp.persistence.BodyweightRepository;
+import com.example.paddy.fyp.utils.UtilityDate;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
@@ -42,7 +43,6 @@ public class StatsBodyweightStatActivity extends AppCompatActivity implements Vi
     private BodyweightRepository mBodyweightRepository;
     ArrayList<Entry> yValues = new ArrayList<>();
     ArrayList<String> xValues = new ArrayList<String>();
-    ArrayList<String> xStringValues = new ArrayList<>();
     XAxis xAxis;
 
     @Override
@@ -84,9 +84,16 @@ public class StatsBodyweightStatActivity extends AppCompatActivity implements Vi
                     for(int i = 0; i < bodyweights.size(); i++){
                         int weight = bodyweights.get(i).getWeight();
                         String timestamp = bodyweights.get(i).getTimestamp();
-                        Log.d(TAG, "onChanged: " + timestamp);
-                        xValues.add(i,timestamp);
+                        int pos1 = timestamp.indexOf("-");
+                        String month = timestamp.substring(pos1 + 1);
+                        String date = timestamp.substring(0, 3);
+                        String time = UtilityDate.getMonthFromNumber(month);
+                        String finalTimestamp = date + time;
+                        Log.d(TAG, "onChanged: " + finalTimestamp);
                         yValues.add(new Entry(i, weight));
+                        xValues.add(i, finalTimestamp);
+                        Log.d(TAG, "onChanged: " + yValues + xValues);
+
 
                         xAxis = lineChart.getXAxis();
                         xAxis.setTextColor(Color.BLACK);
@@ -94,22 +101,22 @@ public class StatsBodyweightStatActivity extends AppCompatActivity implements Vi
                         xAxis.setDrawGridLines(false);
                         xAxis.isCenterAxisLabelsEnabled();
                         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-                        xAxis.setValueFormatter(new IndexAxisValueFormatter(xValues) {
-                            @Override
-                            public String getFormattedValue(float value, AxisBase axis) {
-                                return xValues.get((int) value);
-                            }
-                        });
+                        xAxis.setValueFormatter(new IndexAxisValueFormatter(xValues));
+                        xAxis.setGranularity(1f);
                     }
                 }
-                LineDataSet set1 = new LineDataSet(yValues, "Weight KG");
+                LineDataSet set1 = new LineDataSet(yValues, "");
 
                 set1.setFillAlpha(150);
                 set1.setColor(Color.RED);
                 set1.setLineWidth(2f);
-                //set1.setDrawFilled(true);
-                //set1.setFillColor(Color.CYAN);
+                set1.setDrawFilled(true);
+                set1.setFillColor(Color.parseColor("#FF8282"));
+                set1.setHighLightColor(Color.BLACK);
+                set1.setHighlightEnabled(true);
                 set1.setValueTextSize(15f);
+
+                xAxis.isCenterAxisLabelsEnabled();
 
 
                 ArrayList<ILineDataSet> dataSets = new ArrayList<>();

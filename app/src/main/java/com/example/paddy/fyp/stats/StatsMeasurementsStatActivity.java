@@ -19,10 +19,14 @@ import com.example.paddy.fyp.models.Bodyweight;
 import com.example.paddy.fyp.models.Measurement;
 import com.example.paddy.fyp.persistence.BodyweightRepository;
 import com.example.paddy.fyp.persistence.MeasurementRepository;
+import com.example.paddy.fyp.utils.UtilityDate;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
@@ -42,6 +46,8 @@ public class StatsMeasurementsStatActivity extends AppCompatActivity implements 
     private LineChart lineChart;
     private MeasurementRepository mMeasurementRepository;
     ArrayList<Entry> yValues = new ArrayList<>();
+    ArrayList<String> xValues = new ArrayList<String>();
+    XAxis xAxis;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,18 +86,37 @@ public class StatsMeasurementsStatActivity extends AppCompatActivity implements 
                     for(int i = 0; i < measurements.size(); i++){
                         float weight = measurements.get(i).getMeasurement();
                         String timestamp = measurements.get(i).getTimestamp();
+                        int pos1 = timestamp.indexOf("-");
+                        String month = timestamp.substring(pos1 + 1);
+                        String date = timestamp.substring(0, 3);
+                        String time = UtilityDate.getMonthFromNumber(month);
+                        String finalTimestamp = date + time;
                         yValues.add(new Entry(i, weight));
+                        xValues.add(finalTimestamp);
                         Log.d(TAG, "onChanged: " + weight);
                         Log.d(TAG, "onChanged: " + yValues);
+                        Log.d(TAG, "onChanged: " + xValues);
+
                     }
+                    xAxis = lineChart.getXAxis();
+                    xAxis.setTextColor(Color.BLACK);
+                    xAxis.setTextSize(15);
+                    xAxis.setDrawGridLines(false);
+                    xAxis.isCenterAxisLabelsEnabled();
+                    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                    xAxis.setValueFormatter(new IndexAxisValueFormatter(xValues));
+                    xAxis.setGranularity(1f);
                 }
                 LineDataSet set1 = new LineDataSet(yValues, "Weight KG");
 
+
                 set1.setFillAlpha(150);
                 set1.setColor(Color.RED);
-                set1.setLineWidth(3f);
-                //set1.setDrawFilled(true);
-                //set1.setFillColor(Color.CYAN);
+                set1.setLineWidth(2f);
+                set1.setDrawFilled(true);
+                set1.setFillColor(Color.parseColor("#FF8282"));
+                set1.setHighLightColor(Color.BLACK);
+                set1.setHighlightEnabled(true);
                 set1.setValueTextSize(15f);
 
                 ArrayList<ILineDataSet> dataSets = new ArrayList<>();
@@ -127,6 +152,7 @@ public class StatsMeasurementsStatActivity extends AppCompatActivity implements 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         yValues.clear();
+        xValues.clear();
         retrieveBodyweight();
     }
 
