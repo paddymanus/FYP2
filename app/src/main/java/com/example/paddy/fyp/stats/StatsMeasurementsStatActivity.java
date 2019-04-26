@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.paddy.fyp.R;
 import com.example.paddy.fyp.models.Bodyweight;
@@ -22,12 +23,15 @@ import com.example.paddy.fyp.persistence.MeasurementRepository;
 import com.example.paddy.fyp.utils.UtilityDate;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +75,11 @@ public class StatsMeasurementsStatActivity extends AppCompatActivity implements 
         lineChart.setDragEnabled(true);
         lineChart.setScaleEnabled(false);
 
+        Description description = new Description();
+        description.setText(" ");
+        description.setTextSize(15);
+        lineChart.setDescription(description);
+
 
         //retrieveBodyweight();
         setListeners();
@@ -107,11 +116,12 @@ public class StatsMeasurementsStatActivity extends AppCompatActivity implements 
                     xAxis.setValueFormatter(new IndexAxisValueFormatter(xValues));
                     xAxis.setGranularity(1f);
                 }
-                LineDataSet set1 = new LineDataSet(yValues, "Weight KG");
+                LineDataSet set1 = new LineDataSet(yValues, "Inches");
 
 
                 set1.setFillAlpha(150);
                 set1.setColor(Color.RED);
+                set1.setCircleColor(Color.BLACK);
                 set1.setLineWidth(2f);
                 set1.setDrawFilled(true);
                 set1.setFillColor(Color.parseColor("#FF8282"));
@@ -127,6 +137,19 @@ public class StatsMeasurementsStatActivity extends AppCompatActivity implements 
                 lineChart.setData(data);
                 lineChart.notifyDataSetChanged();
                 lineChart.invalidate();
+
+                lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+                    @Override
+                    public void onValueSelected(Entry e, Highlight h) {
+                        float y = e.getY();
+                        Toast.makeText(StatsMeasurementsStatActivity.this, "" + y + " Inches", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onNothingSelected() {
+
+                    }
+                });
             }
         });
     }

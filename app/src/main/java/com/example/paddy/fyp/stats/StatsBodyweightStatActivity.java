@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.paddy.fyp.R;
 import com.example.paddy.fyp.models.Bodyweight;
@@ -25,7 +26,9 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,13 +69,15 @@ public class StatsBodyweightStatActivity extends AppCompatActivity implements Vi
         rightAxis.setTextSize(0);
 
         Description description = new Description();
-        description.setText("Bodyweight over time");
+        description.setText(" ");
         description.setTextSize(15);
         lineChart.setDescription(description);
 
 
         retrieveBodyweight();
         setListeners();
+
+
 
     }
 
@@ -97,7 +102,7 @@ public class StatsBodyweightStatActivity extends AppCompatActivity implements Vi
 
                         xAxis = lineChart.getXAxis();
                         xAxis.setTextColor(Color.BLACK);
-                        xAxis.setTextSize(15);
+                        xAxis.setTextSize(13);
                         xAxis.setDrawGridLines(false);
                         xAxis.isCenterAxisLabelsEnabled();
                         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -105,10 +110,11 @@ public class StatsBodyweightStatActivity extends AppCompatActivity implements Vi
                         xAxis.setGranularity(1f);
                     }
                 }
-                LineDataSet set1 = new LineDataSet(yValues, "");
+                LineDataSet set1 = new LineDataSet(yValues, "Weight KG");
 
                 set1.setFillAlpha(150);
                 set1.setColor(Color.RED);
+                set1.setCircleColor(Color.BLACK);
                 set1.setLineWidth(2f);
                 set1.setDrawFilled(true);
                 set1.setFillColor(Color.parseColor("#FF8282"));
@@ -127,6 +133,19 @@ public class StatsBodyweightStatActivity extends AppCompatActivity implements Vi
                 lineChart.setData(data);
                 lineChart.notifyDataSetChanged();
                 lineChart.invalidate();
+
+                lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+                    @Override
+                    public void onValueSelected(Entry e, Highlight h) {
+                        float y = e.getY();
+                        Toast.makeText(StatsBodyweightStatActivity.this, "" + y + " KG", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onNothingSelected() {
+
+                    }
+                });
             }
         });
     }
