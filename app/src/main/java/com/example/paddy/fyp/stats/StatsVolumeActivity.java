@@ -28,14 +28,12 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Stats1rmActivity extends AppCompatActivity implements View.OnClickListener{
+public class StatsVolumeActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final String TAG = "Stats1rmActivity";
 
@@ -55,7 +53,7 @@ public class Stats1rmActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stats_1rm);
+        setContentView(R.layout.activity_stats_volume);
 
         mBackButton = findViewById(R.id.toolbar_back_arrow_exercise_stats);
         mViewTitle = findViewById(R.id.stats_exercise_title);
@@ -103,7 +101,7 @@ public class Stats1rmActivity extends AppCompatActivity implements View.OnClickL
             public void onChanged(@Nullable List<ExerciseSet> exerciseSets) {
                 if(exerciseSets != null){
                     for(int i = 0; i < exerciseSets.size(); i++){
-                        int onerepmax = exerciseSets.get(i).getOnerepmax();
+                        int volume = exerciseSets.get(i).getVolume();
                         String timestamp = exerciseSets.get(i).getTimestamp();
                         int pos1 = timestamp.indexOf("-");
                         String month = timestamp.substring(pos1 + 1);
@@ -111,9 +109,9 @@ public class Stats1rmActivity extends AppCompatActivity implements View.OnClickL
                         String time = UtilityDate.getMonthFromNumber(month);
                         String finalTimestamp = date + time;
                         Log.d(TAG, "onChanged: " + finalTimestamp);
-                        yValues.add(new Entry(i,onerepmax));
+                        yValues.add(new Entry(i,volume));
                         xValues.add(i, finalTimestamp);
-                        Log.d(TAG, "onChanged: " + onerepmax);
+                        Log.d(TAG, "onChanged: " + volume);
                         Log.d(TAG, "onChanged: " + yValues);
 
 
@@ -152,7 +150,7 @@ public class Stats1rmActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onValueSelected(Entry e, Highlight h) {
                         float y = e.getY();
-                        Toast.makeText(Stats1rmActivity.this, "" + y + " KG", Toast.LENGTH_LONG).show();
+                        Toast.makeText(StatsVolumeActivity.this, "" + y + " KG", Toast.LENGTH_LONG).show();
                     }
 
                     @Override

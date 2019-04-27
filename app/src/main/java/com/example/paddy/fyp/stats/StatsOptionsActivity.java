@@ -134,6 +134,11 @@ public class StatsOptionsActivity extends AppCompatActivity implements StatsOpti
         }
         else if(position == 2){
             Log.d(TAG, "onStatClicked: this is the total volume");
+            Intent intent = new Intent(this, StatsVolumeActivity.class);
+            intent.putExtra("selected_exercise", mInitialExercise);
+            intent.putExtra("selected_stat", mIntialStatsHome);
+            startActivity(intent);
+
         }
     }
 

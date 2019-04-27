@@ -28,6 +28,7 @@
         <activity android:name=".NavigationActivity"/>
         <activity android:name=".stats.StatsMusclesActivity"/>
         <activity android:name=".stats.Stats1rmActivity"/>
+        <activity android:name=".stats.StatsVolumeActivity"/>
         <activity android:name=".stats.StatsBodyweightActivity"/>
         <activity android:name=".stats.StatsAddBodyweightActivity"/>
         <activity android:name=".stats.StatsBodyweightStatActivity"/>
