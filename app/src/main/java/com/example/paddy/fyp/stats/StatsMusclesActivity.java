@@ -13,7 +13,9 @@ import android.widget.Toast;
 
 import com.example.paddy.fyp.R;
 import com.example.paddy.fyp.models.Exercise;
+import com.example.paddy.fyp.models.ExerciseSet;
 import com.example.paddy.fyp.persistence.ExerciseRepository;
+import com.example.paddy.fyp.persistence.ExerciseSetRepository;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -49,6 +51,7 @@ public class StatsMusclesActivity extends AppCompatActivity implements View.OnCl
     private ImageButton mBackButton;
 
     private ExerciseRepository mExerciseRepository;
+    private ExerciseSetRepository mExerciseSetRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,7 @@ public class StatsMusclesActivity extends AppCompatActivity implements View.OnCl
 
         pieChart = (PieChart) findViewById(R.id.PieChart);
         mExerciseRepository = new ExerciseRepository(this);
+        mExerciseSetRepository = new ExerciseSetRepository(this);
         mBackButton = findViewById(R.id.toolbar_back_arrow_exercise_stats);
 
         Description description = new Description();
@@ -158,12 +162,12 @@ public class StatsMusclesActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void retrieveExerciseStats(){
-        mExerciseRepository.retrieveExerciseStat("Legs").observe(this, new Observer<List<Exercise>>() {
+        mExerciseSetRepository.retrieveExerciseSetStat("Legs").observe(this, new Observer<List<ExerciseSet>>() {
             @Override
-            public void onChanged(@Nullable List<Exercise> exercises) {
+            public void onChanged(@Nullable List<ExerciseSet> exercises) {
                 if(exercises != null){
                     legSize = exercises.size();
-                    yEntrys.add(new PieEntry(legSize));
+                    yEntrys.add(new PieEntry(legSize, "LEGS"));
                     yData[0] = legSize;
                     Log.d(TAG, "onChangedLegs: " + yEntrys);
                 }
@@ -171,12 +175,12 @@ public class StatsMusclesActivity extends AppCompatActivity implements View.OnCl
                 pieChart.invalidate();
             }
         });
-        mExerciseRepository.retrieveExerciseStat("Chest").observe(this, new Observer<List<Exercise>>() {
+        mExerciseSetRepository.retrieveExerciseSetStat("Chest").observe(this, new Observer<List<ExerciseSet>>() {
             @Override
-            public void onChanged(@Nullable List<Exercise> exercises) {
+            public void onChanged(@Nullable List<ExerciseSet> exercises) {
                 if(exercises != null){
                     chestSize = exercises.size();
-                    yEntrys.add(new PieEntry(chestSize));
+                    yEntrys.add(new PieEntry(chestSize, "CHEST"));
                     yData[1] = chestSize;
                     Log.d(TAG, "onChangedChest: " + chestSize);
                 }
@@ -184,12 +188,12 @@ public class StatsMusclesActivity extends AppCompatActivity implements View.OnCl
                 pieChart.invalidate();
             }
         });
-        mExerciseRepository.retrieveExerciseStat("Shoulders").observe(this, new Observer<List<Exercise>>() {
+        mExerciseSetRepository.retrieveExerciseSetStat("Shoulders").observe(this, new Observer<List<ExerciseSet>>() {
             @Override
-            public void onChanged(@Nullable List<Exercise> exercises) {
+            public void onChanged(@Nullable List<ExerciseSet> exercises) {
                 if(exercises != null){
                     shouldersSize = exercises.size();
-                    yEntrys.add(new PieEntry(shouldersSize));
+                    yEntrys.add(new PieEntry(shouldersSize, "SHOULDERS"));
                     yData[2] = shouldersSize;
                     Log.d(TAG, "onChangedShoulders: " + shouldersSize);
                 }
@@ -197,12 +201,12 @@ public class StatsMusclesActivity extends AppCompatActivity implements View.OnCl
                 pieChart.invalidate();
             }
         });
-        mExerciseRepository.retrieveExerciseStat("Biceps").observe(this, new Observer<List<Exercise>>() {
+        mExerciseSetRepository.retrieveExerciseSetStat("Biceps").observe(this, new Observer<List<ExerciseSet>>() {
             @Override
-            public void onChanged(@Nullable List<Exercise> exercises) {
+            public void onChanged(@Nullable List<ExerciseSet> exercises) {
                 if(exercises != null){
                     bicepsSize = exercises.size();
-                    yEntrys.add(new PieEntry(bicepsSize));
+                    yEntrys.add(new PieEntry(bicepsSize, "BICEPS"));
                     yData[3] = bicepsSize;
                     Log.d(TAG, "onChangedBiceps: " + bicepsSize);
                 }
@@ -210,12 +214,12 @@ public class StatsMusclesActivity extends AppCompatActivity implements View.OnCl
                 pieChart.invalidate();
             }
         });
-        mExerciseRepository.retrieveExerciseStat("Triceps").observe(this, new Observer<List<Exercise>>() {
+        mExerciseSetRepository.retrieveExerciseSetStat("Triceps").observe(this, new Observer<List<ExerciseSet>>() {
             @Override
-            public void onChanged(@Nullable List<Exercise> exercises) {
+            public void onChanged(@Nullable List<ExerciseSet> exercises) {
                 if(exercises != null){
                     tricepsSize = exercises.size();
-                    yEntrys.add(new PieEntry(tricepsSize));
+                    yEntrys.add(new PieEntry(tricepsSize, "TRICEPS"));
                     yData[4] = tricepsSize;
                     Log.d(TAG, "onChangedTriceps: " + tricepsSize);
                 }
@@ -223,12 +227,12 @@ public class StatsMusclesActivity extends AppCompatActivity implements View.OnCl
                 pieChart.invalidate();
             }
         });
-        mExerciseRepository.retrieveExerciseStat("Back").observe(this, new Observer<List<Exercise>>() {
+        mExerciseSetRepository.retrieveExerciseSetStat("Back").observe(this, new Observer<List<ExerciseSet>>() {
             @Override
-            public void onChanged(@Nullable List<Exercise> exercises) {
+            public void onChanged(@Nullable List<ExerciseSet> exercises) {
                 if(exercises != null){
                     backSize = exercises.size();
-                    yEntrys.add(new PieEntry(backSize));
+                    yEntrys.add(new PieEntry(backSize, "BACK"));
                     yData[5] = backSize;
                     Log.d(TAG, "onChangedBack: " + backSize);
                 }
@@ -236,12 +240,12 @@ public class StatsMusclesActivity extends AppCompatActivity implements View.OnCl
                 pieChart.invalidate();
             }
         });
-        mExerciseRepository.retrieveExerciseStat("Abs").observe(this, new Observer<List<Exercise>>() {
+        mExerciseSetRepository.retrieveExerciseSetStat("Abs").observe(this, new Observer<List<ExerciseSet>>() {
             @Override
-            public void onChanged(@Nullable List<Exercise> exercises) {
+            public void onChanged(@Nullable List<ExerciseSet> exercises) {
                 if(exercises != null){
                     absSize = exercises.size();
-                    yEntrys.add(new PieEntry(absSize));
+                    yEntrys.add(new PieEntry(absSize, "ABS"));
                     yData[6] = absSize;
                     Log.d(TAG, "onChangedAbs: " + absSize);
                 }

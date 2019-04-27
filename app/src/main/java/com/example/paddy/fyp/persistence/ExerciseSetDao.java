@@ -26,6 +26,9 @@ public interface ExerciseSetDao {
     @Query("SELECT * FROM ExerciseSet WHERE exerciseName LIKE :name")
     LiveData<List<ExerciseSet>> getByTitle(String name);
 
+    @Query("SELECT * FROM ExerciseSet WHERE category LIKE :category")
+    LiveData<List<ExerciseSet>> getExerciseSetStat(String category);
+
     @Delete
     int delete(ExerciseSet... exerciseSets);
 

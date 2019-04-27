@@ -213,6 +213,7 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
             exerciseSet = new ExerciseSet();
             exerciseSet.setName(mViewTitle.getText().toString());
             exerciseSet.setWorkoutID(mInitialLogItem.getId());
+            exerciseSet.setCategory(mInitialExercise.getCategory());
             String timestamp = UtilityDate.getCurrentTimeStamp();
             exerciseSet.setTimestamp(timestamp);
 

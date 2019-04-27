@@ -27,6 +27,9 @@ public class ExerciseSet implements Parcelable {
     @ColumnInfo(name = "parameters")
     private String parameters;
 
+    @ColumnInfo(name = "category")
+    private String category;
+
     @ColumnInfo(name = "setNo")
     private String number;
 
@@ -46,11 +49,12 @@ public class ExerciseSet implements Parcelable {
     private int onerepmax;
 
 
-    public ExerciseSet(int id, String name, int workoutID, String parameters, String number, int weight, int reps, String timestamp, int volume, int onerepmax) {
+    public ExerciseSet(int id, String name, int workoutID, String parameters, String category, String number, int weight, int reps, String timestamp, int volume, int onerepmax) {
         this.id = id;
         this.name = name;
         this.workoutID = workoutID;
         this.parameters = parameters;
+        this.category = category;
         this.number = number;
         this.weight = weight;
         this.reps = reps;
@@ -68,6 +72,7 @@ public class ExerciseSet implements Parcelable {
         name = in.readString();
         workoutID = in.readInt();
         parameters = in.readString();
+        category = in.readString();
         number = in.readString();
         weight = in.readInt();
         reps = in.readInt();
@@ -116,6 +121,14 @@ public class ExerciseSet implements Parcelable {
 
     public void setParameters(String parameters) {
         this.parameters = parameters;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getNumber() {
@@ -171,6 +184,7 @@ public class ExerciseSet implements Parcelable {
                 ", workoutID=" + workoutID +
                 ", name='" + name + '\'' +
                 ", parameters='" + parameters + '\'' +
+                ", category='" + category + '\'' +
                 ", number='" + number + '\'' +
                 ", weight=" + weight +
                 ", reps=" + reps +
@@ -191,6 +205,7 @@ public class ExerciseSet implements Parcelable {
         dest.writeString(name);
         dest.writeInt(workoutID);
         dest.writeString(parameters);
+        dest.writeString(category);
         dest.writeString(number);
         dest.writeInt(weight);
         dest.writeInt(reps);
