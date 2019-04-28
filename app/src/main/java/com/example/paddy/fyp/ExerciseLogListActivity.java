@@ -88,10 +88,9 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
 
 
         initRecyclerView();
-       // retrieveExerciseSets();
         retrieveSete1();
-      //  retrieveSetByName();
         setListeners();
+
         if(getIntent().hasExtra("selected_log")) {
             int intValueHere = getIntent().getExtras().getInt("selected_log");
             Log.d(TAG, "onCreate: " + intValueHere);
@@ -161,24 +160,11 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
             Log.d(TAG, "isLogNotNull: " + intValue);
             mFinalLogItem.setId(intValue);
             mFinalLogItem.setTitle(mEditTitle.getText().toString());
-          //  String content = "Bench Press, Shoulder Press, Dumbell Flies, Laterial Raises";
             String timestamp = UtilityDate.getCurrentTimeStamp();
 
             mFinalLogItem.setTimestamp(timestamp);
             Log.d(TAG, "isLogNotNull: " + mFinalLogItem);
 
-//            if(mSets.size() > 0) {
-//                for (int i = 0; i <= lvPosition - fvPosition; i++) {
-//                    View item = mRecyclerView.getChildAt(i);
-//                    TextView exerciseName = (TextView) item.findViewById(R.id.title_exercise_name);
-//                    String name = exerciseName.getText().toString();
-//                    if (set.length() != 0) {
-//                        set = set.concat("\n");
-//                    }
-//                    set = set.concat(name);
-//                    mFinalLogItem.setContent(set);
-//                }
-//            }
 
         }
     }
@@ -213,21 +199,6 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
         mFinalLogItem.setTitle("");
     }
 
-
-    private void retrieveExerciseSets(){
-        mExerciseSetRepository.retrieveSetTask().observe(this, new Observer<List<ExerciseSet>>() {
-            @Override
-            public void onChanged(@Nullable List<ExerciseSet> exerciseSets) {
-                if(mSets.size() > 0){
-                    mSets.clear();
-                }
-                if(exerciseSets != null){
-                    mSets.addAll(exerciseSets);
-                }
-                mExerciseSetRecyclerAdapter.notifyDataSetChanged();
-            }
-        });
-    }
 
 
     private void retrieveSete1(){
@@ -277,8 +248,8 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
                 break;
             }
             case R.id.toolbar_back_arrow_exercise:{
-                checkIfNew();
-                saveChanges();
+//                checkIfNew();
+//                saveChanges();
                 Intent intent = new Intent(this, HomeActivity.class);
                 startActivity(intent);
                 break;
