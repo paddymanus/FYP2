@@ -52,6 +52,7 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
     private boolean mIsNewLogItem;
     private LogItem mInitialLogItem;
     private LogItem mFinalLogItem;
+    private LogItem mUpdateLogItem;
     private ExerciseSet mExerciseSet;
     private LogItemRepository mLogItemRepository;
 
@@ -123,12 +124,17 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
             saveNewLogItem();
         }
         else{
-
+            saveContents();
+            updateLogItem();
         }
     }
 
     private void saveNewLogItem(){
         mLogItemRepository.insertLogItemTask(mFinalLogItem);
+    }
+
+    private void updateLogItem(){
+        mLogItemRepository.updateLogItemTask(mFinalLogItem);
     }
 
     private void setLogItemProperties(){
@@ -140,9 +146,10 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
     }
 
     private void isLogNotNull() {
-        LinearLayoutManager layoutManager = ((LinearLayoutManager) mRecyclerView.getLayoutManager());
-        int fvPosition = layoutManager.findFirstVisibleItemPosition();
-        int lvPosition = layoutManager.findLastVisibleItemPosition();
+//        LinearLayoutManager layoutManager = ((LinearLayoutManager) mRecyclerView.getLayoutManager());
+//        int fvPosition = layoutManager.findFirstVisibleItemPosition();
+//        int lvPosition = layoutManager.findLastVisibleItemPosition();
+//        String set = "";
 
         String temp = mEditTitle.getText().toString();
         temp = temp.replace("\n", "");
@@ -152,13 +159,47 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
             Log.d(TAG, "isLogNotNull: " + intValue);
             mFinalLogItem.setId(intValue);
             mFinalLogItem.setTitle(mEditTitle.getText().toString());
-            String content = "Bench Press, Shoulder Press, Dumbell Flies, Laterial Raises";
+          //  String content = "Bench Press, Shoulder Press, Dumbell Flies, Laterial Raises";
             String timestamp = UtilityDate.getCurrentTimeStamp();
-            mFinalLogItem.setContent(content);
+
             mFinalLogItem.setTimestamp(timestamp);
             Log.d(TAG, "isLogNotNull: " + mFinalLogItem);
 
+//            if(mSets.size() > 0) {
+//                for (int i = 0; i <= lvPosition - fvPosition; i++) {
+//                    View item = mRecyclerView.getChildAt(i);
+//                    TextView exerciseName = (TextView) item.findViewById(R.id.title_exercise_name);
+//                    String name = exerciseName.getText().toString();
+//                    if (set.length() != 0) {
+//                        set = set.concat("\n");
+//                    }
+//                    set = set.concat(name);
+//                    mFinalLogItem.setContent(set);
+//                }
+//            }
+
         }
+    }
+
+    private void saveContents(){
+        LinearLayoutManager layoutManager = ((LinearLayoutManager) mRecyclerView.getLayoutManager());
+        int fvPosition = layoutManager.findFirstVisibleItemPosition();
+        int lvPosition = layoutManager.findLastVisibleItemPosition();
+        String set = "";
+
+        if(mSets.size() > 0) {
+            for (int i = 0; i <= lvPosition - fvPosition; i++) {
+                View item = mRecyclerView.getChildAt(i);
+                TextView exerciseName = (TextView) item.findViewById(R.id.title_exercise_name);
+                String name = exerciseName.getText().toString();
+                if (set.length() != 0) {
+                    set = set.concat(", ");
+                }
+                set = set.concat(name);
+                mFinalLogItem.setContent(set);
+            }
+        }
+
     }
 
     private void setNewLogItemProperties(){
@@ -194,9 +235,10 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
                 if(mSets.size() > 0){
                     mSets.clear();
                 }
-                if(exerciseSets != null){
+                if(exerciseSets != null) {
                     mSets.addAll(exerciseSets);
                 }
+
                 mExerciseSetRecyclerAdapter.notifyDataSetChanged();
             }
         });
@@ -234,13 +276,17 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
                 break;
             }
             case R.id.toolbar_back_arrow_exercise:{
+                checkIfNew();
+                saveChanges();
                 Intent intent = new Intent(this, HomeActivity.class);
                 startActivity(intent);
                 break;
             }
             case R.id.note_text_finish:{
-                isLogNotNull();
+             //   isLogNotNull();
+                checkIfNew();
                 saveChanges();
+              //  saveContents();
                 Intent intent = new Intent(this, HomeActivity.class);
                 startActivity(intent);
             }
