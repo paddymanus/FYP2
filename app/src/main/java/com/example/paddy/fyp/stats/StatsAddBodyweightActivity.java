@@ -89,7 +89,7 @@ public class StatsAddBodyweightActivity extends AppCompatActivity implements Bod
         temp = temp.replace(" ", "");
         if (temp.length() > 0) {
             String timestamp = UtilityDate.getCurrentTimeStamp();
-            mWeight.setWeight(Integer.valueOf(String.valueOf(mEditWeight.getText())));
+            mWeight.setWeight(Float.valueOf(String.valueOf(mEditWeight.getText())));
             mWeight.setTimestamp(timestamp);
         }
         mBodyweight.add(mWeight);

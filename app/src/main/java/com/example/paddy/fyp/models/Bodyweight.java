@@ -13,12 +13,12 @@ public class Bodyweight {
     private int id;
 
     @ColumnInfo(name = "weight")
-    private int weight;
+    private float weight;
 
     @ColumnInfo(name = "timestamp")
     private String timestamp;
 
-    public Bodyweight(int weight, String timestamp) {
+    public Bodyweight(float weight, String timestamp) {
         this.weight = weight;
         this.timestamp = timestamp;
     }
@@ -35,11 +35,11 @@ public class Bodyweight {
         this.id = id;
     }
 
-    public int getWeight() {
+    public float getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(float weight) {
         this.weight = weight;
     }
 

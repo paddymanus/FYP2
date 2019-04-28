@@ -192,9 +192,10 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    public boolean updateExercise() {
+    public int updateExercise() {
         updateSets();
         boolean isCalled = false;
+        int alert = 0;
 
         LinearLayoutManager layoutManager = ((LinearLayoutManager) mRecyclerView.getLayoutManager());
         int fvPosition = layoutManager.findFirstVisibleItemPosition();
@@ -206,7 +207,11 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
         int max = 0;
         int maxTemp = 0;
         int weightMax = 0;
+        int weightNull = 0;
+        int repMax = 0;
         int weightMaxTemp = 0;
+        int weightNullTemp = 0;
+        int repMaxTemp = 0;
 
         for (int i = 0; i <= lvPosition - fvPosition; i++) {
 
@@ -223,6 +228,8 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
             TextView setNumberET = (TextView) item.findViewById(R.id.view_exercise_set_number);
 
             weightMax = Integer.valueOf(String.valueOf(setWeightET.getText()));
+            repMax = Integer.valueOf(String.valueOf(setRepsET.getText()));
+            weightNull = Integer.valueOf(String.valueOf(setWeightET.getText()));
             exerciseSet.setWeight((Integer.valueOf(setWeightET.getText().toString())));
             exerciseSet.setReps(Integer.valueOf(setRepsET.getText().toString()));
             exercises.add(exerciseSet);
@@ -256,12 +263,24 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
                 weightMax = weightMaxTemp;
             }
 
+            if(repMaxTemp > repMax){
+                repMax = repMaxTemp;
+            }
+
+            if(weightNullTemp > weightNull){
+                weightNull = weightNullTemp;
+            }
+
             if (weightMax > 150){
-                isCalled = true;
+                alert = 1;
+            } else if (weightNull == 0){
+                alert = 2;
+            } else if (repMax == 0){
+                alert = 3;
             }
             weightMaxTemp = weightMax;
         }
-        return isCalled;
+        return alert;
 //        saveExercise();
     }
 
@@ -286,6 +305,63 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
             public void onClick(DialogInterface dialogInterface, int i) {
                 saveExercise();
              //   dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    private void alertPopupWeight(){
+        boolean didPopUp = true;
+        AlertDialog.Builder builder = new AlertDialog.Builder(ExerciseActivity.this);
+
+
+        builder.setCancelable(true);
+        builder.setTitle("You haven't recorded any weight here");
+        builder.setMessage("Please record weight for all sets performed");
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+
+            }
+        });
+        builder.show();
+    }
+
+    private void alertPopupReps(){
+        boolean didPopUp = true;
+        AlertDialog.Builder builder = new AlertDialog.Builder(ExerciseActivity.this);
+
+
+        builder.setCancelable(true);
+        builder.setTitle("You haven't recorded any reps here");
+        builder.setMessage("Please record reps for all sets performed");
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+
+            }
+        });
+        builder.show();
+    }
+
+    private void alertPopupNull(){
+        boolean didPopUp = true;
+        AlertDialog.Builder builder = new AlertDialog.Builder(ExerciseActivity.this);
+
+
+        builder.setCancelable(true);
+        builder.setTitle("You haven't recorded anything");
+        builder.setMessage("Please record weight and reps for all sets performed");
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+
             }
         });
         builder.show();
@@ -368,8 +444,12 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
                 removeExerciseSet(position);
             }
             case R.id.toolbar_check: {
-                   if (updateExercise()){
+                   if (updateExercise() == 1){
                        alertPopup();
+                   } else if (updateExercise() == 2){
+                       alertPopupWeight();
+                   } else if (updateExercise() == 3){
+                       alertPopupReps();
                    } else {
                        saveExercise();
                    }

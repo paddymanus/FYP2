@@ -87,7 +87,7 @@ public class StatsBodyweightStatActivity extends AppCompatActivity implements Vi
             public void onChanged(@Nullable List<Bodyweight> bodyweights) {
                 if(bodyweights != null){
                     for(int i = 0; i < bodyweights.size(); i++){
-                        int weight = bodyweights.get(i).getWeight();
+                        float weight = bodyweights.get(i).getWeight();
                         String timestamp = bodyweights.get(i).getTimestamp();
                         int pos1 = timestamp.indexOf("-");
                         String month = timestamp.substring(pos1 + 1);
