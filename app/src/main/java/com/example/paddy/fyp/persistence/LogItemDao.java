@@ -17,7 +17,7 @@ public interface LogItemDao {
         @Insert
         long[] insertLogItems(LogItem... logItems);
 
-        @Query("SELECT * FROM logItem")
+        @Query("SELECT * FROM logItem ORDER BY id DESC")
         LiveData<List<LogItem>> getLogItems();
 
 //        @Query("SELECT * FROM logItem WHERE id LIKE :id")

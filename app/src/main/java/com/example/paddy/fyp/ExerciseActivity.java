@@ -147,7 +147,6 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
 
     private void initRecyclerView2(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setReverseLayout(true);
         mRecyclerView2.setLayoutManager(linearLayoutManager);
         mExerciseSetRecyclerAdapter = new ExerciseSetRecyclerAdapter(mExerciseSets, this);
         mRecyclerView2.setAdapter(mExerciseSetRecyclerAdapter);
@@ -215,6 +214,7 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
 
         for (int i = 0; i <= lvPosition - fvPosition; i++) {
 
+            int setNo = i+1;
             exerciseSet = new ExerciseSet();
             exerciseSet.setName(mViewTitle.getText().toString());
             exerciseSet.setWorkoutID(mInitialLogItem.getId());
@@ -239,7 +239,7 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
             if (set.length() != 0) {
                 set = set.concat("\n");
             }
-            set = set.concat(String.valueOf(exerciseSet.getWeight() + "kg x " + String.valueOf(exerciseSet.getReps())));
+            set = set.concat("Set " + setNo + "- " + String.valueOf(exerciseSet.getWeight() + "kg x " + String.valueOf(exerciseSet.getReps())));
             Log.d(TAG, "getSet: " + set);
 
             temp = (temp * exerciseSet.getWeight() / (1.0278 - (0.0278 * exerciseSet.getReps())));
@@ -277,6 +277,8 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
                 alert = 2;
             } else if (repMax == 0){
                 alert = 3;
+            } else if (weightNull == 0 && repMax == 0){
+                alert = 4;
             }
             weightMaxTemp = weightMax;
         }
@@ -348,7 +350,7 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
         builder.show();
     }
 
-    private void alertPopupNull(){
+    private void alertPopupWeightAndRep(){
         boolean didPopUp = true;
         AlertDialog.Builder builder = new AlertDialog.Builder(ExerciseActivity.this);
 
@@ -450,6 +452,8 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
                        alertPopupWeight();
                    } else if (updateExercise() == 3){
                        alertPopupReps();
+                   } else if (updateExercise() == 4){
+                       alertPopupWeightAndRep();
                    } else {
                        saveExercise();
                    }

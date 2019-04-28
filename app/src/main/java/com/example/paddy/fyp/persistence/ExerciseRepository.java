@@ -30,6 +30,11 @@ public class ExerciseRepository {
         return mExerciseDatabase.getExerciseDao().getExercises();
     }
 
+    public LiveData<List<Exercise>> retrieveExerciseTaskByBodypart(String bodypart){
+
+        return mExerciseDatabase.getExerciseDao().getExerciseStat(bodypart);
+    }
+
     public LiveData<List<Exercise>> retrieveExerciseStat(String category){
         return mExerciseDatabase.getExerciseDao().getExerciseStat(category);
     }

@@ -55,8 +55,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     </android.support.v7.widget.RecyclerView>

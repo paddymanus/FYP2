@@ -69,6 +69,8 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
         mExerciseSetRepository = new ExerciseSetRepository(this);
         mLogItemRepository = new LogItemRepository(this);
 
+        findViewById(R.id.fab).setOnClickListener(this);
+
         if(getIntent().hasExtra("selected_item")){
             LogItem logItem = getIntent().getParcelableExtra("selected_item");
             Log.d(TAG, "onCreate: " + logItem.toString());
@@ -256,7 +258,6 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
 
 
     private void setListeners(){
-        mButton.setOnClickListener(this);
         mBackPressed.setOnClickListener(this);
         mFinish.setOnClickListener(this);
     }
@@ -266,7 +267,7 @@ public class ExerciseLogListActivity extends AppCompatActivity implements
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.add_exercise_button:{
+            case R.id.fab:{
                 checkIfNew();
                 saveChanges();
                 Intent intent = new Intent(this, MainActivity.class);

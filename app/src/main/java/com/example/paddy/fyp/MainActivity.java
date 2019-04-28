@@ -11,7 +11,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 
 import com.example.paddy.fyp.adapters.ExerciseRecyclerAdapter;
 import com.example.paddy.fyp.home.HomeActivity;
@@ -26,13 +29,14 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
         ExerciseRecyclerAdapter.OnExerciseListener,
-        View.OnClickListener{
+        View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "MainActivity";
 
     // UI components
     private RecyclerView mRecyclerView;
     private ImageButton mAddButton, mBackButton;
+    private Spinner mEditBodypart;
 
     // vars
     private ArrayList<Exercise> mExercise = new ArrayList<>();
@@ -50,8 +54,15 @@ public class MainActivity extends AppCompatActivity implements
         mRecyclerView = findViewById(R.id.rvAddExercise);
         mAddButton = findViewById(R.id.toolbar_add);
         mBackButton = findViewById(R.id.toolbar_back_arrow_select_exercise);
+        mEditBodypart = findViewById(R.id.spinnerCategory);
 
         mExerciseRepository = new ExerciseRepository(this);
+
+        Spinner spinner = findViewById(R.id.spinnerCategory);
+        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.musclesMain, android.R.layout.simple_spinner_item);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(arrayAdapter);
+        spinner.setOnItemSelectedListener(this);
 
         if(getIntent().hasExtra("selected_item1")){
             LogItem logItem1 = getIntent().getParcelableExtra("selected_item1");
@@ -62,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements
         getIncomingIntent();
 
         initRecyclerView();
-        retrieveExercises();
+       // retrieveExercises();
         setListeners();
 
     }
@@ -79,6 +90,26 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
 
+
+    private void retrieveExercisesByBodypart(){
+        String bodypart = mEditBodypart.getSelectedItem().toString();
+        mExerciseRepository.retrieveExerciseTaskByBodypart(bodypart).observe(this, new Observer<List<Exercise>>() {
+            @Override
+            public void onChanged(@Nullable List<Exercise> exercises) {
+                if(mExercise.size() > 0){
+                    mExercise.clear();
+                }
+                if(exercises != null){
+                    mExercise.addAll(exercises);
+                    for(int i = 0; i < exercises.size(); i++){
+                        String name = exercises.get(i).getName();
+                        Log.d(TAG, "onChanged: " + name);
+                    }
+                }
+                mExerciseRecyclerAdapter.notifyDataSetChanged();
+            }
+        });
+    }
 
     private void retrieveExercises(){
         mExerciseRepository.retrieveExerciseTask().observe(this, new Observer<List<Exercise>>() {
@@ -158,4 +189,20 @@ public class MainActivity extends AppCompatActivity implements
             deleteExercise(mExercise.get(viewHolder.getAdapterPosition()));
         }
     };
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String bodypart = mEditBodypart.getSelectedItem().toString();
+        Log.d(TAG, "onItemSelected: " + bodypart);
+        if(bodypart.equals("All")){
+            retrieveExercises();
+        } else {
+            retrieveExercisesByBodypart();
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }

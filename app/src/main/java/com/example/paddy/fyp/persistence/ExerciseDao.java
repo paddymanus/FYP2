@@ -20,7 +20,7 @@ public interface ExerciseDao {
     @Query("SELECT * FROM exercises ORDER BY name")
     LiveData<List<Exercise>> getExercises();
 
-    @Query("SELECT * FROM exercises WHERE category LIKE :category")
+    @Query("SELECT * FROM exercises WHERE category LIKE :category ORDER BY name")
     LiveData<List<Exercise>> getExerciseStat(String category);
 
 
