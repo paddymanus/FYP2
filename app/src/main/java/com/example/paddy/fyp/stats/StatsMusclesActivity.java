@@ -136,13 +136,13 @@ public class StatsMusclesActivity extends AppCompatActivity implements View.OnCl
 
         //add colors to dataset
         ArrayList<Integer> colors = new ArrayList<>();
-        colors.add(Color.BLUE);
-        colors.add(Color.RED);
-        colors.add(Color.GREEN);
-        colors.add(Color.YELLOW);
-        colors.add(Color.CYAN);
-        colors.add(Color.MAGENTA);
-        colors.add(Color.GRAY);
+        colors.add(Color.parseColor("#003f5c"));
+        colors.add(Color.parseColor("#374c80"));
+        colors.add(Color.parseColor("#7a5195"));
+        colors.add(Color.parseColor("#bc5090"));
+        colors.add(Color.parseColor("#ef5675"));
+        colors.add(Color.parseColor("#ff764a"));
+        colors.add(Color.parseColor("#ffa600"));
 
         pieDataSet.setColors(colors);
 
