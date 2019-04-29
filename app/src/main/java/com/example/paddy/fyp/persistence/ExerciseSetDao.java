@@ -23,8 +23,12 @@ public interface ExerciseSetDao {
     @Query("SELECT * FROM ExerciseSet WHERE workout_id LIKE :workoutid")
     LiveData<List<ExerciseSet>> getWorkoutId1(int workoutid);
 
-    @Query("SELECT * FROM ExerciseSet WHERE exerciseName LIKE :name ORDER BY _id  DESC LIMIT 3")
+    @Query("SELECT * FROM ExerciseSet WHERE exerciseName LIKE :name")
     LiveData<List<ExerciseSet>> getByTitle(String name);
+
+    @Query("SELECT * FROM ExerciseSet WHERE exerciseName LIKE :name ORDER BY _id  DESC LIMIT 3")
+    LiveData<List<ExerciseSet>> getByTitleExercise(String name);
+
 
     @Query("SELECT * FROM ExerciseSet WHERE category LIKE :category")
     LiveData<List<ExerciseSet>> getExerciseSetStat(String category);

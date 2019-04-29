@@ -3,6 +3,7 @@ package com.example.paddy.fyp.persistence;
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
 
+import com.example.paddy.fyp.async.DeleteBodyweightAsyncTask;
 import com.example.paddy.fyp.async.InsertBodyweightAsyncTask;
 import com.example.paddy.fyp.async.InsertLogItemAsyncTask;
 import com.example.paddy.fyp.models.Bodyweight;
@@ -33,6 +34,6 @@ public class BodyweightRepository {
 
 
     public void deleteBodyweight(Bodyweight bodyweight){
-
+        new DeleteBodyweightAsyncTask(mBodyweightDatabase.getBodyweightsDao()).execute(bodyweight);
     }
 }

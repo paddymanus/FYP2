@@ -134,7 +134,7 @@ public class RoutineExerciseActivity extends AppCompatActivity implements View.O
     }
 
     private void retrieveExerciseSets(){
-        mExerciseSetRepository.retrieveSetByTitle(mInitialExerciseSet.getName()).observe(this, new Observer<List<ExerciseSet>>() {
+        mExerciseSetRepository.retrieveSetByTitleExercise(mInitialExerciseSet.getName()).observe(this, new Observer<List<ExerciseSet>>() {
             @Override
             public void onChanged(@Nullable List<ExerciseSet> exerciseSets) {
                 if(mExerciseSets.size() > 0){
@@ -163,7 +163,6 @@ public class RoutineExerciseActivity extends AppCompatActivity implements View.O
 
     private void initRecyclerView2(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setReverseLayout(true);
         mRecyclerView2.setLayoutManager(linearLayoutManager);
         mExerciseSetRecyclerAdapter = new ExerciseSetRecyclerAdapter(mExerciseSets, this);
         mRecyclerView2.setAdapter(mExerciseSetRecyclerAdapter);
@@ -227,6 +226,7 @@ public class RoutineExerciseActivity extends AppCompatActivity implements View.O
 
         for (int i = 0; i <= lvPosition - fvPosition; i++) {
 
+            int setNo = i+1;
             exerciseSet = mExerciseIntentSet;
             exerciseSet.setName(mViewTitle.getText().toString());
             exerciseSet.setWorkoutID(intValue);
@@ -248,7 +248,7 @@ public class RoutineExerciseActivity extends AppCompatActivity implements View.O
             if (set.length() != 0) {
                 set = set.concat("\n");
             }
-            set = set.concat(String.valueOf(exerciseSet.getWeight() + "kg x " + String.valueOf(exerciseSet.getReps())));
+            set = set.concat("Set " + setNo + "- " + String.valueOf(exerciseSet.getWeight() + "kg x " + String.valueOf(exerciseSet.getReps())));
             Log.d(TAG, "getSet: " + set);
 
             temp = (temp * exerciseSet.getWeight() / (1.0278 - (0.0278 * exerciseSet.getReps())));

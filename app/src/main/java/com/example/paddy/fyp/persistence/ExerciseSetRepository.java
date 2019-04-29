@@ -41,6 +41,10 @@ public class ExerciseSetRepository {
         return mExerciseSetDatabase.getExerciseSetDao().getByTitle(name);
     }
 
+    public LiveData<List<ExerciseSet>> retrieveSetByTitleExercise(String name){
+        return mExerciseSetDatabase.getExerciseSetDao().getByTitleExercise(name);
+    }
+
     public LiveData<List<ExerciseSet>> retrieveExerciseSetStat(String category){
         return mExerciseSetDatabase.getExerciseSetDao().getExerciseSetStat(category);
     }

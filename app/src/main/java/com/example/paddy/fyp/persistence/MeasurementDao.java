@@ -18,7 +18,7 @@ public interface MeasurementDao {
         @Insert
         long[] insertMeasurement(Measurement... measurements);
 
-        @Query("SELECT * FROM measurement")
+        @Query("SELECT * FROM measurement ORDER BY id DESC")
         LiveData<List<Measurement>> getMeasurement();
 
         @Query("SELECT * FROM measurement WHERE bodypart LIKE :bodypart")

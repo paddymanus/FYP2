@@ -118,7 +118,7 @@ public class ExerciseActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void retrieveExerciseSets(){
-        mExerciseSetRepository.retrieveSetByTitle(mInitialExercise.getName()).observe(this, new Observer<List<ExerciseSet>>() {
+        mExerciseSetRepository.retrieveSetByTitleExercise(mInitialExercise.getName()).observe(this, new Observer<List<ExerciseSet>>() {
             @Override
             public void onChanged(@Nullable List<ExerciseSet> exerciseSets) {
                 if(mExerciseSets.size() > 0){

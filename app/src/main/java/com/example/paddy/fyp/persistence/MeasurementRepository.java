@@ -3,6 +3,7 @@ package com.example.paddy.fyp.persistence;
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
 
+import com.example.paddy.fyp.async.DeleteMeasurementAsyncTask;
 import com.example.paddy.fyp.async.InsertBodyweightAsyncTask;
 import com.example.paddy.fyp.async.InsertMeasurementAsyncTask;
 import com.example.paddy.fyp.models.Bodyweight;
@@ -37,6 +38,6 @@ public class MeasurementRepository {
 
 
     public void deleteMeasurement(Measurement measurement){
-
+        new DeleteMeasurementAsyncTask(mMeasurementDatabase.getMeasurementsDao()).execute(measurement);
     }
 }

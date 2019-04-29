@@ -18,7 +18,7 @@ public interface BodyweightDao {
         @Insert
         long[] insertBodyweight(Bodyweight... bodyweights);
 
-        @Query("SELECT * FROM bodyweight")
+        @Query("SELECT * FROM bodyweight ORDER BY id DESC")
         LiveData<List<Bodyweight>> getBodyweight();
 
 //        @Query("SELECT * FROM logItem WHERE id LIKE :id")

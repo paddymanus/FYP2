@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -59,8 +60,8 @@ public class StatsAddBodyweightActivity extends AppCompatActivity implements Bod
 
     private void initRecyclerView(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setReverseLayout(true);
         mRecyclerView.setLayoutManager(linearLayoutManager);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
         mBodyweightRecyclerAdapter = new BodyweightRecyclerAdapter(mBodyweight, this);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.recyclerview_divider));
@@ -125,6 +126,25 @@ public class StatsAddBodyweightActivity extends AppCompatActivity implements Bod
             }
         }
     }
+
+    private void deleteBodyweight(Bodyweight bodyweight){
+        mBodyweight.remove(bodyweight);
+        mBodyweightRecyclerAdapter.notifyDataSetChanged();
+
+        mBodyweightRepository.deleteBodyweight(bodyweight);
+    }
+
+    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            deleteBodyweight(mBodyweight.get(viewHolder.getAdapterPosition()));
+        }
+    };
 
     @Override
     public void onBodyweightClicked(int position) {

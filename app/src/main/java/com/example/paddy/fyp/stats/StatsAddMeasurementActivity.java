@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -73,8 +74,8 @@ public class StatsAddMeasurementActivity extends AppCompatActivity implements Ad
 
     private void initRecyclerView(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setReverseLayout(true);
         mRecyclerView.setLayoutManager(linearLayoutManager);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
         mMeasurementRecyclerAdapter = new MeasurementRecyclerAdapter(mMeasurement, this);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.recyclerview_divider));
@@ -153,6 +154,25 @@ public class StatsAddMeasurementActivity extends AppCompatActivity implements Ad
             Log.d(TAG, "onStatClicked: this is stats");
         }
     }
+
+    private void deleteMeasurement(Measurement measurement){
+        mMeasurement.remove(measurement);
+        mMeasurementRecyclerAdapter.notifyDataSetChanged();
+
+        mMeasurementRepository.deleteMeasurement(measurement);
+    }
+
+    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            deleteMeasurement(mMeasurement.get(viewHolder.getAdapterPosition()));
+        }
+    };
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
