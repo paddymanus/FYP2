@@ -82,7 +82,7 @@ public class StatsBodyweightStatActivity extends AppCompatActivity implements Vi
     }
 
     private void retrieveBodyweight(){
-        mBodyweightRepository.retrieveBodyweightTask().observe(this, new Observer<List<Bodyweight>>() {
+        mBodyweightRepository.retrieveBodyweightTaskStat().observe(this, new Observer<List<Bodyweight>>() {
             @Override
             public void onChanged(@Nullable List<Bodyweight> bodyweights) {
                 if(bodyweights != null){

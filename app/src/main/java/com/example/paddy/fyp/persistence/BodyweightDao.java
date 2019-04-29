@@ -21,8 +21,9 @@ public interface BodyweightDao {
         @Query("SELECT * FROM bodyweight ORDER BY id DESC")
         LiveData<List<Bodyweight>> getBodyweight();
 
-//        @Query("SELECT * FROM logItem WHERE id LIKE :id")
-//        List<LogItem> findByWorkoutId(int id);
+        @Query("SELECT * FROM bodyweight")
+        LiveData<List<Bodyweight>> getBodyweightStat();
+
 
         @Delete
         int delete(Bodyweight... bodyweights);

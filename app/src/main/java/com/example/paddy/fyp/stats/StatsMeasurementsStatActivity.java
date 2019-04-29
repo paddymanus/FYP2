@@ -86,7 +86,7 @@ public class StatsMeasurementsStatActivity extends AppCompatActivity implements 
 
     }
 
-    private void retrieveBodyweight(){
+    private void retrieveMeasurement(){
         String bodypart = mEditBodypart.getSelectedItem().toString();
         mMeasurementRepository.retrieveMeasurementByBodypart(bodypart).observe(this, new Observer<List<Measurement>>() {
             @Override
@@ -176,7 +176,7 @@ public class StatsMeasurementsStatActivity extends AppCompatActivity implements 
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         yValues.clear();
         xValues.clear();
-        retrieveBodyweight();
+        retrieveMeasurement();
     }
 
     @Override

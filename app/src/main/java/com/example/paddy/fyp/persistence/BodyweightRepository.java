@@ -32,6 +32,11 @@ public class BodyweightRepository {
         return mBodyweightDatabase.getBodyweightsDao().getBodyweight();
     }
 
+    public LiveData<List<Bodyweight>> retrieveBodyweightTaskStat(){
+
+        return mBodyweightDatabase.getBodyweightsDao().getBodyweightStat();
+    }
+
 
     public void deleteBodyweight(Bodyweight bodyweight){
         new DeleteBodyweightAsyncTask(mBodyweightDatabase.getBodyweightsDao()).execute(bodyweight);
